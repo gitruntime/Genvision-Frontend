@@ -9,7 +9,8 @@
     "dev:tenant2": "cross-env VITE_HOST=tenant2.localhost npm run dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve -s dist"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
