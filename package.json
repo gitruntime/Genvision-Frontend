@@ -10,7 +10,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "serve": "serve -s dist"
+    "serve": "serve -s dist",
+    "start": "vite --port 3001"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.0",
