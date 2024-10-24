@@ -6,11 +6,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeftIcon, ChevronRightIcon, InfoIcon, PlusIcon } from "lucide-react";
 import { FC, useState } from "react";
 
-interface Group {
-  id: number;
-  name: string;
-  permissionCount: number;
-}
+// interface Group {
+//   id: number;
+//   name: string;
+//   permissionCount: number;
+// }
 
 export const GroupView: FC = () => {
   const [groupName, setGroupName] = useState<string>("");

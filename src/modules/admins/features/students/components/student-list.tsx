@@ -26,18 +26,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { memo } from "react"
 
-interface Students{
-    id:number,
-    fullName:string,
-    profilePicture:string,
-    grade:string,   
-    status:string,
-    teacher:string,
-    joinedAt:Date
-}
+interface Students {
+    id: number;
+    fullName: string;
+    status: "Present" | "Absent" | "Late";
+    grade: string;
+    teacher: string;
+    joinedAt: string;
+    profilePicture: string;
+  }
 interface StudentListComponentProps {
     students: Students[];
   }

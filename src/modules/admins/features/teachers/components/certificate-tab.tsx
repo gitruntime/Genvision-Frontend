@@ -8,7 +8,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -46,7 +45,10 @@ export const CertificateTab: FC = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
-      setFiles((prevFiles) => [...prevFiles, ...Array.from(e.target.files)]);
+      setFiles((prevFiles) => [
+        ...prevFiles,
+        ...Array.from(e.target.files as FileList),
+      ]);
     }
   };
 

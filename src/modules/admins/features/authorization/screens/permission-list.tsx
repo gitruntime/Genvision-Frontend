@@ -39,30 +39,36 @@ import { Input } from "@/components/ui/input";
 interface Permission {
   id: number;
   name: string;
+  codeName: string;
 }
 
 export const PermissionList: FC = () => {
   // Use state to manage permission data
-  const [permissions, setPermissions] = useState<Permission[]>([
+  const [permissions] = useState<Permission[]>([
     {
       id: 1,
       name: "Student Can View Profile",
+      codeName: ".view_student_profile",
     },
     {
       id: 2,
       name: "Student Can View Profile",
+      codeName: ".view_student_profile",
     },
     {
       id: 3,
       name: "Student Can View Profile",
+      codeName: ".view_student_profile",
     },
     {
       id: 4,
       name: "Student Can View Profile",
+      codeName: ".view_student_profile",
     },
     {
       id: 5,
       name: "Student Can View Profile",
+      codeName: ".view_student_profile",
     },
   ]);
 

@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-interface Student {
+interface Students {
   id: number;
   fullName: string;
   status: "Present" | "Absent" | "Late";
@@ -50,9 +50,9 @@ interface Student {
 
 export const StudentList: FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<Students[]>([]);
 
-  const students: Student[] = [
+  const students: Students[] = [
     {
       id: 1,
       fullName: "Thouseef",

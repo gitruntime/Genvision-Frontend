@@ -1,17 +1,12 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +23,8 @@ interface PermissionListComponentProps {
   permissions: Permissions[];
 }
 
-export const PermissionListComponent: React.FC<PermissionListComponentProps> = memo(
-  ({ permissions }) => {
+export const PermissionListComponent: React.FC<PermissionListComponentProps> =
+  memo(({ permissions }) => {
     const navigate = useNavigate();
     return (
       <>
@@ -40,7 +35,7 @@ export const PermissionListComponent: React.FC<PermissionListComponentProps> = m
               {permission.codeName}
             </TableCell>
             <TableCell>
-              <DropdownMenu>  
+              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button aria-haspopup="true" size="icon" variant="ghost">
                     <MoreHorizontal className="h-4 w-4" />
@@ -64,5 +59,4 @@ export const PermissionListComponent: React.FC<PermissionListComponentProps> = m
         ))}
       </>
     );
-  }
-);
+  });

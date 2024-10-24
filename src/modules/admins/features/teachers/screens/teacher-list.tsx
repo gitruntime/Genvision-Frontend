@@ -1,10 +1,6 @@
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  File,
   ListFilter,
   PlusCircle,
-  PlusIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -27,7 +23,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
