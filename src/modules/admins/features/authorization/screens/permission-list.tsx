@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { PermissionListComponent } from "../components/permission-list";
 import {
   DropdownMenu,
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ListFilter, PlusCircle } from "lucide-react";
-import { PermissionAddComponent } from "../components/permission-add";
 import {
   Dialog,
   DialogContent,
@@ -35,11 +34,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
+
+// Define types for permission
+interface Permission {
+  id: number;
+  name: string;
+}
 
 export const PermissionList: FC = () => {
-  const permissions = [
+  // Use state to manage permission data
+  const [permissions, setPermissions] = useState<Permission[]>([
     {
       id: 1,
       name: "Student Can View Profile",
@@ -52,7 +56,6 @@ export const PermissionList: FC = () => {
       id: 3,
       name: "Student Can View Profile",
     },
-
     {
       id: 4,
       name: "Student Can View Profile",
@@ -61,7 +64,7 @@ export const PermissionList: FC = () => {
       id: 5,
       name: "Student Can View Profile",
     },
-  ];
+  ]);
 
   return (
     <>
@@ -136,7 +139,7 @@ export const PermissionList: FC = () => {
           <CardFooter>
             <div className="text-xs text-muted-foreground">
               Showing <strong>1-10</strong> of{" "}
-              <strong>{permissions.length}</strong> students
+              <strong>{permissions.length}</strong> permissions
             </div>
           </CardFooter>
         </Card>

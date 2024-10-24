@@ -1,8 +1,9 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Attendance, OverviewTab, Performance, Teacher, Marks, Documents } from "../components";
+import { FC } from "react";
 
-export const StudentView = () => {
+export const StudentView: FC = () => {
   
   return (
     <main className="grid flex-1 items-start mt-3">

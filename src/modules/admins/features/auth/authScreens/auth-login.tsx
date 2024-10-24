@@ -1,10 +1,11 @@
-// import { Image } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Link } from "react-router-dom"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
+
 export const description =
-  "A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image."
+  "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
+
 export default function AuthLogin() {
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[575px]">
@@ -30,8 +31,7 @@ export default function AuthLogin() {
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
                 <Link
-                  to={'https://google.com'}
-                  hrefLang="/forgot-password"
+                  to={'/forgot-password'}
                   className="ml-auto inline-block text-sm underline"
                 >
                   Forgot your password?
@@ -48,15 +48,16 @@ export default function AuthLogin() {
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link hrefLang="#" to={'https://google.com/'} className="underline">
+            <Link to={'/signup'} className="underline">
               Sign up
             </Link>
           </div>
         </div>
       </div>
       <div className="hidden bg-muted lg:block">
+        {/* Replace the Image component with your preferred image handling */}
         {/* <Image
-          src=""
+          src="your-image-url"
           alt="Image"
           width="1920"
           height="1080"
@@ -64,5 +65,5 @@ export default function AuthLogin() {
         /> */}
       </div>
     </div>
-  )
+  );
 }

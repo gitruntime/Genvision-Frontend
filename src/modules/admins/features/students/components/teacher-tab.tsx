@@ -10,6 +10,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -43,6 +44,7 @@ export const Teacher: FC = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add New Teacher</DialogTitle>
+              <DialogDescription></DialogDescription>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <Select>
@@ -107,4 +109,3 @@ export const Teacher: FC = () => {
     </Card>
   );
 };
-

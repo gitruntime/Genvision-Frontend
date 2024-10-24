@@ -1,19 +1,18 @@
-import './App.css'
-import { Routes,Route } from 'react-router-dom'
-import AdminNavigator from './modules/admins/routes'
-import { TooltipProvider } from '@radix-ui/react-tooltip';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import AdminNavigator from "./modules/admins/routes";
+import { FC } from "react";
+import { TooltipProvider } from "./components/ui/tooltip";
 
-function App() {
+const App: FC = () => {
   return (
-    <>
     <TooltipProvider>
       <Routes>
-        <Route path='admin/*' element={<AdminNavigator />} />
+        <Route path="admin/*" element={<AdminNavigator />} />
         {/* <Route path='teacher/*' element={<AdminNavigator />} /> */}
       </Routes>
     </TooltipProvider>
-    </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

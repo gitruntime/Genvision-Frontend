@@ -1,20 +1,24 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import {
   DialogContent,
-  DialogDescription,
   DialogTitle,
-  DialogTrigger,
-} from "@radix-ui/react-dialog";
-import { Label } from "@/components/ui/label";
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { PlusCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
 
-export const PermissionAddComponent = ({children}) => {
-  const customList = (items) => (
+interface PermissionAddComponentProps {
+  children: React.ReactNode;
+}
+
+export const PermissionAddComponent: React.FC<PermissionAddComponentProps> = ({
+  children,
+}) => {
+  const customList = (items: number[]) => (
     <Card className="w-[200px] h-[230px]">
       <ScrollArea className="h-full">
         <ul className="p-0 m-0 list-none">
@@ -36,6 +40,7 @@ export const PermissionAddComponent = ({children}) => {
       </ScrollArea>
     </Card>
   );
+
   return (
     <>
       {children}

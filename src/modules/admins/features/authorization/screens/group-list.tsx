@@ -1,3 +1,4 @@
+import { FC } from "react";
 import {
   Card,
   CardContent,
@@ -13,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FC } from "react";
 import { GroupListComponent } from "../components/group-list";
 import {
   DropdownMenu,
@@ -35,6 +35,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -42,18 +43,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+interface Group {
+  id: number;
+  name: string;
+  permissionCount: number;
+}
+
 export const GroupList: FC = () => {
-  const groups = [
+  const groups: Group[] = [
     { id: 1, name: "Admin", permissionCount: 3 },
     { id: 2, name: "Teachers", permissionCount: 4 },
     { id: 3, name: "Parents", permissionCount: 7 },
     { id: 4, name: "Students", permissionCount: 9 },
   ];
-  const availableGroups = [
-    "Teacher",
-    "Student",
-    "Parent",
-  ];
+
+  const availableGroups: string[] = ["Teacher", "Student", "Parent"];
 
   return (
     <>
@@ -85,9 +89,16 @@ export const GroupList: FC = () => {
                 <PlusCircle className="h-3.5 w-3.5" /> Add Group
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[550px]">
+            <DialogContent
+              className="sm:max-w-[550px]"
+              aria-describedby="group-description"
+            >
               <DialogHeader>
                 <DialogTitle>Add Group</DialogTitle>
+                <DialogDescription className="text-xs mt-0">
+                  Please enter the group name and select the desired permissions
+                  for the new group.
+                </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col space-y-4">
                 <Input
@@ -100,29 +111,39 @@ export const GroupList: FC = () => {
                     <Card className="border-gray-300 h-[250px]">
                       <CardContent className="p-0 flex flex-col h-full">
                         <div className="bg-gray-100 p-2 flex items-center justify-between">
-                          <span className="text-sm font-semibold">Available groups</span>
+                          <span className="text-sm font-semibold">
+                            Available Permissions
+                          </span>
                           <InfoIcon className="h-4 w-4 text-gray-500" />
                         </div>
-                          <Input type="text" placeholder="Filter" className="mb-2" />
+                        <Input
+                          type="text"
+                          placeholder="Filter"
+                          className="mb-2"
+                        />
                         <div className="p-2 flex-grow flex flex-col scrollbar">
-                          {/* <ScrollArea className="flex-grow border border-gray-200 rounded"> */}
-                            <ul className="p-1">
-                              {availableGroups.map((group, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-center justify-between p-1 hover:bg-gray-100 rounded text-sm"
+                          <ul className="p-1">
+                            {availableGroups.map((group, index) => (
+                              <li
+                                key={index}
+                                className="flex items-center justify-between p-1 hover:bg-gray-100 rounded text-sm"
+                              >
+                                <span
+                                  className={index === 5 ? "text-red-500" : ""}
                                 >
-                                  <span className={index === 5 ? "text-red-500" : ""}>
-                                    {group}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
-                          {/* </ScrollArea> */}
+                                  {group}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       </CardContent>
                     </Card>
-                    <Button variant="link" size="sm" className="text-xs p-0 mt-2">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="text-xs p-0 mt-2"
+                    >
                       Choose all
                     </Button>
                   </div>
@@ -140,8 +161,14 @@ export const GroupList: FC = () => {
                     <Card className="border-gray-300 h-[250px]">
                       <CardContent className="p-0 flex flex-col h-full">
                         <div className="bg-blue-100 p-2 flex items-center justify-between">
-                          <span className="text-sm font-semibold">Chosen groups</span>
-                          <Button variant="ghost" size="icon" className="h-6 w-6">
+                          <span className="text-sm font-semibold">
+                            Chosen Permissions
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6"
+                          >
                             <PlusIcon className="h-4 w-4" />
                           </Button>
                         </div>
@@ -152,7 +179,11 @@ export const GroupList: FC = () => {
                         </ScrollArea>
                       </CardContent>
                     </Card>
-                    <Button variant="link" size="sm" className="text-xs p-0 mt-2">
+                    <Button
+                      variant="link"
+                      size="sm"
+                      className="text-xs p-0 mt-2"
+                    >
                       Remove all
                     </Button>
                   </div>
@@ -188,7 +219,7 @@ export const GroupList: FC = () => {
           <CardFooter>
             <div className="text-xs text-muted-foreground">
               Showing <strong>1-10</strong> of <strong>{groups.length}</strong>{" "}
-              students
+              groups
             </div>
           </CardFooter>
         </Card>
