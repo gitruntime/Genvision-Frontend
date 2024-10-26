@@ -6,7 +6,7 @@ import {
   PlusCircle,
   PlusIcon,
 } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,6 +32,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@radix-ui/react-select"; // Import Select components
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StudentListComponent } from "../components/student-list";
 import { useEffect, useState } from "react";
@@ -64,7 +72,7 @@ export function StudentList() {
     {
       id: 1,
       fullName: "Ranajit Maity",
-      childName:"Rihana",
+      childName: "Rihana",
       status: "Present",
       grade: "1st",
       teacher: "Akshitha",
@@ -74,7 +82,7 @@ export function StudentList() {
     {
       id: 2,
       fullName: "Thouseef",
-      childName:"Rihana",
+      childName: "Rihana",
       status: "Present",
       grade: "1st",
       teacher: "Akshitha",
@@ -84,7 +92,7 @@ export function StudentList() {
     {
       id: 3,
       fullName: "Thouseef",
-      childName:"Rihana",
+      childName: "Rihana",
       status: "Present",
       grade: "1st",
       teacher: "Akshitha",
@@ -94,7 +102,7 @@ export function StudentList() {
     {
       id: 4,
       fullName: "Thouseef",
-      childName:"Rihana",
+      childName: "Rihana",
       status: "Absent",
       grade: "1st",
       teacher: "Akshitha",
@@ -104,7 +112,7 @@ export function StudentList() {
     {
       id: 5,
       fullName: "Thouseef",
-      childName:"Rihana",
+      childName: "Rihana",
       status: "Absent",
       grade: "1st",
       teacher: "Akshitha",
@@ -170,6 +178,31 @@ export function StudentList() {
                       <PlusCircle className="h-3.5 w-3.5" /> Add Parents
                     </Button>
                   </DialogTrigger>
+                  {/* <DialogContent className="sm:max-w-[550px]">
+                    <DialogHeader>
+                      <DialogTitle>Add Parents</DialogTitle>
+                    </DialogHeader>
+                    <div className="flex flex-col space-y-4">
+                      <Input
+                        type="text"
+                        placeholder="First Name"
+                        className="w-full"
+                      />
+                      <Input
+                        type="text"
+                        placeholder="Last Name"
+                        className="w-full"
+                      />
+                      <Input
+                        type="text"
+                        placeholder="Email"
+                        className="w-full"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full">
+                      Add Parents
+                    </Button>
+                  </DialogContent> */}
                   <DialogContent className="sm:max-w-[550px]">
                     <DialogHeader>
                       <DialogTitle>Add Parents</DialogTitle>
@@ -190,6 +223,19 @@ export function StudentList() {
                         placeholder="Email"
                         className="w-full"
                       />
+                      {/* Plain HTML dropdown for selecting a student */}
+                      <select
+                        className="w-full border rounded-md p-2"
+                        defaultValue=""
+                      >
+                        <option value="" disabled>
+                          Select Student
+                        </option>
+                        <option value="student1">Rihana</option>
+                        <option value="student2">Aman</option>
+                        <option value="student3">Sneha</option>
+                        <option value="student4">Karan</option>
+                      </select>
                     </div>
                     <Button type="submit" className="w-full">
                       Add Parents
@@ -259,7 +305,6 @@ export function StudentList() {
                             </TableRow>
                           ))}
                         </TableBody> */}
-                        
                       </TableBody>
                     </Table>
                   </CardContent>
