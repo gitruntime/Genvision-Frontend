@@ -83,7 +83,7 @@ export function Sidebar({children}:SidebarProps) {
             </nav>
           </div>
           <div className="mt-auto p-4">
-            <Card x-chunk="dashboard-02-chunk-0">
+            {/* <Card x-chunk="dashboard-02-chunk-0">
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
                 <CardDescription>
@@ -96,7 +96,7 @@ export function Sidebar({children}:SidebarProps) {
                   Upgrade
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@ export function Sidebar({children}:SidebarProps) {
 
               </nav>
               <div className="mt-auto">
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle>Upgrade to Pro</CardTitle>
                     <CardDescription>
@@ -150,7 +150,7 @@ export function Sidebar({children}:SidebarProps) {
                       Upgrade
                     </Button>
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </SheetContent>
           </Sheet>
