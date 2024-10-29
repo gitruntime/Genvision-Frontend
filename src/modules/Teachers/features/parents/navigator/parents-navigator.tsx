@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import { StudentScreens } from '../screens';
+import { ParentScreens } from '../screens';
 
 export const ParentsNavigator = () => {
     return (
       <Routes>
-        <Route path="/" element={<StudentScreens.List/>} />
-        <Route path="/:id" element={<StudentScreens.View/>} />
+        <Route path="/" element={<ParentScreens.List/>} />
+        <Route path="/:id" element={<ParentScreens.View/>} />
       </Routes>
     );
 };

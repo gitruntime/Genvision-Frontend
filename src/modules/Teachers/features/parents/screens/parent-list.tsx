@@ -5,7 +5,8 @@ import {
   ListFilter,
   PlusCircle,
   PlusIcon,
-} from "lucide-react";
+  MoreHorizontal,
+} from "lucide-react"; // Added MoreHorizontal import
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,103 +54,52 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-interface Student {
+interface Parent {
   id: number;
   fullName: string;
   childName: string;
-  status: "Present" | "Absent" | "Late";
-  grade: string;
-  teacher: string;
-  joinedAt: string;
+  contactNumber: string;
+  email: string;
   profilePicture: string;
 }
 
-export function StudentList() {
+export function ParentList() {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+  const [filteredParents, setFilteredParents] = useState<Parent[]>([]);
 
-  const students: Student[] = [
+  const parents: Parent[] = [
     {
       id: 1,
       fullName: "Ranajit Maity",
       childName: "Rihana",
-      status: "Present",
-      grade: "1st",
-      teacher: "Akshitha",
-      joinedAt: "10/12/2024",
+      contactNumber: "+1234567890",
+      email: "ranajit@example.com",
       profilePicture: "https://github.com/shadcn.png",
     },
     {
       id: 2,
       fullName: "Thouseef",
       childName: "Rihana",
-      status: "Present",
-      grade: "1st",
-      teacher: "Akshitha",
-      joinedAt: "10/12/2024",
-      profilePicture: "https://github.com/shadcn.png",
-    },
-    {
-      id: 3,
-      fullName: "Thouseef",
-      childName: "Rihana",
-      status: "Present",
-      grade: "1st",
-      teacher: "Akshitha",
-      joinedAt: "10/12/2024",
-      profilePicture: "https://github.com/shadcn.png",
-    },
-    {
-      id: 4,
-      fullName: "Thouseef",
-      childName: "Rihana",
-      status: "Absent",
-      grade: "1st",
-      teacher: "Akshitha",
-      joinedAt: "10/12/2024",
-      profilePicture: "https://github.com/shadcn.png",
-    },
-    {
-      id: 5,
-      fullName: "Thouseef",
-      childName: "Rihana",
-      status: "Absent",
-      grade: "1st",
-      teacher: "Akshitha",
-      joinedAt: "10/12/2024",
+      contactNumber: "+1234567890",
+      email: "thouseef@example.com",
       profilePicture: "https://github.com/shadcn.png",
     },
   ];
 
   useEffect(() => {
-    let filtered = students.filter((student) => {
-      if (activeTab === "present") return student.status === "Present";
-      if (activeTab === "absent") return student.status === "Absent";
-      if (activeTab === "late") return student.status === "Late";
-      return true; // For 'all'
-    });
-    console.log(filtered);
-    setFilteredStudents(filtered);
+    setFilteredParents(parents);
   }, [activeTab]);
 
   return (
     <>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
-        {students && students.length > 0 ? (
+        {parents && parents.length > 0 ? (
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
             defaultValue="all"
           >
             <div className="flex items-center">
-              {/* <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="present">Present</TabsTrigger>
-                <TabsTrigger value="absent">Absent</TabsTrigger>
-                <TabsTrigger value="late" className="hidden sm:flex">
-                  Late
-                </TabsTrigger>
-              </TabsList> */}
               <div className="ml-auto flex items-center gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -178,31 +128,6 @@ export function StudentList() {
                       <PlusCircle className="h-3.5 w-3.5" /> Add Parents
                     </Button>
                   </DialogTrigger>
-                  {/* <DialogContent className="sm:max-w-[550px]">
-                    <DialogHeader>
-                      <DialogTitle>Add Parents</DialogTitle>
-                    </DialogHeader>
-                    <div className="flex flex-col space-y-4">
-                      <Input
-                        type="text"
-                        placeholder="First Name"
-                        className="w-full"
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Last Name"
-                        className="w-full"
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Email"
-                        className="w-full"
-                      />
-                    </div>
-                    <Button type="submit" className="w-full">
-                      Add Parents
-                    </Button>
-                  </DialogContent> */}
                   <DialogContent className="sm:max-w-[550px]">
                     <DialogHeader>
                       <DialogTitle>Add Parents</DialogTitle>
@@ -223,7 +148,6 @@ export function StudentList() {
                         placeholder="Email"
                         className="w-full"
                       />
-                      {/* Plain HTML dropdown for selecting a student */}
                       <select
                         className="w-full border rounded-md p-2"
                         defaultValue=""
@@ -245,7 +169,7 @@ export function StudentList() {
               </div>
             </div>
             <TabsContent value={activeTab}>
-              {filteredStudents.length > 0 ? (
+              {filteredParents.length > 0 ? (
                 <Card>
                   <CardHeader>
                     <CardTitle>Parents</CardTitle>
@@ -259,15 +183,12 @@ export function StudentList() {
                             <span className="sr-only">Image</span>
                           </TableHead>
                           <TableHead>Full Name</TableHead>
-                          <TableHead>Status</TableHead>
+                          <TableHead>Child Name</TableHead>
                           <TableHead className="hidden md:table-cell">
-                            Grade
+                            Contact
                           </TableHead>
                           <TableHead className="hidden md:table-cell">
-                            Responsibility
-                          </TableHead>
-                          <TableHead className="hidden md:table-cell">
-                            Joined
+                            Email
                           </TableHead>
                           <TableHead>
                             <span className="sr-only">Actions</span>
@@ -275,56 +196,50 @@ export function StudentList() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        <StudentListComponent students={filteredStudents} />
-
-                        {/* <TableBody>
-                          {filteredStudents.map((student) => (
-                            <TableRow key={student.id}>
-                              <TableCell className="hidden w-[100px] sm:table-cell">
-                                <img
-                                  src={student.profilePicture}
-                                  alt={student.fullName}
-                                  className="w-10 h-10 rounded-full"
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Link to={`/teacher/students/${student.id}`}>
-                                  {student.fullName}
-                                </Link>
-                              </TableCell>
-                              <TableCell>{student.status}</TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {student.grade}
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {student.teacher}
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell">
-                                {student.joinedAt}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody> */}
+                        {filteredParents.map((parent) => (
+                          <TableRow key={parent.id}>
+                            <TableCell className="hidden w-[100px] sm:table-cell">
+                              <img
+                                src={parent.profilePicture}
+                                alt={parent.fullName}
+                                className="w-10 h-10 rounded-full"
+                              />
+                            </TableCell>
+                            <TableCell>{parent.fullName}</TableCell>
+                            <TableCell>{parent.childName}</TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              {parent.contactNumber}
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              {parent.email}
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="w-5 h-5" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                       </TableBody>
                     </Table>
                   </CardContent>
                   <CardFooter>
                     <div className="text-xs text-muted-foreground">
                       Showing <strong>1-10</strong> of{" "}
-                      <strong>{filteredStudents.length}</strong> students
+                      <strong>{filteredParents.length}</strong> parents
                     </div>
                   </CardFooter>
                 </Card>
               ) : (
                 <NoListComponent
                   className="h-[400px] lg:h-[510px]"
-                  label="Student"
+                  label="Parent"
                 />
               )}
             </TabsContent>
           </Tabs>
         ) : (
-          <NoListComponent label="Student" action={() => {}} />
+          <NoListComponent label="Parent" action={() => {}} />
         )}
       </main>
     </>

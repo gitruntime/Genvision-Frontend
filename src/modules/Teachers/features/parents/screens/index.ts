@@ -1,6 +1,6 @@
-import { StudentList } from "./student-list";
-import { StudentView } from "./student-view";
-export const StudentScreens={
-    List:StudentList,
-    View:StudentView
+import { ParentList } from "./parent-list";
+import { ParentView } from "./parent-view";
+export const ParentScreens={
+    List:ParentList,
+    View:ParentView
 }

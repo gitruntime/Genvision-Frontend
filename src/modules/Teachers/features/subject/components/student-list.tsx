@@ -83,7 +83,7 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={()=>navigate('/teacher/students/1')}>View</DropdownMenuItem>
+                    <DropdownMenuItem onClick={()=>navigate('/teacher/parents/1')}>View</DropdownMenuItem>
                     <DropdownMenuItem>Edit</DropdownMenuItem>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger className="focus:text-white">

@@ -2,7 +2,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Attendance, OverviewTab, Performance, Teacher, Marks, Documents } from "../components";
 
-export const StudentView = () => {
+export const SubjectView = () => {
   
   return (
     <main className="grid flex-1 items-start mt-3">
