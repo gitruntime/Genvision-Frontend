@@ -3,7 +3,7 @@ import { AdminNavigators } from "../features";
 import { Sidebar } from "../layout/sidebar-layout";
 import { Provider } from "react-redux";
 import { store } from "../store";
-import AuthProtectedRoute from "./authprotected-router";
+// import AuthProtectedRoute from "./authprotected-router";
 
 
 const AdminNavigator: React.FC = () => {
@@ -18,7 +18,7 @@ const AdminNavigator: React.FC = () => {
         </Routes>
         {!isAuthRoute && (
           <Sidebar>
-            <AuthProtectedRoute>
+            {/* <AuthProtectedRoute> */}
               <Routes>
                 <Route path="dashboard/" />
                 <Route
@@ -31,7 +31,7 @@ const AdminNavigator: React.FC = () => {
                 />
                 <Route path="/*" element={<AdminNavigators.Authorization />} />
               </Routes>
-            </AuthProtectedRoute>
+            {/* </AuthProtectedRoute> */}
           </Sidebar>
         )}
       </Provider>
