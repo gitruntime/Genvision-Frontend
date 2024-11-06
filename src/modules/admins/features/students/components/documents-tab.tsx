@@ -1,7 +1,7 @@
 import { FC } from "react";
 
-export const Documents: FC = () => {
-    return (
-        <></>
-    )
-}
+const Documents: FC = () => {
+  return <></>;
+};
+
+export default Documents;

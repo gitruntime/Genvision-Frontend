@@ -1,42 +1,46 @@
 import { getBaseURL } from "@/modules/admins/utils/axios-util";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { logIn,setLoginError } from "../store/auth-slice";
+import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { setCredentialError, setCredentials } from "../store/auth-slice";
 
-const loginAPI = async ({ email, password }) => {
-  const { data } = await axios.post(
-    getBaseURL() + "/api/auth/login",
+// Define types for the login request and response
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface ErrorResponse {
+  errors: string[];
+}
+
+// Define the API function with explicit types
+const loginAPI = async ({ email, password }: LoginCredentials): Promise<any> => {
+  const { data } = await axios.post<any>(
+    `${getBaseURL()}/auth/login`,
     {
       email,
       password,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   );
   return data;
 };
 
+// Define the useLogin hook
 export const useLogin = () => {
   const dispatch = useDispatch();
-  return useMutation({
+
+  return useMutation<any, AxiosError<ErrorResponse>, LoginCredentials>({
     mutationFn: loginAPI,
-    onError: (error) => {  
-      // @ts-ignore
-      if (error.response && error.response.data.details) {
-        // @ts-ignore
-        dispatch(setLoginError({error:error?.response?.data?.details}))
+    onError: (error) => {
+      if (error.response?.data?.errors) {
+        dispatch(setCredentialError(error.response.data.errors));
       }
-      // console.log(error, "thousi");
     },
     onSuccess: (data) => {
       console.log(data);
-      dispatch(logIn({ token: data?.data?.accessToken }));
-      // Handle successful login, e.g., redirect or store auth token
-    }
+      dispatch(setCredentials(data.data));
+    },
+    retry: false,
   });
 };

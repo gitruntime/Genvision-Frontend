@@ -98,9 +98,9 @@ const barChartData = [
 
 // Performance Component
 const Performance: FC = () => {
-    const totalVisitors = useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-      }, []);
+  const totalVisitors = useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  }, []);
   return (
     <>
       <div className="grid grid-cols-3 gap-4">

@@ -11,7 +11,7 @@ import {
   } from "@/components/ui/drawer"
 
   
-export const StudentAdd = () => {
+const StudentAdd = () => {
     return (
         <Drawer>
             <DrawerTrigger>Open</DrawerTrigger>
@@ -30,3 +30,5 @@ export const StudentAdd = () => {
         </Drawer>
     )
 }
+
+export default StudentAdd

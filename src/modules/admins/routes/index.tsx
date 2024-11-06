@@ -3,6 +3,8 @@ import { AdminNavigators } from "../features";
 import { Sidebar } from "../layout/sidebar-layout";
 import { Provider } from "react-redux";
 import { store } from "../store";
+import AuthProtectedRoute from "./authprotected-router";
+
 
 const AdminNavigator: React.FC = () => {
   const { pathname } = useLocation();
@@ -16,12 +18,20 @@ const AdminNavigator: React.FC = () => {
         </Routes>
         {!isAuthRoute && (
           <Sidebar>
-            <Routes>
-              <Route path="dashboard/" />
-              <Route path="students/*" element={<AdminNavigators.Student />} />
-              <Route path="teachers/*" element={<AdminNavigators.Teacher />} />
-              <Route path="/*" element={<AdminNavigators.Authorization />} />
-            </Routes>
+            <AuthProtectedRoute>
+              <Routes>
+                <Route path="dashboard/" />
+                <Route
+                  path="students/*"
+                  element={<AdminNavigators.Student />}
+                />
+                <Route
+                  path="teachers/*"
+                  element={<AdminNavigators.Teacher />}
+                />
+                <Route path="/*" element={<AdminNavigators.Authorization />} />
+              </Routes>
+            </AuthProtectedRoute>
           </Sidebar>
         )}
       </Provider>

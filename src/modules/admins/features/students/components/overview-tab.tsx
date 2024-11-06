@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 
-export const OverviewTab = () => {
+const OverviewTab = () => {
   return (
     <div className="grid grid-cols-3 gap-4">
       <Card className="col-span-1 relative">
@@ -137,3 +137,5 @@ export const OverviewTab = () => {
     </div>
   );
 };
+
+export default OverviewTab

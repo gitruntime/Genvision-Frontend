@@ -11,7 +11,7 @@ import {
 import { FC } from "react";
 import AnatomyDashboard from "../components/ai-tab";
 
-export const StudentView: FC = () => {
+const StudentView: FC = () => {
   return (
     <main className="grid flex-1 items-start mt-3">
       <div className="container mx-auto p-4">
@@ -22,14 +22,20 @@ export const StudentView: FC = () => {
 
         <Tabs defaultValue="overview">
           <TabsList className="mb-4">
-            <TabsTrigger value="ai">AI</TabsTrigger>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="teachers">Teachers</TabsTrigger>
-            <TabsTrigger value="attendance">Attendance</TabsTrigger>
-            <TabsTrigger value="subjects">Subjects</TabsTrigger>
-            <TabsTrigger value="marks">Marks</TabsTrigger>
-            <TabsTrigger value="performance">Performance</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
+            {[
+              "AI",
+              "Overview",
+              "Teachers",
+              "Attendance",
+              "Subjects",
+              "Marks",
+              "Performance",
+              "Documents",
+            ].map((tab, idx) => (
+              <TabsTrigger key={idx} value={tab.toLowerCase()}>
+                {tab}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
           <TabsContent value="ai">
@@ -64,3 +70,5 @@ export const StudentView: FC = () => {
     </main>
   );
 };
+
+export default StudentView;

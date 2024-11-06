@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 import { useLogin } from "../hooks/useLogin";
 import { useSelector } from "react-redux";
+import { ToastAction } from "@/components/ui/toast";
+import { useEffect } from "react";
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
 
@@ -15,48 +16,63 @@ export default function AuthLogin() {
   const { mutate: loginMutate, isError, isSuccess } = useLogin();
   // @ts-ignore
   const { error } = useSelector((state) => state.auth);
-  console.log(error);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    isSubmitting,
-    values,
-    handleChange,
-    handleBlur,
-    touched,
-    errors,
-  } = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().required("Email is required.!"),
-      password: Yup.string()
-        .required("Password is required.!")
-        .min(8, "Password must be at least 8 characters long")
-        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-        .matches(/[0-9]/, "Password must contain at least one number")
-        .matches(
-          /[^a-zA-Z0-9]/,
-          "Password must contain at least one special character"
-        ),
-    }),
-    onSubmit: (values) => {
-      console.log(values);
-      loginMutate({ email: values.email, password: values.password });
-    },
-  });
-  if (isSuccess) {
-    alert("Thousi success");
-  }
+  const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      validationSchema: Yup.object({
+        email: Yup.string().required("Email is required.!"),
+        password: Yup.string()
+          .required("Password is required.!")
+          .min(8, "Password must be at least 8 characters long")
+          .matches(
+            /[A-Z]/,
+            "Password must contain at least one uppercase letter"
+          )
+          .matches(
+            /[a-z]/,
+            "Password must contain at least one lowercase letter"
+          )
+          .matches(/[0-9]/, "Password must contain at least one number")
+          .matches(
+            /[^a-zA-Z0-9]/,
+            "Password must contain at least one special character"
+          ),
+      }),
+      onSubmit: (values) => {
+        console.log(values);
+        loginMutate({ email: values.email, password: values.password });
+      },
+    });
 
-  if (isError) {
-    alert(error);
-  }
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error.email || error.password,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+  }, [isError, error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        variant: "success",
+        title: "Login Successfully",
+      });
+      navigate("/admin/dashboard");
+    }
+  }, [isSuccess]);
+
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[575px]">
+    <div className="w-full lg:grid   lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[575px]">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -110,12 +126,12 @@ export default function AuthLogin() {
               Login with Google
             </Button> */}
           </form>
-          {/* <div className="mt-4 text-center text-sm">
+          <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link to={"/signup"} className="underline">
               Sign up
             </Link>
-          </div> */}
+          </div>
         </div>
       </div>
       <div className="hidden bg-muted lg:block">
