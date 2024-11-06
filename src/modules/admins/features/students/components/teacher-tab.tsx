@@ -25,7 +25,7 @@ import {
 import { Plus, User } from "lucide-react";
 import { FC } from "react";
 
-export const Teacher: FC = () => {
+const Teacher: FC = () => {
   return (
     <Card className="w-full max-w-5xl">
       <CardHeader className="flex flex-row items-start justify-between">
@@ -109,3 +109,5 @@ export const Teacher: FC = () => {
     </Card>
   );
 };
+
+export default Teacher

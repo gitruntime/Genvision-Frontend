@@ -89,7 +89,7 @@ const StatCard: FC<StatCardProps> = ({ icon, value, label, bgColor }) => (
   </Card>
 );
 
-export const Attendance: FC = () => {
+const Attendance: FC = () => {
   return (
     <Card>
       <div className="container mx-auto p-4">
@@ -125,3 +125,5 @@ export const Attendance: FC = () => {
     </Card>
   );
 };
+
+export default Attendance

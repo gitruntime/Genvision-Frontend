@@ -28,4 +28,5 @@ tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
 
 
+# vercel ignore
 .vercel

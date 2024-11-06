@@ -48,7 +48,7 @@ interface Students {
   profilePicture: string;
 }
 
-export const StudentList: FC = () => {
+const StudentList: FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [filteredStudents, setFilteredStudents] = useState<Students[]>([]);
 
@@ -230,3 +230,5 @@ export const StudentList: FC = () => {
     </main>
   );
 };
+
+export default StudentList
