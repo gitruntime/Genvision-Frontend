@@ -84,7 +84,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
             </nav>
           </div>
           <div className="mt-auto p-4">
-            <Card>
+            {/* <Card x-chunk="dashboard-02-chunk-0">
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardTitle>Upgrade to Pro</CardTitle>
                 <CardDescription>
@@ -96,7 +96,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                   Upgrade
                 </Button>
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </div>
       </div>
@@ -134,7 +134,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                 ))}
               </nav>
               <div className="mt-auto">
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <CardTitle>Upgrade to Pro</CardTitle>
                     <CardDescription>
@@ -146,7 +146,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                       Upgrade
                     </Button>
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </SheetContent>
           </Sheet>

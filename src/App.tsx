@@ -4,6 +4,7 @@ import { FC } from "react";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import TeacherNavigator from './modules/Teachers/routes'
 
 const App: FC = () => {
   const queryClient = new QueryClient();
@@ -13,7 +14,7 @@ const App: FC = () => {
       <TooltipProvider>
         <Routes>
           <Route path="admin/*" element={<AdminNavigator />} />
-          {/* <Route path='teacher/*' element={<AdminNavigator />} /> */}
+          <Route path='teacher/*' element={<TeacherNavigator />} />
         </Routes>
       </TooltipProvider>
     </QueryClientProvider>
