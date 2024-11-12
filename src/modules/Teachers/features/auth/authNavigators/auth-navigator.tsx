@@ -6,7 +6,7 @@ import { AuthScreens } from '../authScreens';
 export const AuthNavigator = () => {
     return (
       <Routes>
-        <Route path="login" element={<AuthScreens.LogIn/>} />
+        <Route path="/login" element={<AuthScreens.LogIn/>} />
       </Routes>
     );
 };
