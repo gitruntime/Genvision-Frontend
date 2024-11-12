@@ -6,8 +6,8 @@ export const getBaseURL = () => {
   const subdomain = hostname.split(".")[0];
 
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-
-  return `${protocol}://${subdomain}.localhost:3000/api`;
+  const domain = process.env.NODE_ENV === "production" ? null : "localhost:3000"
+  return `${protocol}://${subdomain}.${domain}/api`;
 };
 
 const api = axios.create({
