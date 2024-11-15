@@ -57,6 +57,7 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(({
             <TableCell className="font-medium">
                 {student.fullName}
             </TableCell>
+            
             <TableCell>
                 <Badge variant="outline">{student.status}</Badge>
             </TableCell>
@@ -66,9 +67,9 @@ export const StudentListComponent: React.FC<StudentListComponentProps> = memo(({
             <TableCell className="hidden md:table-cell">
                 {student.teacher}
             </TableCell>
-            <TableCell className="hidden md:table-cell">
+            {/* <TableCell className="hidden md:table-cell">
                 {student.joinedAt}
-            </TableCell>
+            </TableCell> */}
             <TableCell>
                 <DropdownMenu>
                 <DropdownMenuTrigger asChild>
