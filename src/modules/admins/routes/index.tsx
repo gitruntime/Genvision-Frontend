@@ -1,14 +1,23 @@
 import { Routes, Route } from "react-router-dom";
 import { AdminNavigators } from "../features";
 import { Sidebar } from "../layout/sidebar-layout";
+import { useEffect, useState } from "react";
 
 const AdminNavigator = () => {
+  // const [token,setToken] = useState("")
+  // useEffect(()=>{
+  //   const accessToken:any = sessionStorage.getItem("accessToken");
+  //   if (accessToken) {
+  //     setToken(accessToken)
+  //   }
+  // },[])
   return (
     <>
-      <Routes>
+      
+    <Routes>
         <Route path="auth/*" element={<AdminNavigators.Auth />} />
       </Routes>
-      <Sidebar>
+       <Sidebar>
         <Routes>    
           <Route path="dashboard" />
           <Route path="students/*" element={<AdminNavigators.Student />} />
@@ -16,6 +25,7 @@ const AdminNavigator = () => {
           <Route path="/*" element={<AdminNavigators.Authorization />} />
         </Routes>
       </Sidebar>
+      
     </>
   );
 };
