@@ -1,3 +1,4 @@
+import { Loader, LucideLoader } from "lucide-react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -97,12 +98,15 @@ export function StudentList() {
   };
 
   const fetchDetails = async (page: number) => {
+    setLoading(true); // Start loader
     try {
       const response = await api.get(`/teacher/students?page=${page}&limit=${studentsPerPage}`);
       setStudents(response.data?.data);
-      setTotalPages(10); // Assuming backend returns total pages
+      setTotalPages(response.data?.totalPages); // Assuming backend returns total pages
     } catch (error) {
       console.error("Failed to fetch user details:", error);
+    }finally {
+      setLoading(false); // Stop loader
     }
   };
 
@@ -191,7 +195,11 @@ export function StudentList() {
   return (
     <>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
-        {students && students.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-[400px]">
+            <LucideLoader className="animate-spin h-8 w-8 text-muted-foreground" />
+          </div>
+        ): students && students.length > 0 ? (
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
