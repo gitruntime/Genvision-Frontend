@@ -24,13 +24,19 @@ import { FC, memo } from "react";
 interface Teachers {
   id: number;
   fullName: string;
-  profilePicture: string;
-  status: string;
-  joinedAt: string;
+  profilePicture?: string;
+  status?: string;
+  joinedAt?: string;
+  createdAt: string;
 }
 interface TeacherListComponentProps {
   teachers: Teachers[];
 }
+
+const convertToDateOnly = (timestamp: string): string => {
+  const dateObj = new Date(timestamp);
+  return dateObj.toISOString().split("T")[0];
+};
 
 export const TeacherListComponent: FC<TeacherListComponentProps> = memo(
   ({ teachers }) => {
@@ -46,11 +52,11 @@ export const TeacherListComponent: FC<TeacherListComponentProps> = memo(
               </Avatar>
             </TableCell>
             <TableCell className="font-medium">{teacher.fullName}</TableCell>
-            <TableCell>
+            {/* <TableCell>
               <Badge variant="outline">{teacher.status}</Badge>
-            </TableCell>
+            </TableCell> */}
             <TableCell className="hidden md:table-cell">
-              {teacher.joinedAt}
+              {convertToDateOnly(teacher.joinedAt || teacher.createdAt)}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -63,7 +69,7 @@ export const TeacherListComponent: FC<TeacherListComponentProps> = memo(
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem
-                    onClick={() => navigate("/admin/teachers/1")}
+                    onClick={() => navigate(`/admin/teachers/${teacher.id}`)}
                   >
                     View
                   </DropdownMenuItem>

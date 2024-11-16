@@ -30,10 +30,54 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { useListTExperience } from "../store/hooks";
+import { useParams } from "react-router-dom";
+import { NoListComponent } from "@/modules/admins/components/no-list";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ExperienceSkeleton = () => {
+  return (
+    <div className="relative">
+      <div className="absolute top-2 right-2">
+        <Skeleton className="w-8 h-8 rounded-full" />
+      </div>
+
+      <div className="flex gap-4">
+        <Skeleton className="w-12 h-12 rounded flex items-center justify-center shrink-0" />
+        <div className="flex-1">
+          <Skeleton className="h-5 w-1/3 mb-2" />
+          <Skeleton className="h-4 w-1/4 mb-4" />
+          <div className="mt-6 space-y-2">
+            <Skeleton className="h-5 w-1/3" />
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-4 w-1/3" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const ExperienceTab: FC = () => {
   const [date, setDate] = useState<Date>();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const { id } = useParams();
+
+  const { data, isLoading, isError, isSuccess } = useListTExperience(id);
+
+  console.log(data, "experienceData");
+
+  if (isSuccess && !data?.data.length) {
+    return (
+      <NoListComponent
+        className="h-[410px]"
+        label="Experience"
+        description="No experience data found for this teacher"
+      />
+    );
+  }
 
   return (
     <>
@@ -161,89 +205,62 @@ export const ExperienceTab: FC = () => {
           </Dialog>
 
           <CardContent className="p-0 relative">
-            <div className="absolute top-2 right-2">
-              <Button variant="ghost" size="icon">
-                <Pencil className="h-4 w-4" />
-              </Button>
-            </div>
-            {/* Company Entry */}
-            <div className="flex gap-4">
-              {/* Company Logo */}
-              <div className="w-12 h-12 bg-yellow-400 rounded flex items-center justify-center shrink-0">
-                <Building2 className="h-6 w-6 text-white" />
-              </div>
+            {isLoading ? (
+              <>
+                <p>
+                  <ExperienceSkeleton />
+                </p>
+              </>
+            ) : (
+              <>
+                {data?.data &&
+                  data?.data.length > 0 &&
+                  data?.data.map((data, index) => (
+                    <>
+                      <div className="absolute top-2 right-2">
+                        <Button variant="ghost" size="icon">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-yellow-400 rounded flex items-center justify-center shrink-0">
+                          <Building2 className="h-6 w-6 text-white" />
+                        </div>
 
-              <div className="flex-1">
-                <h3 className="font-semibold">GHSS UDINUR</h3>
-                <div className="text-sm text-gray-500">8 mos</div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold">GHSS UDINUR</h3>
+                          <div className="text-sm text-gray-500">8 mos</div>
 
-                {/* Web Developer Position */}
-                <div className="mt-6">
-                  <h4 className="font-medium">
-                    English Teacher for Higher Secondary
-                  </h4>
-                  <div className="text-sm text-gray-500">Full-time</div>
-                  <div className="text-sm text-gray-500">
-                    May 2024 - Present · 6 mos
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    Mumbai, Maharashtra, India · Hybrid
-                  </div>
-                </div>
+                          <div className="mt-6">
+                            <h4 className="font-medium">{data.designation}</h4>
+                            <div className="text-sm text-gray-500">
+                              Full-time
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              May 2024 - Present · 6 mos
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              Mumbai, Maharashtra, India · Hybrid
+                            </div>
+                          </div>
 
-                <div className="mt-6">
-                  <h4 className="font-medium">
-                    English Teacher for Primary School
-                  </h4>
-                  <div className="text-sm text-gray-500">Full Time</div>
-                  <div className="text-sm text-gray-500">
-                    Mar 2024 - Apr 2024 · 2 mos
-                  </div>
-                  <div className="text-sm text-gray-500">Remote</div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-
-          <Separator className="m-5" />
-          <CardContent className="p-0">
-            {/* Company Entry */}
-            <div className="flex gap-4">
-              {/* Company Logo */}
-              <div className="w-12 h-12 bg-yellow-400 rounded flex items-center justify-center shrink-0">
-                <Building2 className="h-6 w-6 text-white" />
-              </div>
-
-              <div className="flex-1">
-                <h3 className="font-semibold">GHSS UDINUR</h3>
-                <div className="text-sm text-gray-500">8 mos</div>
-
-                {/* Web Developer Position */}
-                <div className="mt-6">
-                  <h4 className="font-medium">
-                    English Teacher for Higher Secondary
-                  </h4>
-                  <div className="text-sm text-gray-500">Full-time</div>
-                  <div className="text-sm text-gray-500">
-                    May 2024 - Present · 6 mos
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    Mumbai, Maharashtra, India · Hybrid
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <h4 className="font-medium">
-                    English Teacher for Primary School
-                  </h4>
-                  <div className="text-sm text-gray-500">Full Time</div>
-                  <div className="text-sm text-gray-500">
-                    Mar 2024 - Apr 2024 · 2 mos
-                  </div>
-                  <div className="text-sm text-gray-500">Remote</div>
-                </div>
-              </div>
-            </div>
+                          {/* <div className="mt-6">
+                    <h4 className="font-medium">
+                      English Teacher for Primary School
+                    </h4>
+                    <div className="text-sm text-gray-500">Full Time</div>
+                    <div className="text-sm text-gray-500">
+                      Mar 2024 - Apr 2024 · 2 mos
+                    </div>
+                    <div className="text-sm text-gray-500">Remote</div>
+                  </div> */}
+                        </div>
+                      </div>
+                      {index < data.length - 1 && <Separator className="m-5" />}
+                    </>
+                  ))}
+              </>
+            )}
           </CardContent>
         </div>
       </Card>

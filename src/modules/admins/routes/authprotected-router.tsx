@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
-interface AuthProtectedRouteProps  {
+interface AuthProtectedRouteProps {
   children: ReactNode;
 }
 

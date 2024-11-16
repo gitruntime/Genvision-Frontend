@@ -1,11 +1,4 @@
-import {
-  Bell,
-  CircleUser,
-  Home,
-  Menu,
-  Package2,
-  Users,
-} from "lucide-react";
+import { Bell, CircleUser, Home, Menu, Package2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -45,13 +38,33 @@ interface SidebarProps {
 }
 
 const itemList: Items[] = [
-  { name: "Dashboard", icon: <Home className="h-4 w-4" />, to: '/admin/dashboard' },
-  { name: "Groups", icon: <Users className="h-4 w-4" />, to: '/admin/groups' },
-  { name: "Permissions", icon: <Users className="h-4 w-4" />, to: '/admin/permissions' },
-  { name: "Teachers", icon: <Users className="h-4 w-4" />, to: '/admin/teachers' },
-  { name: "Students", icon: <Users className="h-4 w-4" />, to: '/admin/students' },
-  { name: "Parents", icon: <Users className="h-4 w-4" />, to: '/admin/parents' },
-  { name: "Class", icon: <Home className="h-4 w-4" />, to: '/admin/class' },
+  {
+    name: "Dashboard",
+    icon: <Home className="h-4 w-4" />,
+    to: "/admin/dashboard",
+  },
+  { name: "Groups", icon: <Users className="h-4 w-4" />, to: "/admin/groups" },
+  {
+    name: "Permissions",
+    icon: <Users className="h-4 w-4" />,
+    to: "/admin/permissions",
+  },
+  {
+    name: "Teachers",
+    icon: <Users className="h-4 w-4" />,
+    to: "/admin/teachers",
+  },
+  {
+    name: "Students",
+    icon: <Users className="h-4 w-4" />,
+    to: "/admin/students",
+  },
+  {
+    name: "Parents",
+    icon: <Users className="h-4 w-4" />,
+    to: "/admin/parents",
+  },
+  { name: "Class", icon: <Home className="h-4 w-4" />, to: "/admin/classes" },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ children }) => {
@@ -82,21 +95,6 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                 </Link>
               ))}
             </nav>
-          </div>
-          <div className="mt-auto p-4">
-            {/* <Card x-chunk="dashboard-02-chunk-0">
-              <CardHeader className="p-2 pt-0 md:p-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>
-                  Unlock all features and get unlimited access to our support team.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
-                  Upgrade
-                </Button>
-              </CardContent>
-            </Card> */}
           </div>
         </div>
       </div>
@@ -133,25 +131,10 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                   </Link>
                 ))}
               </nav>
-              <div className="mt-auto">
-                {/* <Card>
-                  <CardHeader>
-                    <CardTitle>Upgrade to Pro</CardTitle>
-                    <CardDescription>
-                      Unlock all features and get unlimited access to our support team.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button size="sm" className="w-full">
-                      Upgrade
-                    </Button>
-                  </CardContent>
-                </Card> */}
-              </div>
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
-            <Breadcrumb className="hidden md:flex">
+            {/* <Breadcrumb className="hidden md:flex">
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
@@ -169,7 +152,7 @@ export const Sidebar: FC<SidebarProps> = ({ children }) => {
                   <BreadcrumbPage>All Students</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
-            </Breadcrumb>
+            </Breadcrumb> */}
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

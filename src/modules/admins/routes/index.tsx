@@ -4,7 +4,7 @@ import { Sidebar } from "../layout/sidebar-layout";
 import { Provider } from "react-redux";
 import { store } from "../store";
 import AuthProtectedRoute from "./authprotected-router";
-
+import { DashboardNavigator } from "../features/dashboard/navigators/navigator";
 
 const AdminNavigator: React.FC = () => {
   const { pathname } = useLocation();
@@ -20,7 +20,7 @@ const AdminNavigator: React.FC = () => {
           <Sidebar>
             <AuthProtectedRoute>
               <Routes>
-                <Route path="dashboard/" />
+                <Route path="dashboard/" element={<DashboardNavigator />} />
                 <Route
                   path="students/*"
                   element={<AdminNavigators.Student />}
@@ -29,6 +29,7 @@ const AdminNavigator: React.FC = () => {
                   path="teachers/*"
                   element={<AdminNavigators.Teacher />}
                 />
+                <Route path="classes/*" element={<AdminNavigators.Class />} />
                 <Route path="/*" element={<AdminNavigators.Authorization />} />
               </Routes>
             </AuthProtectedRoute>

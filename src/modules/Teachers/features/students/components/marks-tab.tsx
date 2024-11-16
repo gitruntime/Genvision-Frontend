@@ -63,7 +63,7 @@ export const Marks: FC = () => {
                 Select Month <ChevronDownIcon className="h-4 w-4 ml-1" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-secondary scrollbar-track-gray-200">
+            <DropdownMenuContent className="max-h-40 overflow-y-scroll hide-scrollbar">
               {months.map((month) => (
                 <DropdownMenuItem  key={month}>{month}</DropdownMenuItem>
               ))}
@@ -76,7 +76,7 @@ export const Marks: FC = () => {
                 Select Year <ChevronDownIcon className="h-4 w-4 ml-1" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-secondary scrollbar-track-gray-200">
+            <DropdownMenuContent className="max-h-40 overflow-y-scroll hide-scrollbar">
               {years.map((year) => (
                 <DropdownMenuItem  key={year}>{year}</DropdownMenuItem>
               ))}
@@ -89,7 +89,7 @@ export const Marks: FC = () => {
                 Select Exam Type <ChevronDownIcon className="h-4 w-4 ml-1" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-secondary scrollbar-track-gray-200">
+            <DropdownMenuContent className="max-h-40 overflow-y-scroll hide-scrollbar">
               {examTypes.map((examType) => (
                 <DropdownMenuItem key={examType}>{examType}</DropdownMenuItem>
               ))}

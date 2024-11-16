@@ -15,14 +15,14 @@ interface ErrorResponse {
 }
 
 // Define the API function with explicit types
-const loginAPI = async ({ email, password }: LoginCredentials): Promise<any> => {
-  const { data } = await axios.post<any>(
-    `${getBaseURL()}/auth/login`,
-    {
-      email,
-      password,
-    }
-  );
+const loginAPI = async ({
+  email,
+  password,
+}: LoginCredentials): Promise<any> => {
+  const { data } = await axios.post<any>(`${getBaseURL()}/auth/login`, {
+    email,
+    password,
+  });
   return data;
 };
 
@@ -39,7 +39,7 @@ export const useLogin = () => {
     },
     onSuccess: (data) => {
       console.log(data);
-      dispatch(setCredentials(data.data));
+      dispatch(setCredentials({ token: data.data }));
     },
     retry: false,
   });

@@ -6,7 +6,8 @@ export const getBaseURL = () => {
   const subdomain = hostname.split(".")[0];
 
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-  const domain = process.env.NODE_ENV === "production" ? null : "localhost:3000"
+  const domain =
+    process.env.NODE_ENV === "production" ? null : "localhost:3000";
   return `${protocol}://${subdomain}.${domain}/api`;
 };
 
@@ -18,9 +19,16 @@ const isFormData = (data: any) => data instanceof FormData;
 
 api.interceptors.request.use(
   (config) => {
-    const token = useSelector((state: any) => state.auth.tokens?.accessToken);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    interface Tokens {
+      accessToken: string;
+      refreshToken: string;
+    }
+
+    const tokenString: string | null = localStorage.getItem("tokens");
+    const tokens: Tokens | null = tokenString ? JSON.parse(tokenString) : null;
+
+    if (tokens) {
+      config.headers.Authorization = `Bearer ${tokens.accessToken}`;
     }
     if (config.data) {
       if (isFormData(config.data)) {

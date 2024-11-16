@@ -5,12 +5,30 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import { FC } from "react";
+import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import { FC, useState } from "react";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { TeacherEditComponent } from "./teacher-edit";
+import { useListTAddress, useViewTeacher } from "../store/hooks";
+import { useParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 export const OverviewTab: FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { id } = useParams<any>();
+  const openDialog = () => setIsModalOpen(true);
+  const { data: teacherProfile, isPending: isProfileLoading } =
+    useViewTeacher(id);
+
+  const { data: teacherAddress, isPending: isAddressPending } =
+    useListTAddress(id);
+
+  console.log(teacherAddress, "teacher address");
+
   return (
     <div className="grid grid-cols-3 gap-4">
       <Card className="col-span-1 relative">
@@ -22,39 +40,126 @@ export const OverviewTab: FC = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>Edit Profile Picture</DropdownMenuItem>
-            <DropdownMenuItem>Edit Information</DropdownMenuItem>
+            {isProfileLoading ? (
+              <>
+                <Skeleton className="h-6 w-full mb-2" />
+              </>
+            ) : (
+              <>
+                <DropdownMenuItem onClick={openDialog}>
+                  Edit Information
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
+        {!isProfileLoading && (
+          <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+            <TeacherEditComponent
+              teacher={teacherProfile}
+              open={isModalOpen}
+              onUpdateChange={setIsModalOpen}
+            />
+          </Dialog>
+        )}
         <CardContent className="pt-6">
-          <div className="flex flex-col items-center">
-            <Avatar className="w-24 h-24 mb-4">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>NS</AvatarFallback>
-            </Avatar>
-            <h2 className="text-xl font-semibold">Nicholas Swatz</h2>
-            <p className="text-sm text-gray-500">d100385834</p>
-          </div>
-          <div className="mt-4">
-            <h2 className="text-md font-semibold">About</h2>
-            <p className="text-sm">
-              Phone: <strong>+91 8848285720</strong>
-            </p>
-            <p className="text-sm">
-              Email: <strong>thousi.runtime@gmail.com</strong>
-            </p>
-          </div>
-          <div className="mt-4">
-            <h2 className="text-md font-semibold">Address</h2>
-            <p className="text-sm">
-              Address: <strong>Runtime Solutions</strong>
-            </p>
-            <p className="text-sm">
-              City: <strong>Versova, Andheri West</strong>
-            </p>
-            <p className="text-sm">
-              Postcode: <strong>9400047</strong>
-            </p>
-          </div>
+          {isProfileLoading ? (
+            <>
+              <div className="flex flex-col items-center">
+                <Skeleton className="h-24 w-24 rounded-full mb-4" />
+                <Skeleton className="h-6 w-full mb-2" />
+                <Skeleton className="h-6 w-full" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col items-center">
+                <Avatar className="w-24 h-24 mb-4">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>NS</AvatarFallback>
+                </Avatar>
+                <h2 className="text-xl font-semibold">
+                  {teacherProfile.fullName}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {teacherProfile.username || ""}
+                </p>
+              </div>
+              <div className="mt-4">
+                <h2 className="text-md font-semibold">About</h2>
+                <p className="text-sm">
+                  Phone: <strong>{teacherProfile.phoneNumber}</strong>
+                </p>
+                <p className="text-sm">
+                  Email: <strong>{teacherProfile.email}</strong>
+                </p>
+              </div>
+            </>
+          )}
+
+          {isAddressPending ? (
+            <>
+              <Skeleton className=" mt-4 h-20 w-full mb-2" />
+              <Skeleton className=" mt-4 h-20 w-full mb-2" />
+            </>
+          ) : (
+            <>
+              {teacherAddress &&
+                teacherAddress.length > 0 &&
+                teacherAddress.map((address) => (
+                  <div className="mt-4" key={address.id}>
+                    <h6 className="text-sm font-semibold">{`${address.addressType} Address`}</h6>
+                    <>
+                      <div className="flex justify-between items-center  rounded-md mt-2">
+                        {/* <div>
+                        <Badge variant={"outline"}>{address.addressType}</Badge>
+                        </div> */}
+                        <div>
+                          <p className="text-sm">
+                            Address: <strong>{address.streetAddress}</strong>
+                          </p>
+                          <p className="text-sm">
+                            City: <strong>{address.city}</strong>
+                          </p>
+                          <p className="text-sm">
+                            State: <strong>{address.state}</strong>
+                          </p>
+                          <p className="text-sm">
+                            Postcode: <strong>{address.pincode}</strong>
+                          </p>
+                          <p className="text-sm">
+                            Country: <strong>{address.country}</strong>
+                          </p>
+                          <p className="text-sm">
+                            Phone Number: <strong>{address.phoneNumber}</strong>
+                          </p>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="p-2 text-gray-500 hover:text-gray-700">
+                              <Edit className="w-5 h-5" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem>
+                              <Edit className="w-4 h-4 mr-2" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </>
+                  </div>
+                ))}
+            </>
+          )}
         </CardContent>
       </Card>
 

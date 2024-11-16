@@ -9,8 +9,13 @@ import { useLogin } from "../hooks/useLogin";
 import { useSelector } from "react-redux";
 import { ToastAction } from "@/components/ui/toast";
 import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
+
+interface DecodedToken {
+  userRole: string;
+}
 
 export default function AuthLogin() {
   const { mutate: loginMutate, isError, isSuccess } = useLogin();
@@ -18,6 +23,23 @@ export default function AuthLogin() {
   const { error } = useSelector((state) => state.auth);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const tokens = localStorage.getItem("tokens");
+    if (tokens) {
+      try {
+        const parsedTokens = JSON.parse(tokens);
+        const decodedToken = jwtDecode<DecodedToken>(parsedTokens.accessToken);
+
+        if (decodedToken && decodedToken.userRole) {
+          navigate(`/${decodedToken.userRole}/dashboard`);
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        // Optionally handle the error, like redirecting to login
+      }
+    }
+  }, [navigate]);
 
   const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
     useFormik({

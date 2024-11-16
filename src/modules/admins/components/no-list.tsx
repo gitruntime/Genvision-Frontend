@@ -5,10 +5,15 @@ interface NoListComponentProps {
   label?: string;
   description?: string;
   action?: () => void;
-  className?:string
+  className?: string;
 }
 
-export const NoListComponent: React.FC<NoListComponentProps> = ({ label, description, action,className }) => {
+export const NoListComponent: React.FC<NoListComponentProps> = ({
+  label,
+  description,
+  action,
+  className,
+}) => {
   return (
     <div
       className={`flex flex-1 items-center h-full justify-center rounded-lg border border-dashed shadow-sm ${className}`}
@@ -19,9 +24,7 @@ export const NoListComponent: React.FC<NoListComponentProps> = ({ label, descrip
           <h3 className="text-2xl font-bold tracking-tight">No {label}s</h3>
         )}
         {description && (
-          <p className="text-sm text-muted-foreground">
-            {description}
-          </p>
+          <p className="text-sm text-muted-foreground">{description}</p>
         )}
         {action && (
           <Button onClick={action} className="mt-4">

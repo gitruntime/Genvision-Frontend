@@ -8,7 +8,7 @@ export const TeacherView: React.FC = () => {
   return (
     <>
       <main className="grid flex-1 items-start mt-3">
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 lg:overflow-scroll lg:max-h-[550px] lg:hide-scrollbar">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">Thouseef Hamza T P's Profile</h1>
             {/* <Badge>Class Leader</Badge> */}
@@ -16,15 +16,21 @@ export const TeacherView: React.FC = () => {
 
           <Tabs defaultValue="overview">
             <TabsList className="mb-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="experience">Experience</TabsTrigger>
-              <TabsTrigger value="certificates">Certificates</TabsTrigger>
-              <TabsTrigger value="educations">Educations</TabsTrigger>
-              <TabsTrigger value="salary">Salary</TabsTrigger>
-              <TabsTrigger value="classDetails">Class Details</TabsTrigger>
-              <TabsTrigger value="designation">Designation</TabsTrigger>
-              <TabsTrigger value="performance">Performance</TabsTrigger>
-              <TabsTrigger value="documents">Documents</TabsTrigger>
+              {[
+                { value: "overview", label: "Overview" },
+                { value: "experience", label: "Experience" },
+                { value: "certificates", label: "Certificates" },
+                { value: "educations", label: "Educations" },
+                { value: "salary", label: "Salary" },
+                { value: "classDetails", label: "Class Details" },
+                { value: "designation", label: "Designation" },
+                { value: "performance", label: "Performance" },
+                { value: "documents", label: "Documents" },
+              ].map((value, index) => (
+                <TabsTrigger key={index} value={value.value}>
+                  {value.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
 
             <TabsContent value="overview">
