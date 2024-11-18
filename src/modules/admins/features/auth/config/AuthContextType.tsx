@@ -1,8 +1,9 @@
+import { jwtDecode } from "jwt-decode";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface AuthContextType {
   token: string | null;
-  user: DecodedToken | null;
+  user: any | null;
   login: (token: string) => void;
   logout: () => void;
 }
@@ -11,10 +12,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
-  const [user, setUser] = useState<DecodedToken | null>(token ? JSON.parse(localStorage.getItem("userData")!) : null);
+  const [user, setUser] = useState<any | null>(token ? JSON.parse(localStorage.getItem("userData")!) : null);
 
   const login = (newToken: string) => {
-    const decoded: DecodedToken = jwt_decode(newToken);
+    const decoded: any = jwtDecode(newToken);
     localStorage.setItem("token", newToken);
     localStorage.setItem("userData", JSON.stringify(decoded));
     setToken(newToken);

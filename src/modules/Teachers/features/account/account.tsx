@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../apiConfig/Interceptor";
 import { Modal } from "./Modal";
 import { useForm } from "react-hook-form";

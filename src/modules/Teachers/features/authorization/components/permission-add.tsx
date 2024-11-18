@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import {   DialogHeader } from "@/components/ui/dialog";
 import {
   DialogContent,
   DialogDescription,
   DialogTitle,
-  DialogTrigger,
 } from "@radix-ui/react-dialog";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { PlusCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";

@@ -125,7 +125,7 @@ export const OverviewTab = () => {
                     <p className="text-sm font-medium">
                       John Miller has login on Jul 13, 2024
                     </p>
-                    <p className="text-xs text-gray-500">10:23 PM</p>
+                    <p className="text-xs text  -gray-500">10:23 PM</p>
                   </div>
                 </div>
               </div>

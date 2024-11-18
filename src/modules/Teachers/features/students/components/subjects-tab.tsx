@@ -1,6 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import api from "@/modules/Teachers/apiConfig/Interceptor";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 const dummySubjects = [
     {

@@ -1,4 +1,4 @@
-import { ClassScreens } from "./screens";
-import { ClassNavigator } from "./navigator/class-navigator";
+import { ClassScreens } from "../class";
+import { ClassNavigator } from "../class";
 
 export { ClassScreens, ClassNavigator}

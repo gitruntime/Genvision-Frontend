@@ -1,13 +1,12 @@
-import { Loader, LucideLoader } from "lucide-react";
+import {  LucideLoader } from "lucide-react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  File,
+  
   ListFilter,
   PlusCircle,
-  PlusIcon,
+  
 } from "lucide-react";
-import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -28,7 +27,7 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
+  
   TableHead,
   TableHeader,
   TableRow,
@@ -68,7 +67,6 @@ interface FormData {
 
 export function StudentList() {
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   const [students, setStudents] = useState<Student[]>([]); // Initialize as an empty array
   const [totalPages, setTotalPages] = useState(1); // Dynamic total pages
   const [currentPage, setCurrentPage] = useState(1);

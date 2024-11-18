@@ -1,13 +1,8 @@
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  File,
   ListFilter,
   PlusCircle,
-  PlusIcon,
   MoreHorizontal,
 } from "lucide-react"; // Added MoreHorizontal import
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,16 +28,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@radix-ui/react-select"; // Import Select components
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { StudentListComponent } from "../components/student-list";
+
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import { NoListComponent } from "@/modules/admins/components/no-list";
 import {

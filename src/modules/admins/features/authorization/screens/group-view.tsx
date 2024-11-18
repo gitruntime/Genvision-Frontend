@@ -7,12 +7,6 @@ import { ChevronLeftIcon, ChevronRightIcon, InfoIcon, PlusIcon } from "lucide-re
 import { FC } from "react";
 
 export const GroupView: FC = () => {
-    const groups = [
-        { id: 1, name: "Admin", permissionCount: 3 },
-        { id: 2, name: "Teachers", permissionCount: 4 },
-        { id: 3, name: "Parents", permissionCount: 7 },
-        { id: 4, name: "Students", permissionCount: 9 },
-      ];
       const availableGroups = [
         "Teacher",
         "Student",

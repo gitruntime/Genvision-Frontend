@@ -2,23 +2,18 @@ import {
   Bell,
   CircleUser,
   Home,
-  LineChart,
+ 
+
   Menu,
-  Package,
+  
   Package2,
-  ShoppingCart,
+  
   Users,
 } from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
+
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,8 +51,8 @@ export function Sidebar({ children }: SidebarProps) {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link
-              hrefLang="/"
-              to={"sds"}
+              to="/"
+              
               className="flex items-center gap-2 font-semibold"
             >
               {/* Replace Package2 with an image */}
@@ -78,7 +73,7 @@ export function Sidebar({ children }: SidebarProps) {
               {itemList.map((item, id) => (
                 <Link
                   key={id}
-                  hrefLang="#"
+                 
                   to={item.to}
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
@@ -107,7 +102,7 @@ export function Sidebar({ children }: SidebarProps) {
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium">
                 <Link
-                  hrefLang="#"
+                  
                   to={"s"}
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
@@ -117,7 +112,7 @@ export function Sidebar({ children }: SidebarProps) {
                 {itemList.map((item, id) => (
                   <Link
                     key={id}
-                    hrefLang="#"
+                    
                     to={item.to}
                     className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                   >
@@ -134,13 +129,13 @@ export function Sidebar({ children }: SidebarProps) {
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="#">Dashboard</Link>
+                    <Link to="#">Dashboard</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild>
-                    <Link href="#">Students</Link>
+                    <Link to="#">Students</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />

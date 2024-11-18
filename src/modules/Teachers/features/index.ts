@@ -3,7 +3,7 @@ import { StudentNavigator } from "./students/navigator/student-navigator";
 import { ParentsNavigator } from "./parents/navigator/parents-navigator";
 import { ClassNavigator } from "./class/navigator/class-navigator";
 import { SubjectNavigator } from "./subject/navigator/class-navigator";
-import { Account } from "./account/account.tsx";
+import { Account } from "./account/Account";
 
 export const TeacherNavigators={
     Auth:AuthNavigator,
