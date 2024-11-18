@@ -1,10 +1,4 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ListFilter,
-  PlusCircle,
-} from "lucide-react";
-import { Link } from "react-router-dom";
+import { ListFilter, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -114,7 +108,11 @@ export function ClassList() {
                   </DialogHeader>
                   <div className="flex flex-col space-y-4">
                     <Input type="text" placeholder="Grade" className="w-full" />
-                    <Input type="text" placeholder="Teacher Name" className="w-full" />
+                    <Input
+                      type="text"
+                      placeholder="Teacher Name"
+                      className="w-full"
+                    />
                   </div>
                   <Button type="submit" className="w-full mt-4">
                     Add Class

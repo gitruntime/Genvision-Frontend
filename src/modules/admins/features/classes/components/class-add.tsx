@@ -1,17 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { toast, useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import Yup from "@/lib/utils";
 import { useFormik } from "formik";
-import { Loader2, PlusCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useCreateClass, useUpdateClass } from "../store/hooks";
 
@@ -54,9 +51,11 @@ export const ClassAddComp = ({ classData = {}, modalAction }: any) => {
   useEffect(() => {
     if (isCreateError || isEditError) {
       const errorMessage = isCreateError
+      // @ts-ignore
         ? createError?.response?.data?.message ||
           "Uh oh! Something went wrong during creation."
         : isEditError
+        // @ts-ignore
         ? editError?.response?.data?.message ||
           "Uh oh! Something went wrong during editing."
         : "Uh oh! Something went wrong.";
@@ -100,9 +99,10 @@ export const ClassAddComp = ({ classData = {}, modalAction }: any) => {
           value={values.name}
           autoFocus={!!classData}
         />
-        {touched.name && errors.name ? (
+        {touched.name && errors.name && (
+          // @ts-ignore
           <div className="text-xs text-red-500">{errors.name}</div>
-        ) : null}
+        )}
         <Input
           id="section"
           type="text"

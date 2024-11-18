@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, X, CheckCircle2, Save } from "lucide-react";
@@ -9,20 +9,20 @@ const StudentGridSelector = ({
   students,
   onStudentSelect,
   initialSelectedStudents = [],
-}) => {
+}:any) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStudents, setSelectedStudents] = useState(
     initialSelectedStudents
   );
 
-  const filteredStudents = students.filter((student) =>
+  const filteredStudents = students.filter((student: any) =>
     student.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleStudent = (student) => {
-    const isSelected = selectedStudents.find((s) => s.id === student.id);
-    const updatedSelection = isSelected
-      ? selectedStudents.filter((s) => s.id !== student.id)
+  const toggleStudent = (student: any) => {
+    const isSelected = selectedStudents.find((s: any) => s.id === student.id);
+    const updatedSelection: any = isSelected
+      ? selectedStudents.filter((s: any) => s.id !== student.id)
       : [...selectedStudents, student];
     setSelectedStudents(updatedSelection);
     if (onStudentSelect) {
@@ -49,7 +49,7 @@ const StudentGridSelector = ({
         <div className="mb-4 p-4 bg-muted rounded-lg">
           <h3 className="text-sm font-medium mb-2">Your Selected Students:</h3>
           <div className="flex flex-wrap gap-2">
-            {selectedStudents.map((student) => (
+            {selectedStudents.map((student: any) => (
               <Badge
                 key={student.id}
                 variant="default"
@@ -84,9 +84,9 @@ const StudentGridSelector = ({
       <ScrollArea className="max-h-[300px]  overflow-y-scroll hide-scrollbar">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredStudents.length > 0 ? (
-            filteredStudents.map((student) => {
+            filteredStudents.map((student: any) => {
               const isSelected = filteredStudents.find(
-                (s) => s.id === student.id
+                (s: any) => s.id === student.id
               );
               return (
                 <div

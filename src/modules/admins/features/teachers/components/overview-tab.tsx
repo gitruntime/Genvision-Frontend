@@ -5,27 +5,25 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import { FC, useState } from "react";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import { TeacherEditComponent } from "./teacher-edit";
 import { useListTAddress, useViewTeacher } from "../store/hooks";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 
 export const OverviewTab: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { id } = useParams<any>();
   const openDialog = () => setIsModalOpen(true);
   const { data: teacherProfile, isPending: isProfileLoading } =
-    useViewTeacher(id);
+    useViewTeacher(id as string);
 
   const { data: teacherAddress, isPending: isAddressPending } =
-    useListTAddress(id);
+    useListTAddress(id as string);
 
   console.log(teacherAddress, "teacher address");
 
@@ -56,6 +54,7 @@ export const OverviewTab: FC = () => {
         {!isProfileLoading && (
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <TeacherEditComponent
+            // @ts-ignore
               teacher={teacherProfile}
               open={isModalOpen}
               onUpdateChange={setIsModalOpen}
@@ -109,7 +108,7 @@ export const OverviewTab: FC = () => {
             <>
               {teacherAddress &&
                 teacherAddress.length > 0 &&
-                teacherAddress.map((address) => (
+                teacherAddress.map((address:any) => (
                   <div className="mt-4" key={address.id}>
                     <h6 className="text-sm font-semibold">{`${address.addressType} Address`}</h6>
                     <>

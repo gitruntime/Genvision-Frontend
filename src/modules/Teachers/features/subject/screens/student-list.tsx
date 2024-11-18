@@ -1,12 +1,7 @@
 import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  File,
   ListFilter,
   PlusCircle,
-  PlusIcon,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -35,10 +30,7 @@ import {
 import {
   Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
 } from "@/components/ui/tabs";
-import { StudentListComponent } from "../components/student-list";
 import { useEffect, useState } from "react";
 import { NoListComponent } from "@/modules/admins/components/no-list";
 import {

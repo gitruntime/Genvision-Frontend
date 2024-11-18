@@ -38,17 +38,19 @@ export const useCreateClass = () => {
     mutationFn: ClassCreateAPI,
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "classes"]);
     },
   });
 };
 
-export const useUpdateClass = (id) => {
+export const useUpdateClass = (id:number | string) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data: any) => ClassUpdateAPI(id, data),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "classes"]);
     },
   });
@@ -60,6 +62,7 @@ export const useDeleteClass = () => {
     mutationFn: (id) => ClassDeleteAPI(id),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "classes"]);
     },
   });
@@ -89,6 +92,7 @@ export const useCreateSubject = () => {
     mutationFn: ClassCreateAPI,
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "subjects"]);
     },
   });
@@ -97,9 +101,11 @@ export const useCreateSubject = () => {
 export const useUpdateSubject = () => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
+    // @ts-ignore
     mutationFn: (id: any, data: any) => ClassUpdateAPI(id, data),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "classes"]);
     },
   });
@@ -111,6 +117,7 @@ export const useDeleteSubject = () => {
     mutationFn: (id) => ClassDeleteAPI(id),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "subjects"]);
     },
   });

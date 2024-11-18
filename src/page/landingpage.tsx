@@ -1,20 +1,8 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import {
   Brain,
-  School,
-  GraduationCap,
-  Users,
-  LineChart,
-  Sparkles,
   Star,
   CheckCircle,
   ArrowRight,
@@ -89,7 +77,7 @@ const pricingPlans = [
 const LandingPage = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const navigate = useNavigate();
-  const [isUser, setIsUser] = useState(localStorage.getItem("tokens") || null);
+  const isUser = localStorage.getItem("tokens") || null;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -324,7 +312,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes fadeIn {
           from {
             opacity: 0;

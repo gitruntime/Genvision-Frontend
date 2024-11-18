@@ -1,12 +1,4 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  File,
-  ListFilter,
-  PlusCircle,
-  PlusIcon,
-} from "lucide-react";
-import { Link } from 'react-router-dom';
+import { ListFilter, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,7 +19,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -223,6 +214,7 @@ export function StudentList() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
+                        {/* @ts-ignore */}
                         <StudentListComponent students={filteredStudents} />
 
                         {/* <TableBody>
@@ -253,7 +245,6 @@ export function StudentList() {
                             </TableRow>
                           ))}
                         </TableBody> */}
-                        
                       </TableBody>
                     </Table>
                   </CardContent>

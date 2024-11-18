@@ -2,23 +2,11 @@ import {
     Bell,
     CircleUser,
     Home,
-    LineChart,
     Menu,
-    Package,
     Package2,
-    ShoppingCart,
     Users,
   } from "lucide-react"
   
-  import { Badge } from "@/components/ui/badge"
-  import { Button } from "@/components/ui/button"
-  import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
   import {
     DropdownMenu,
     DropdownMenuContent,
@@ -30,6 +18,7 @@ import {
   import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
   import { Link } from "react-router-dom"
   import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
+import { Button } from "@/components/ui/button"
   
   interface Items {
       name: string;
@@ -129,13 +118,13 @@ import {
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                      <Link href="#">Dashboard</Link>
+                      <Link to="#">Dashboard</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                      <Link href="#">Students</Link>
+                      <Link to={"/teacher/students"}>Students</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />

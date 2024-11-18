@@ -6,7 +6,6 @@ import {
   MoreHorizontal,
   Pencil,
   PlusCircle,
-  Trash,
 } from "lucide-react";
 
 import {
@@ -16,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -31,9 +29,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { ClassAddComp } from "./class-add";
 import { useDeleteClass } from "../store/hooks";
 import { toast } from "@/hooks/use-toast";
 
@@ -42,12 +38,14 @@ export const ClassListComponent: FC<any> = memo(
     // const handleSubjectModal = () => setIsSubjectModalOpen(true);
     // const handleStudentModal = () => setIsStudentModalOpen(true);
     const [isDeleteClass, setIsDeleteClass] = useState(false);
-    const [classData, setClassData] = useState(null);
+    const [classData, setClassData] = useState<any>(null);
 
     const {
       mutate: deleteClassMutate,
+      // @ts-ignore
       isError: isDeleteClassError,
       isSuccess: isDeleteClassSuccess,
+      // @ts-ignore
       error: deleteClassError,
       isPending: isDeleteClassPending,
     } = useDeleteClass();

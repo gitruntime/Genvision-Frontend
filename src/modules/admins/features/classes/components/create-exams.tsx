@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +22,7 @@ export const CreateExamPreview = () => {
   );
 };
 
-const ClassCard = ({ className, selected, onClick }) => (
+const ClassCard = ({ className, selected, onClick }:any) => (
   <button
     type="button"
     onClick={onClick}
@@ -52,12 +51,12 @@ const CreateExam = () => {
     "Class 8A",
     "Class 8B",
   ];
-  const [selectedClasses, setSelectedClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState<any>([]);
 
-  const toggleClass = (className) => {
-    setSelectedClasses((prev) =>
+  const toggleClass = (className:any) => {
+    setSelectedClasses((prev:any) =>
       prev.includes(className)
-        ? prev.filter((c) => c !== className)
+        ? prev.filter((c:any) => c !== className)
         : [...prev, className]
     );
   };
@@ -102,7 +101,7 @@ const CreateExam = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {classes.map((className) => (
+              {classes.map((className:any) => (
                 <ClassCard
                   key={className}
                   className={className}
@@ -115,7 +114,7 @@ const CreateExam = () => {
             {selectedClasses.length > 0 && (
               <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg">
                 <span className="text-sm text-gray-500 mr-2">Selected:</span>
-                {selectedClasses.map((className) => (
+                {selectedClasses.map((className:any) => (
                   <span
                     key={className}
                     className="px-2 py-1 text-sm bg-blue-100 text-blue-700 rounded-full"
@@ -133,7 +132,7 @@ const CreateExam = () => {
         <div className="flex-[65%] max-h-[500px] overflow-scroll hide-scrollbar">
           {selectedClasses && selectedClasses.length > 0 ? (
             <Accordion type="single" collapsible>
-              {selectedClasses.map((value, index) => (
+              {selectedClasses.map((value:any, index:any) => (
                 <AccordionItem value={`item-${index}`}>
                   <AccordionTrigger>
                     {value}{" "}

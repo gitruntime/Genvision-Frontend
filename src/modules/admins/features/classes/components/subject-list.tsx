@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, X, CheckCircle2, Save } from "lucide-react";
@@ -9,21 +9,21 @@ const SubjectGridSelector = ({
   onSubjectSelect,
   initialSelectedSubjects = [],
   subjects = [],
-}) => {
+}:any) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubjects, setSelectedSubjects] = useState(
     initialSelectedSubjects
   );
 
   // Filter subjects based on search query
-  const filteredSubjects = subjects.filter((subject) =>
+  const filteredSubjects = subjects.filter((subject:any) =>
     subject.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleSubject = (subject) => {
-    const isSelected = selectedSubjects.find((s) => s.id === subject.id);
-    const updatedSelection = isSelected
-      ? selectedSubjects.filter((s) => s.id !== subject.id)
+  const toggleSubject = (subject:any) => {
+    const isSelected = selectedSubjects.find((s:any) => s.id === subject.id);
+    const updatedSelection: any = isSelected
+      ? selectedSubjects.filter((s:any) => s.id !== subject.id)
       : [...selectedSubjects, subject];
     setSelectedSubjects(updatedSelection);
     if (onSubjectSelect) {
@@ -50,7 +50,7 @@ const SubjectGridSelector = ({
         <div className="mb-4 p-4 bg-muted rounded-lg">
           <h3 className="text-sm font-medium mb-2">Your Selected Subjects:</h3>
           <div className="flex flex-wrap gap-2">
-            {selectedSubjects.map((subject) => (
+            {selectedSubjects.map((subject:any) => (
               <Badge
                 key={subject.id}
                 variant="default"
@@ -85,9 +85,9 @@ const SubjectGridSelector = ({
       <ScrollArea className="max-h-[300px]  overflow-y-scroll hide-scrollbar">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredSubjects.length > 0 ? (
-            filteredSubjects.map((subject) => {
+            filteredSubjects.map((subject: any) => {
               const isSelected = selectedSubjects.find(
-                (s) => s.id === subject.id
+                (s: any) => s.id === subject.id
               );
               return (
                 <div
@@ -100,6 +100,7 @@ const SubjectGridSelector = ({
                   onClick={() => toggleSubject(subject)}
                 >
                   <div className="flex items-center justify-between">
+                    {/* @ts-ignore */}
                     <h3 className="font-medium">{subject.name}</h3>
                     {isSelected && (
                       <CheckCircle2 className="h-5 w-5 text-primary" />

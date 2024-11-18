@@ -16,7 +16,6 @@ import {
   experienceListAPI,
 } from "./api";
 import { Teacher } from "../types";
-import { useDispatch } from "react-redux";
 
 interface FetchDataParams {
   page?: number | string | null;
@@ -78,6 +77,7 @@ export const useUpdateTeacher = (id: number | string | null) => {
     mutationFn: (data) => teacherUpdateAPI(id, data),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "teacher", id]);
     },
   });

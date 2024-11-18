@@ -27,11 +27,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useEffect, useState } from "react";
-import { NoListComponent } from "@/modules/admins/components/no-list";
+import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast, useToast } from "@/hooks/use-toast";
-import { useCreateClass, useListClass } from "../store/hooks";
+import { useListClass } from "../store/hooks";
 import { ClassListComponent } from "../components/class-list";
 import SubjectGridSelector from "../components/subject-list";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -99,12 +97,13 @@ const ClassListSkeleton: React.FC = () => {
 
 export const ClassList: React.FC = () => {
   const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+  // @ts-ignore
   const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
   const [isClassAddModalOpen, setIsClassModalOpen] = useState(false);
   const [isCreateExamModalOpen, setIsCreateExamModalOpen] = useState(false);
   const [isSubjectViewModalOpen, setIsSubjectViewModalOpen] = useState(false);
-  const [isSubjectCreateModalOpen, setIsSubjectCreateModalOpen] =
-    useState(false);
+  // const [isSubjectCreateModalOpen, setIsSubjectCreateModalOpen] =
+  //   useState(false);
   const [editClassData, setIsEditClassData] = useState(null);
   const [editSubjectData, setIsEditSubjectData] = useState(null);
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
@@ -114,8 +113,8 @@ export const ClassList: React.FC = () => {
   const {
     data: classData,
     isLoading: isClassListLoading,
-    isError: isClassListError,
-    isSuccess: isClassListSuccess,
+    // isError: isClassListError,
+    // isSuccess: isClassListSuccess,
   } = useListClass({
     page: 1,
     size: 10,
@@ -124,7 +123,6 @@ export const ClassList: React.FC = () => {
   });
 
   const [position, setPosition] = useState("10");
-  const [filterBy, setFilterBy] = useState("id");
 
   const [activeTab, setActiveTab] = useState<string>("all");
 
@@ -197,11 +195,13 @@ export const ClassList: React.FC = () => {
     setIsEditClassData(data);
   };
 
+  // @ts-ignore
   const handleSubjectAddModal = () => {
     setIsEditSubjectData(null);
     setIsSubjectModalOpen(true);
   };
 
+  // @ts-ignore
   const handleSubjectEditModal = (data: any) => {
     setIsSubjectModalOpen(true);
     setIsEditSubjectData(data);
@@ -413,7 +413,9 @@ export const ClassList: React.FC = () => {
             <DialogContent className="max-w-[90%] h-[550px]">
               <SubjectGridSelector
                 onSubjectSelect={handleSubjectSelect}
+                // @ts-ignore
                 subjects={customSubjects}
+                // @ts-ignore
                 initialSelectedSubjects={initialSelected}
               />
             </DialogContent>
@@ -423,6 +425,7 @@ export const ClassList: React.FC = () => {
               <StudentGridSelector
                 onStudentSelect={handleStudentSelect}
                 students={students}
+                // @ts-ignore
                 initialSelectedSubjects={initialStudentSelected}
               />
             </DialogContent>

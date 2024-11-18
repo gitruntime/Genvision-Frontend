@@ -1,6 +1,5 @@
 import api from "@/modules/admins/utils/axios-util";
 import { FetchDataParams, Teacher } from "../types";
-import { UseQueryResult } from "@tanstack/react-query";
 
 export type id = string | number | null;
 

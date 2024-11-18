@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Plus, Check } from "lucide-react";
+import { Pencil, Trash2, Check } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
@@ -24,7 +23,7 @@ export const CreateExamPreview = () => {
   );
 };
 
-const ClassCard = ({ className, selected, onClick }) => (
+const ClassCard = ({ className, selected, onClick }:any) => (
   <button
     type="button"
     onClick={onClick}
@@ -121,10 +120,10 @@ const ExamList = () => {
     "Class 8B",
   ];
   const [selectedClasses, setSelectedClasses] = useState([]);
-  const toggleClass = (className) => {
-    setSelectedClasses((prev) =>
+  const toggleClass = (className: any) => {
+    setSelectedClasses((prev: any) =>
       prev.includes(className)
-        ? prev.filter((c) => c !== className)
+        ? prev.filter((c: any) => c !== className)
         : [...prev, className]
     );
   };
@@ -204,6 +203,7 @@ const ExamList = () => {
                     <ClassCard
                       key={className}
                       className={className}
+                      // @ts-ignore
                       selected={selectedClasses.includes(className)}
                       onClick={() => toggleClass(className)}
                     />

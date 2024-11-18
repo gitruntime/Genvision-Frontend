@@ -65,7 +65,7 @@ export const ExperienceTab: FC = () => {
 
   const { id } = useParams();
 
-  const { data, isLoading, isError, isSuccess } = useListTExperience(id);
+  const { data, isLoading, isSuccess } = useListTExperience(id as string);
 
   console.log(data, "experienceData");
 
@@ -215,7 +215,7 @@ export const ExperienceTab: FC = () => {
               <>
                 {data?.data &&
                   data?.data.length > 0 &&
-                  data?.data.map((data, index) => (
+                  data?.data.map((data:any, index:any) => (
                     <>
                       <div className="absolute top-2 right-2">
                         <Button variant="ghost" size="icon">

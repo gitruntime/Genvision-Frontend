@@ -2,17 +2,12 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -25,9 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDownIcon } from "lucide-react";
-import { FC, useState } from "react";
-
-
+import { FC } from "react";
 
 export const Marks: FC = () => {
   const getScoreColor = (score: number) => {
@@ -40,9 +33,10 @@ export const Marks: FC = () => {
     new Date(0, i).toLocaleString("en", { month: "long" })
   );
 
-
-    const years = Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => 2000 + i);
-
+  const years = Array.from(
+    { length: new Date().getFullYear() - 2000 + 1 },
+    (_, i) => 2000 + i
+  );
 
   const examTypes = [
     "Unit Test",
@@ -51,7 +45,6 @@ export const Marks: FC = () => {
     "Leaving Exam",
     "Second Half Exam",
   ];
-
 
   return (
     <Card className="w-full max-w-5xl">
@@ -65,7 +58,7 @@ export const Marks: FC = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-40 overflow-y-auto hide-scrollbar">
               {months.map((month) => (
-                <DropdownMenuItem  key={month}>{month}</DropdownMenuItem>
+                <DropdownMenuItem key={month}>{month}</DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -78,7 +71,7 @@ export const Marks: FC = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-h-40 overflow-y-auto hide-scrollbar">
               {years.map((year) => (
-                <DropdownMenuItem  key={year}>{year}</DropdownMenuItem>
+                <DropdownMenuItem key={year}>{year}</DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>

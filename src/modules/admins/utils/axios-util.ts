@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 export const getBaseURL = () => {
   const { hostname } = window.location;

@@ -1,4 +1,4 @@
-import { StudentScreens } from "./screens";
+import { ParentScreens } from "./screens";
 import { ParentsNavigator } from "./navigator/parents-navigator";
 
-export { StudentScreens, ParentsNavigator}
+export { ParentScreens, ParentsNavigator };

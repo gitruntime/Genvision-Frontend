@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Plus, Eye } from "lucide-react";
+import { Pencil, Trash2, Eye } from "lucide-react";
 
 export const SubjectListPreview = () => {
   return (

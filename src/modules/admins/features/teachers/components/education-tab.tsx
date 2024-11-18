@@ -8,8 +8,7 @@ import { useParams } from "react-router-dom";
 
 export const EducationTab: FC = () => {
   const { id } = useParams<{ id: string }>();
-  // const {  }
-  const { data, isError, isLoading, isSuccess } = useListTEducation(id);
+  const { data, isError, isLoading } = useListTEducation(id as string);
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error Occured...</p>;
   return (
@@ -31,7 +30,7 @@ export const EducationTab: FC = () => {
 
             {data &&
               data.length > 0 &&
-              data.map((datas) => {
+              data.map((datas: any) => {
                 <div className="flex gap-4 items-start" key={datas.id}>
                   <div className="flex-shrink-0">
                     <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">

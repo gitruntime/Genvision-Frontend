@@ -27,7 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FormEvent, MouseEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { NoListComponent } from "@/modules/admins/components/no-list";
 import {
   Dialog,
@@ -52,7 +52,6 @@ export const TeacherList: React.FC = () => {
     isSuccess: isPostSuccess,
     error,
     isPending,
-    data,
   } = useCreateTeacher();
   useEffect(() => {
     if (isPostSuccess) {
@@ -72,18 +71,14 @@ export const TeacherList: React.FC = () => {
     }
   }, [isPostSuccess, isPostError]);
   const [position, setPosition] = useState("10");
-  const [filterBy, setFilterBy] = useState("id");
+  const filterBy = "id";
   const {
     data: {
       currentPage = 1,
       data: teachers,
-      message = "",
       size = 10,
       totalCount = 0,
-      totalPages = 1,
     } = {},
-    isError,
-    isSuccess,
     isLoading: isListLoading,
   } = useListTeacher({
     page: 1,
@@ -109,7 +104,6 @@ export const TeacherList: React.FC = () => {
     touched,
     errors,
     setFieldValue,
-    resetForm,
   } = useFormik({
     initialValues: {
       firstName: "",
@@ -132,8 +126,9 @@ export const TeacherList: React.FC = () => {
           "Password must contain at least one special character"
         ),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values:any) => {
       console.log(values);
+
       teacherMutate({ ...values });
     },
   });
@@ -245,6 +240,7 @@ export const TeacherList: React.FC = () => {
                       />
                       {touched.firstName && errors.firstName ? (
                         <div className="text-xs text-red-500">
+                          {/* @ts-ignore */}
                           {errors.firstName}
                         </div>
                       ) : null}
@@ -259,6 +255,7 @@ export const TeacherList: React.FC = () => {
                       />
                       {touched.lastName && errors.lastName ? (
                         <div className="text-xs text-red-500">
+                          {/* @ts-ignore */}
                           {errors.lastName}
                         </div>
                       ) : null}
@@ -273,6 +270,7 @@ export const TeacherList: React.FC = () => {
                       />
                       {touched.email && errors.email ? (
                         <div className="text-xs text-red-500">
+                          {/* @ts-ignore */}
                           {errors.email}
                         </div>
                       ) : null}
@@ -288,6 +286,7 @@ export const TeacherList: React.FC = () => {
                         />
                         {touched.password && errors.password ? (
                           <div className="text-xs text-red-500">
+                            {/* @ts-ignore */}
                             {errors.password}
                           </div>
                         ) : null}

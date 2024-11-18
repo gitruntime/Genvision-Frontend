@@ -1,17 +1,12 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";

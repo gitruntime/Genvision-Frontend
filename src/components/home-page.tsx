@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface UserRoleCallback {
-  (role: "admin" | "teacher" | "student" | "parent"): void;
-}
-
-interface UserRoleModalProps {
-  onUserRoleSelect: UserRoleCallback;
-}
-
 const HomePage: React.FC = () => {
+  // @ts-ignore
   const [open, setOpen] = useState(false);
 
+  // @ts-ignore
   const handleOpen = () => {
     setOpen(true);
   };

@@ -1,17 +1,4 @@
-import {
-  Users,
-  School,
-  GraduationCap,
-  Calendar,
-  Bell,
-  Search,
-  BarChart3,
-  TrendingUp,
-  User,
-  LogOut,
-  Settings,
-  BookOpen,
-} from "lucide-react";
+import { Users, GraduationCap, Calendar, TrendingUp } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -19,18 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import {
   LineChart,
   Line,
@@ -256,7 +232,7 @@ const SchoolDashboard = () => {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {genderDistribution.map((entry, index) => (
+                    {genderDistribution.map((_, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}

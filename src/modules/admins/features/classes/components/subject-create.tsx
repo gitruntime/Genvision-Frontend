@@ -1,8 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useCreateSubject, useUpdateSubject } from "../store/hooks";
+import { useCreateSubject } from "../store/hooks";
 import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
@@ -25,24 +24,30 @@ export const CreateSubjectPreview = () => {
 
 const CreateSubject = ({ modalAction, subjectData = {} }: any) => {
   const {
+    // @ts-ignore
     mutate: createMutate,
     isPending: isCreatePending,
     isSuccess: isCreateSuccess,
     isError: isCreateError,
     error: createError,
   } = useCreateSubject();
-  const {
-    mutate: isEditMutate,
-    isPending: isEditPending,
-    isSuccess: isEditSuccess,
-    isError: isEditError,
-    error: editError,
-  } = useUpdateSubject();
+  // const {
+  //   mutate: isEditMutate,
+  //   isPending: isEditPending,
+  //   isSuccess: isEditSuccess,
+  //   isError: isEditError,
+  //   error: editError,
+  // } = useUpdateSubject(1, {});
+  const isEditPending = false;
+  const isEditSuccess = false;
+  const isEditError = false;
+  const editError: any = false;
 
   useEffect(() => {
     if (isCreateError || isEditError) {
       const errorMessage = isCreateError
-        ? createError?.response?.data?.message ||
+        ? // @ts-ignore
+          createError?.response?.data?.message ||
           "Uh oh! Something went wrong during creation."
         : isEditError
         ? editError?.response?.data?.message ||

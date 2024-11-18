@@ -7,10 +7,12 @@ import Performance from "./performance-tab";
 import { Marks } from "./marks-tab";
 import { Documents } from "./documents-tab";
 
-
-
-
-
-
-
-export { OverviewTab, StudentAdd, StudentList, Attendance, Teacher, Performance, Marks, Documents }
+export {
+  OverviewTab,
+  StudentAdd,
+  Attendance,
+  Teacher,
+  Performance,
+  Marks,
+  Documents,
+};

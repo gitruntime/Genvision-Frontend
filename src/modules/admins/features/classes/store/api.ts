@@ -18,7 +18,7 @@ export const ClassCreateAPI = async (data: any) => {
   return response.data;
 };
 
-export const ClassUpdateAPI = async (id, data: any) => {
+export const ClassUpdateAPI = async (id : number | string, data: any) => {
   const response = await api.put(`/admin/classes/${id}`, data);
   return response.data;
 };
@@ -45,7 +45,7 @@ export const SubjectCreateAPI = async (data: any) => {
   return response.data;
 };
 
-export const SubjectUpdateAPI = async (id, data: any) => {
+export const SubjectUpdateAPI = async (id : number | string, data: any) => {
   const response = await api.put(`/admin/subjects/${id}`, data);
   return response.data;
 };

@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ListFilter, PlusCircle } from "lucide-react";
-import { PermissionAddComponent } from "../components/permission-add";
 import {
   Dialog,
   DialogContent,
@@ -35,8 +34,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
 
 export const PermissionList: FC = () => {
   const permissions = [
@@ -129,6 +126,7 @@ export const PermissionList: FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {/* @ts-ignore */}
                 <PermissionListComponent permissions={permissions} />
               </TableBody>
             </Table>
