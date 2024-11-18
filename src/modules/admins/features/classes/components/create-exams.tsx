@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 
 export const CreateExamPreview = () => {
   return (
@@ -64,7 +65,7 @@ const CreateExam = () => {
   return (
     <form className="space-y-6">
       <div className="flex flex-row gap-4 p-4">
-        <div className="flex-[40%]">
+        <div className="flex-[35%]">
           <div className="space-y-2">
             <Label htmlFor="examName">Exam Name</Label>
             <Input
@@ -125,13 +126,30 @@ const CreateExam = () => {
               </div>
             )}
           </div>
+          <Button className="w-full mt-4" disabled={selectedClasses.length === 0}>
+            Create Exam with ({selectedClasses.length} classes)
+          </Button>
         </div>
-        <div className="flex-[60%]">
+        <div className="flex-[65%] max-h-[500px] overflow-scroll hide-scrollbar">
           {selectedClasses && selectedClasses.length > 0 ? (
             <Accordion type="single" collapsible>
               {selectedClasses.map((value, index) => (
                 <AccordionItem value={`item-${index}`}>
-                  <AccordionTrigger>{value}</AccordionTrigger>
+                  <AccordionTrigger>
+                    {value}{" "}
+                    <Badge
+                      variant={"outline"}
+                      className="border-red-500 text-red-600"
+                    >
+                      Date not specified
+                    </Badge>{" "}
+                    <Badge
+                      variant={"outline"}
+                      className="border-green-500 text-green-600"
+                    >
+                      Date specified
+                    </Badge>{" "}
+                  </AccordionTrigger>
                   <AccordionContent className="max-h-[10%]">
                     {[
                       "History",
@@ -238,10 +256,6 @@ const CreateExam = () => {
           )}
         </div>
       </div>
-
-      <Button className="w-full" disabled={selectedClasses.length === 0}>
-        Create Exam with ({selectedClasses.length} classes)
-      </Button>
     </form>
   );
 };

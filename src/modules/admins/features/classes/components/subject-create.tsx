@@ -2,43 +2,93 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCreateSubject, useUpdateSubject } from "../store/hooks";
+import { toast } from "@/hooks/use-toast";
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import {
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const CreateSubject = () => {
+export const CreateSubjectPreview = () => {
   return (
-    <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-      <header className="mb-4">
-        <h2 className="text-lg font-bold">Create New Subject</h2>
-      </header>
+    <div className="p-4 bg-gray-100 min-h-screen">
+      <h1 className="text-2xl font-bold mb-4">Create Subject Preview</h1>
+      <div className="flex justify-center">
+        <CreateSubject />
+      </div>
+    </div>
+  );
+};
+
+const CreateSubject = ({ modalAction, subjectData = {} }: any) => {
+  const {
+    mutate: createMutate,
+    isPending: isCreatePending,
+    isSuccess: isCreateSuccess,
+    isError: isCreateError,
+    error: createError,
+  } = useCreateSubject();
+  const {
+    mutate: isEditMutate,
+    isPending: isEditPending,
+    isSuccess: isEditSuccess,
+    isError: isEditError,
+    error: editError,
+  } = useUpdateSubject();
+
+  useEffect(() => {
+    if (isCreateError || isEditError) {
+      const errorMessage = isCreateError
+        ? createError?.response?.data?.message ||
+          "Uh oh! Something went wrong during creation."
+        : isEditError
+        ? editError?.response?.data?.message ||
+          "Uh oh! Something went wrong during editing."
+        : "Uh oh! Something went wrong.";
+
+      toast({
+        variant: "destructive",
+        // @ts-ignore
+        title: errorMessage,
+        description: "Try Again",
+      });
+    }
+
+    if (isCreateSuccess || isEditSuccess) {
+      modalAction(false);
+      toast({
+        variant: "success",
+        title: `Class ${isCreateSuccess ? "created" : "updated"} Successfully.`,
+      });
+    }
+  }, [isCreateError, isCreateSuccess, isEditError, isEditSuccess]);
+  return (
+    <>
+      {(isCreatePending || isEditPending) && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
+          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        </div>
+      )}
+
+      <DialogHeader>
+        <DialogTitle>{`${!subjectData ? "Add" : "Edit"} Subjects`}</DialogTitle>
+        <DialogDescription> </DialogDescription>
+      </DialogHeader>
       <form className="space-y-4">
         <div className="space-y-2">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Subject Name
-          </label>
-          <input
-            id="name"
-            placeholder="Enter subject name"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <Label htmlFor="name">Subject Name</Label>
+          <Input id="name" placeholder="Enter subject name" />
         </div>
         <div className="space-y-2">
-          <label
-            htmlFor="code"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Subject Code
-          </label>
-          <input
-            id="code"
-            placeholder="Enter subject code"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <Label htmlFor="code">Subject Code</Label>
+          <Input id="code" placeholder="Enter subject code" />
         </div>
-        <Button type="submit">Create Subject</Button>
+        <Button className="w-full">Create Subject</Button>
       </form>
-    </div>
+    </>
   );
 };
 

@@ -1,9 +1,15 @@
-import React from 'react';
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const CreateEventPreview = () => {
   return (
@@ -18,37 +24,30 @@ export const CreateEventPreview = () => {
 
 const CreateEvent = () => {
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Create New Event</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="eventName">Event Name</Label>
-            <Input id="eventName" placeholder="Enter event name" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="eventDate">Date</Label>
-            <Input id="eventDate" type="date" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="eventType">Event Type</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Select event type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="cultural">Cultural</SelectItem>
-                <SelectItem value="sports">Sports</SelectItem>
-                <SelectItem value="academic">Academic</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button className="w-full">Create Event</Button>
-        </form>
-      </CardContent>
-    </Card>
+    <form className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="eventName">Event Name</Label>
+        <Input id="eventName" placeholder="Enter event name" />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="eventDate">Date</Label>
+        <Input id="eventDate" type="date" />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="eventType">Event Type</Label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Select event type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cultural">Cultural</SelectItem>
+            <SelectItem value="sports">Sports</SelectItem>
+            <SelectItem value="academic">Academic</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <Button className="w-full">Create Event</Button>
+    </form>
   );
 };
 
