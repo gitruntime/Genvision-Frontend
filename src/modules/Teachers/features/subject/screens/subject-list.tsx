@@ -95,7 +95,7 @@ export function SubjectList() {
           >
             <div className="flex items-center">
               <div className="ml-auto flex items-center gap-2">
-                <DropdownMenu>
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="h-8 gap-1">
                       <ListFilter className="h-3.5 w-3.5" />
@@ -114,39 +114,8 @@ export function SubjectList() {
                       Inactive
                     </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
-                </DropdownMenu>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="sm" className="h-8 gap-1">
-                      <PlusCircle className="h-3.5 w-3.5" /> Add Subject
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[550px]">
-                    <DialogHeader>
-                      <DialogTitle>Add New Subject</DialogTitle>
-                    </DialogHeader>
-                    <div className="flex flex-col space-y-4">
-                      <Input
-                        type="text"
-                        placeholder="Subject Name"
-                        className="w-full"
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Teacher Name"
-                        className="w-full"
-                      />
-                      <Input
-                        type="text"
-                        placeholder="Grade Level"
-                        className="w-full"
-                      />
-                    </div>
-                    <Button type="submit" className="w-full">
-                      Add Subject
-                    </Button>
-                  </DialogContent>
-                </Dialog>
+                </DropdownMenu> */}
+                
               </div>
             </div>
             <TabsContent value={activeTab}>

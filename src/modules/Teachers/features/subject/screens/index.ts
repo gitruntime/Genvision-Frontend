@@ -1,6 +1,6 @@
-import { SubjectList } from "./student-list";
-import { SubjectView } from "./student-view";
+import { SubjectList } from "./subject-list"
+// import { SubjectView } from "./student-view";
 export const SubjectScreens={
     List:SubjectList,
-    View:SubjectView
+    // View:SubjectView
 }

@@ -16,6 +16,10 @@ const TeacherNavigator = () => {
           <Route path="parents/*" element={<TeacherNavigators.Parents />} />
           <Route path="class/*" element={<TeacherNavigators.Classes />} />
           <Route path="subject/*" element={<TeacherNavigators.Subjects />} />
+          <Route path="assignment/*" element={<TeacherNavigators.Assignment />} />
+          <Route path="marks/*" element={<TeacherNavigators.Marks />} />
+          <Route path="exam/*" element={<TeacherNavigators.Exam/>} />
+
           <Route path="profile/*" element={<TeacherNavigators.profile />}/>
         </Routes>
       </Sidebar>

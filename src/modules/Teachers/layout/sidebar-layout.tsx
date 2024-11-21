@@ -41,6 +41,9 @@ const itemList: Items[] = [
   { name: "Parents", icon: <Users className="h-4 w-4" />, to: '/teacher/parents' },
   { name: "Class", icon: <Users className="h-4 w-4" />, to: '/teacher/class' },
   { name: "Subject", icon: <Users className="h-4 w-4" />, to: '/teacher/subject' },
+  { name: "Assignment", icon: <Users className="h-4 w-4" />, to: '/teacher/assignment' },
+  { name: "Marks", icon: <Users className="h-4 w-4" />, to: '/teacher/marks' },
+  { name: "Exam", icon: <Users className="h-4 w-4" />, to: '/teacher/exam' },
 ]
 
 
