@@ -1,3 +1,42 @@
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from "@tanstack/react-query";
+import { FetchDataParams } from "../../teachers/types";
+import { studentCreateAPI, StudentListAPI } from "./api";
+import { AxiosError } from "axios";
+
+export const useListStudents = ({
+  page,
+  size,
+  sortBy,
+  sortOrder,
+}: FetchDataParams): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", page, size, sortBy, sortOrder],
+    queryFn: () =>
+      StudentListAPI({
+        page,
+        size,
+        sortBy,
+        sortOrder,
+      }),
+  });
+};
+
+export const useCreateStudent = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => studentCreateAPI(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["admin", "students"]);
+    },
+    retry: false,
+  });
+};
+
 // import { useMutation, UseMutationResult } from "@tanstack/react-query";
 // import { useDispatch } from "react-redux";
 // import {

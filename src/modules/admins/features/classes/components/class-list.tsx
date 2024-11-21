@@ -1,6 +1,7 @@
 import { TableCell, TableRow } from "@/components/ui/table";
 
 import {
+  AlertCircle,
   Eye,
   Loader2,
   MoreHorizontal,
@@ -30,15 +31,38 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useDeleteClass } from "../store/hooks";
+import { useDeleteClass, useListSubject } from "../store/hooks";
 import { toast } from "@/hooks/use-toast";
+import SubjectGridSelector from "./subject-list";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import TeacherAddComp from "./teacher-add";
+import TeacherAddList from "./teacherAdd-list";
 
 export const ClassListComponent: FC<any> = memo(
   ({ classes, handleClassEditModal }: any) => {
-    // const handleSubjectModal = () => setIsSubjectModalOpen(true);
-    // const handleStudentModal = () => setIsStudentModalOpen(true);
     const [isDeleteClass, setIsDeleteClass] = useState(false);
     const [classData, setClassData] = useState<any>(null);
+
+    const [classSubjectsModal, setClassSubjectsModal] = useState(false);
+    const [classId, setClassId] = useState(null);
+    const [isTeacherAddModal, setIsTeacherAddModal] = useState(false);
+    const [isClassTeachersViewModal, setIsClassTeachersViewModal] =
+      useState(false);
+
+    const { data: subjects, isLoading: isSubjectListLoading } = useListSubject({
+      page: 1,
+      size: 50,
+      sortBy: "id",
+      sortOrder: "ASC",
+    });
+
+    const handleSubjectSelect = (selectedSubject) => {
+      console.log(  
+        selectedSubject.map((subject) => subject.id),
+        "thousi"
+      );
+    };
 
     const {
       mutate: deleteClassMutate,
@@ -56,7 +80,7 @@ export const ClassListComponent: FC<any> = memo(
 
     useEffect(() => {
       if (isDeleteClassSuccess) {
-        setIsDeleteClass(false)
+        setIsDeleteClass(false);
         toast({
           variant: "success",
           title: "Class deleted Successfully",
@@ -101,7 +125,12 @@ export const ClassListComponent: FC<any> = memo(
                   >
                     <Pencil className="mr-2 h-4 w-4" /> Class
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setClassSubjectsModal(true);
+                      setClassId(classItem?.id);
+                    }}
+                  >
                     <Eye className="mr-2 h-4 w-4" />
                     <span>Subject</span>
                   </DropdownMenuItem>
@@ -112,6 +141,36 @@ export const ClassListComponent: FC<any> = memo(
                   <DropdownMenuItem>
                     <Eye className="mr-2 h-4 w-4" /> Events
                   </DropdownMenuItem>
+
+                  <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger className="focus:text-white">
+                        <span>Teacher</span>
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setIsTeacherAddModal(true);
+                              setClassId(classItem?.id);
+                            }}
+                          >
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            <span>Teacher</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setIsClassTeachersViewModal(true);
+                              setClassId(classItem?.id);
+                            }}
+                          >
+                            <Eye className="mr-2 h-4 w-4" />
+                            Teacher
+                          </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
 
                   <DropdownMenuGroup>
                     <DropdownMenuSub>
@@ -146,6 +205,43 @@ export const ClassListComponent: FC<any> = memo(
             </TableCell>
           </TableRow>
         ))}
+
+        <Dialog open={classSubjectsModal} onOpenChange={setClassSubjectsModal}>
+          {classSubjectsModal && (
+            <DialogContent className="max-w-[90%] h-[550px]">
+              {isSubjectListLoading ? (
+                [...Array(8)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="cursor-pointer p-4 rounded-lg border transition-all border-gray-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="w-1/2 h-4" />
+                      <Skeleton className="w-5 h-5" />
+                    </div>
+                  </div>
+                ))
+              ) : subjects?.data && subjects?.data.length > 0 ? (
+                <SubjectGridSelector
+                  modalAction={setClassSubjectsModal}
+                  onSubjectSelect={handleSubjectSelect}
+                  // @ts-ignore
+                  classId={classId}
+                  subjects={subjects?.data}
+                />
+              ) : (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Create Subjects before adding to the class
+                  </AlertDescription>
+                </Alert>
+              )}
+            </DialogContent>
+          )}
+        </Dialog>
+
         <Dialog open={isDeleteClass} onOpenChange={setIsDeleteClass}>
           {classData && (
             <DialogContent>
@@ -179,6 +275,27 @@ export const ClassListComponent: FC<any> = memo(
                 </Button>
               </DialogFooter>
             </DialogContent>
+          )}
+        </Dialog>
+
+        <Dialog open={isTeacherAddModal} onOpenChange={setIsTeacherAddModal}>
+          {isTeacherAddModal && (
+            <TeacherAddComp
+              classId={classId}
+              modalAction={setIsTeacherAddModal}
+            />
+          )}
+        </Dialog>
+
+        <Dialog
+          open={isClassTeachersViewModal}
+          onOpenChange={setIsClassTeachersViewModal}
+        >
+          {isClassTeachersViewModal && classId && (
+            <TeacherAddList
+              classId={classId}
+              modalAction={setIsClassTeachersViewModal}
+            />
           )}
         </Dialog>
       </>

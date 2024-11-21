@@ -11,7 +11,7 @@ const AuthProtectedRoute: React.FC<AuthProtectedRouteProps> = ({
 }) => {
   const { token } = useSelector((state: any) => state.auth);
 
-  return token ? children : <Navigate to={"/admin/auth/login"} />;
+  return token ? children : <Navigate to={"/auth/login"} />;
 };
 
 export default AuthProtectedRoute;

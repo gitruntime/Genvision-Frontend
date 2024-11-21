@@ -29,12 +29,12 @@ const itemList: Items[] = [
     icon: <Home className="h-4 w-4" />,
     to: "/admin/dashboard",
   },
-  { name: "Groups", icon: <Users className="h-4 w-4" />, to: "/admin/groups" },
-  {
-    name: "Permissions",
-    icon: <Users className="h-4 w-4" />,
-    to: "/admin/permissions",
-  },
+  // { name: "Groups", icon: <Users className="h-4 w-4" />, to: "/admin/groups" },
+  // {
+  //   name: "Permissions",
+  //   icon: <Users className="h-4 w-4" />,
+  //   to: "/admin/permissions",
+  // },
   {
     name: "Teachers",
     icon: <Users className="h-4 w-4" />,
@@ -51,6 +51,11 @@ const itemList: Items[] = [
     to: "/admin/parents",
   },
   { name: "Class", icon: <Home className="h-4 w-4" />, to: "/admin/classes" },
+  {
+    name: "Exams",
+    icon: <Home className="h-4 w-4" />,
+    to: "/admin/exams",
+  },
 ];
 
 export const Sidebar: FC<SidebarProps> = ({ children }) => {

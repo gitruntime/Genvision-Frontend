@@ -3,6 +3,7 @@ import { OverviewTab } from "../components/overview-tab";
 import { ExperienceTab } from "../components/experience-tab";
 import { EducationTab } from "../components/education-tab";
 import { CertificateTab } from "../components/certificate-tab";
+import TeacherAI from "../components/ai";
 
 export const TeacherView: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ export const TeacherView: React.FC = () => {
           <Tabs defaultValue="overview">
             <TabsList className="mb-4">
               {[
+                { value: "ai", label: "AI" },
                 { value: "overview", label: "Overview" },
                 { value: "experience", label: "Experience" },
                 { value: "certificates", label: "Certificates" },
@@ -32,6 +34,10 @@ export const TeacherView: React.FC = () => {
                 </TabsTrigger>
               ))}
             </TabsList>
+
+            <TabsContent value="ai" className="hide-scrollbar">
+              <TeacherAI />
+            </TabsContent>
 
             <TabsContent value="overview">
               <OverviewTab />

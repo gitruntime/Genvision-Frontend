@@ -38,7 +38,7 @@ export const useLogin = () => {
       }
     },
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data,"this");
       dispatch(setCredentials({ token: data.data }));
     },
     retry: false,

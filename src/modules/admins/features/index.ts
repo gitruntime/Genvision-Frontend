@@ -1,5 +1,5 @@
 import React from "react";
-import AuthNavigator from "./auth/authNavigators";
+import AuthNavigator from "../../authentication/navigators";
 import { AuthorizationNavigator } from "./authorization";
 import { ClassNavigator } from "./classes/navigators/class-navigator";
 import { StudentNavigator } from "./students/navigator/student-navigator";

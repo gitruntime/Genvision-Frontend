@@ -1,12 +1,19 @@
 import api from "@/modules/admins/utils/axios-util";
+import { FetchDataParams } from "../../teachers/types";
 
 export type id = string | number;
 
-export const studentListAPI = async () => {
-  const response = await api.get(`/admin/students`);
+export const StudentListAPI = async ({
+  page,
+  size,
+  sortBy,
+  sortOrder,
+}: FetchDataParams): Promise<any> => {
+  const response = await api.get(`/admin/students`, {
+    params: { page, size, sortBy, sortOrder },
+  });
   return response.data;
 };
-
 export const studentCreateAPI = async (data: any) => {
   const response = await api.post(`/admin/students`, data);
   return response.data;
@@ -32,8 +39,11 @@ export const addressListAPI = async (studentId: id) => {
   return response.data;
 };
 
-export const addressCreateAPI = async (studentId: id, data:any) => {
-  const response = await api.get(`/admin/students/${studentId}/addresses`,data);
+export const addressCreateAPI = async (studentId: id, data: any) => {
+  const response = await api.get(
+    `/admin/students/${studentId}/addresses`,
+    data
+  );
   return response.data;
 };
 
@@ -46,7 +56,8 @@ export const addressViewAPI = async (studentId: id, id: id) => {
 
 export const addressUpdateAPI = async (studentId: id, id: id, data: any) => {
   const response = await api.get(
-    `/admin/students/${studentId}/addresses/${id}`,data
+    `/admin/students/${studentId}/addresses/${id}`,
+    data
   );
   return response.data;
 };
