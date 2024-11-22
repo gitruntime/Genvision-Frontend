@@ -31,7 +31,6 @@ import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useListClass } from "../store/hooks";
 import { ClassListComponent } from "../components/class-list";
-import SubjectGridSelector from "../components/subject-list";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import StudentGridSelector from "../components/student-list";
 import { ClassAddComp } from "../components/class-add";
@@ -109,6 +108,7 @@ export const ClassList: React.FC = () => {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
   const [isViewEventModalOpen, setIsViewEventModalOpen] = useState(false);
   const [isViewExamModalOpen, setIsViewExamModalOpen] = useState(false);
+  const [isTeacherAddModal, setIsTeacherAddModal] = useState(false);
 
   const {
     data: classData,
@@ -117,7 +117,7 @@ export const ClassList: React.FC = () => {
     // isSuccess: isClassListSuccess,
   } = useListClass({
     page: 1,
-    size: 10,
+    size: 30,
     sortBy: "id",
     sortOrder: "ASC",
   });
@@ -133,47 +133,11 @@ export const ClassList: React.FC = () => {
     return <ClassListSkeleton />;
   }
 
-  const handleSubjectSelect = (selectedSubjects: any) => {
-    // Handle the selected subjects
-    console.log("Selected subjects:", selectedSubjects);
-    // You can send this data to your backend
-  };
-
   const handleStudentSelect = (selectedStudents: any) => {
     // Handle the selected subjects
     console.log("Selected subjects:", selectedStudents);
     // You can send this data to your backend
   };
-
-  // Optional: Pass your own subjects data
-  const customSubjects = [
-    { id: 1, name: "Custom Subject 1", category: "Category A" },
-    { id: 2, name: "Custom Subject 2", category: "Category B" },
-    { id: 3, name: "Custom Subject 2", category: "Category B" },
-    { id: 4, name: "Custom Subject 2", category: "Category B" },
-    { id: 5, name: "Custom Subject 2", category: "Category B" },
-    { id: 6, name: "Custom Subject 2", category: "Category B" },
-    { id: 7, name: "Custom Subject 2", category: "Category B" },
-    { id: 8, name: "Custom Subject 2", category: "Category B" },
-    { id: 9, name: "Custom Subject 2", category: "Category B" },
-    { id: 10, name: "Custom Subject 2", category: "Category B" },
-    { id: 11, name: "Custom Subject 2", category: "Category B" },
-    { id: 12, name: "Custom Subject 2", category: "Category B" },
-    { id: 13, name: "Custom Subject 2", category: "Category B" },
-    { id: 14, name: "Custom Subject 2", category: "Category B" },
-    { id: 15, name: "Custom Subject 2", category: "Category B" },
-    { id: 16, name: "Custom Subject 2", category: "Category B" },
-    { id: 17, name: "Custom Subject 2", category: "Category B" },
-    { id: 18, name: "Custom Subject 2", category: "Category B" },
-    { id: 19, name: "Custom Subject 2", category: "Category B" },
-    { id: 20, name: "Custom Subject 2", category: "Category B" },
-    { id: 21, name: "Custom Subject 2", category: "Category B" },
-    { id: 22, name: "Custom Subject 2", category: "Category B" },
-    // ...more subjects
-  ];
-
-  // Optional: Pass initially selected subjects
-  const initialSelected = [{ id: 1, name: "Mathematics", category: "Science" }];
 
   const initialStudentSelected = [
     {
@@ -283,7 +247,9 @@ export const ClassList: React.FC = () => {
                     <PlusCircle className="h-3.5 w-3.5" /> Subjects
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => setIsSubjectViewModalOpen(true)}
+                    onClick={() => {
+                      setIsSubjectViewModalOpen(true);
+                    }}
                     className="h-8 gap-1"
                   >
                     <Eye className="h-4 w-4" /> Subjects
@@ -313,7 +279,7 @@ export const ClassList: React.FC = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size={"sm"}>
                     Exams <CircleChevronDown className="ml-2 h-4 w-4" />
@@ -333,7 +299,7 @@ export const ClassList: React.FC = () => {
                     <Eye className="h-4 w-4" /> Exams
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
             </div>
           </div>
           {classData?.data && classData?.data.length > 0 ? (
@@ -409,17 +375,6 @@ export const ClassList: React.FC = () => {
             </div>
           )}
           {/* API Done - Backend */}
-          <Dialog open={false} onOpenChange={setIsSubjectViewModalOpen}>
-            <DialogContent className="max-w-[90%] h-[550px]">
-              <SubjectGridSelector
-                onSubjectSelect={handleSubjectSelect}
-                // @ts-ignore
-                subjects={customSubjects}
-                // @ts-ignore
-                initialSelectedSubjects={initialSelected}
-              />
-            </DialogContent>
-          </Dialog>
           <Dialog open={false} onOpenChange={setIsStudentModalOpen}>
             <DialogContent className="max-w-[90%] h-[550px]">
               <StudentGridSelector
@@ -444,25 +399,30 @@ export const ClassList: React.FC = () => {
             open={isCreateExamModalOpen}
             onOpenChange={setIsCreateExamModalOpen}
           >
-            <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-              <CreateExam />
-            </DialogContent>
+            {isCreateExamModalOpen && (
+              <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
+                <CreateExam />
+              </DialogContent>
+            )}
           </Dialog>
           <Dialog
             open={isSubjectViewModalOpen}
             onOpenChange={setIsSubjectViewModalOpen}
           >
-            <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-              <SubjectList />
-            </DialogContent>
+            {isSubjectViewModalOpen && (
+              <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
+                <SubjectList />
+              </DialogContent>
+            )}
           </Dialog>
+          {/* api iNTEGRATION DONE */}
           <Dialog
             open={isSubjectModalOpen}
             onOpenChange={setIsSubjectModalOpen}
           >
             <DialogContent>
               <CreateSubject
-                modalAction={setIsClassModalOpen}
+                modalAction={setIsSubjectModalOpen}
                 subjectData={editSubjectData}
               />
             </DialogContent>

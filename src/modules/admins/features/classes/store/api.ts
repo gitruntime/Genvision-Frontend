@@ -18,7 +18,7 @@ export const ClassCreateAPI = async (data: any) => {
   return response.data;
 };
 
-export const ClassUpdateAPI = async (id : number | string, data: any) => {
+export const ClassUpdateAPI = async (id: number | string, data: any) => {
   const response = await api.put(`/admin/classes/${id}`, data);
   return response.data;
 };
@@ -45,12 +45,60 @@ export const SubjectCreateAPI = async (data: any) => {
   return response.data;
 };
 
-export const SubjectUpdateAPI = async (id : number | string, data: any) => {
+export const SubjectUpdateAPI = async (id: number | string, data: any) => {
   const response = await api.put(`/admin/subjects/${id}`, data);
   return response.data;
 };
 
 export const SubjectDeleteAPI = async (id: number | string) => {
   const response = await api.delete(`/admin/subjects/${id}`);
+  return response.data;
+};
+
+export const GetSubjectsFromClassAPI = async (id: number | string) => {
+  const response = await api.get(`/admin/classes/${id}/subjects`);
+  return response.data;
+};
+
+export const AddSubjectsToClassAPI = async (id: number | string, data: any) => {
+  const response = await api.post(`/admin/classes/${id}/subjects`, data);
+  return response.data;
+};
+
+export const GetTeachersFromClassAPI = async (id: number | string) => {
+  const response = await api.get(`/admin/classes/${id}/teachers`);
+  return response.data;
+};
+
+export const AddTeachersToClassAPI = async (id: number | string, data: any) => {
+  const response = await api.post(`/admin/classes/${id}/teachers`, data);
+  return response.data;
+};
+
+export const DeleteTeachersFromClassAPI = async (
+  classId: number | string,
+  id: number | string
+) => {
+  const response = await api.delete(`/admin/classes/${classId}/teachers/${id}`);
+  return response.data;
+};
+
+export const GetStudentsFromClassAPI = async (id: number | string) => {
+  const response = await api.get(`/admin/classes/${id}/students`);
+  return response.data;
+};
+
+export const AddStudentsToClassAPI = async (id: number | string) => {
+  const response = await api.post(`/admin/classes/${id}/students`);
+  return response.data;
+};
+
+export const AssignmentListAPI = async (id: number | string) => {
+  const response = await api.get(`/admin/classes/${id}/assignments`);
+  return response.data;
+};
+
+export const AssignmentCreateAPI = async (id: number | string) => {
+  const response = await api.post(`/admin/classes/${id}/assignments`);
   return response.data;
 };

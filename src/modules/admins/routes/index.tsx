@@ -1,21 +1,16 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AdminNavigators } from "../features";
 import { Sidebar } from "../layout/sidebar-layout";
-import { Provider } from "react-redux";
-import { store } from "../store";
 import AuthProtectedRoute from "./authprotected-router";
 import { DashboardNavigator } from "../features/dashboard/navigators/navigator";
 
 const AdminNavigator: React.FC = () => {
   const { pathname } = useLocation();
-  const isAuthRoute = pathname.startsWith("/admin/auth");
+  const isAuthRoute = pathname.startsWith("/auth");
 
   return (
     <>
-      <Provider store={store}>
-        <Routes>
-          <Route path="auth/*" element={<AdminNavigators.Auth />} />
-        </Routes>
+     
         {!isAuthRoute && (
           <Sidebar>
             <AuthProtectedRoute>
@@ -35,7 +30,6 @@ const AdminNavigator: React.FC = () => {
             </AuthProtectedRoute>
           </Sidebar>
         )}
-      </Provider>
     </>
   );
 };

@@ -20,26 +20,20 @@ interface DecodedToken {
 export default function AuthLogin() {
   const { mutate: loginMutate, isError, isSuccess } = useLogin();
   // @ts-ignore
-  const { error } = useSelector((state) => state.auth);
+  const { error, user } = useSelector((state) => state.auth);
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const tokens = localStorage.getItem("tokens");
-    if (tokens) {
-      try {
-        const parsedTokens = JSON.parse(tokens);
-        const decodedToken = jwtDecode<DecodedToken>(parsedTokens.accessToken);
+    console.log("hi thousi");
+    console.log(user);
 
-        if (decodedToken && decodedToken.userRole) {
-          navigate(`/${decodedToken.userRole}/dashboard`);
-        }
-      } catch (error) {
-        console.error("Invalid token:", error);
-        // Optionally handle the error, like redirecting to login
-      }
+    if (user) {
+      console.log(user, "user here");
+
+      navigate(`/${user.userRole}/dashboard`);
     }
-  }, [navigate]);
+  }, [user]);
 
   const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
     useFormik({
@@ -67,21 +61,9 @@ export default function AuthLogin() {
           ),
       }),
       onSubmit: (values) => {
-        console.log(values);
         loginMutate({ email: values.email, password: values.password });
       },
     });
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: error.email || error.password,
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      });
-    }
-  }, [isError, error]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -89,9 +71,21 @@ export default function AuthLogin() {
         variant: "success",
         title: "Login Successfully",
       });
-      navigate("/admin/dashboard");
     }
-  }, [isSuccess]);
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title:
+          error?.response?.data?.errors?.email ||
+          "Uh oh! Something went wrong.",
+        description:
+          error?.response?.data?.errors?.email ||
+          error?.response?.data?.details?.email[0] ||
+          error?.response?.data?.details?.password[0],
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+  }, [isSuccess, isError, error]);
 
   return (
     <div className="w-full lg:grid   lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[575px]">

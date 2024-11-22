@@ -10,6 +10,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useFormik } from "formik";
+import Yup from "@/lib/utils";
 
 export const CreateSubjectPreview = () => {
   return (
@@ -24,55 +26,53 @@ export const CreateSubjectPreview = () => {
 
 const CreateSubject = ({ modalAction, subjectData = {} }: any) => {
   const {
-    // @ts-ignore
     mutate: createMutate,
     isPending: isCreatePending,
     isSuccess: isCreateSuccess,
     isError: isCreateError,
     error: createError,
   } = useCreateSubject();
-  // const {
-  //   mutate: isEditMutate,
-  //   isPending: isEditPending,
-  //   isSuccess: isEditSuccess,
-  //   isError: isEditError,
-  //   error: editError,
-  // } = useUpdateSubject(1, {});
-  const isEditPending = false;
-  const isEditSuccess = false;
-  const isEditError = false;
-  const editError: any = false;
+
+  const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
+    useFormik({
+      initialValues: {
+        name: "",
+        code: "",
+      },
+      validationSchema: Yup.object({
+        name: Yup.string().required("Subject Name is required"),
+        code: Yup.string().optional(),
+      }),
+      onSubmit: (values: any) => {
+        createMutate(values);
+      },
+    });
 
   useEffect(() => {
-    if (isCreateError || isEditError) {
-      const errorMessage = isCreateError
-        ? // @ts-ignore
-          createError?.response?.data?.message ||
-          "Uh oh! Something went wrong during creation."
-        : isEditError
-        ? editError?.response?.data?.message ||
-          "Uh oh! Something went wrong during editing."
-        : "Uh oh! Something went wrong.";
-
+    if (isCreateError) {
       toast({
         variant: "destructive",
         // @ts-ignore
-        title: errorMessage,
+        title:
+          createError?.response?.data?.message ||
+          "Uh oh! Something went wrong during creation.",
         description: "Try Again",
       });
     }
 
-    if (isCreateSuccess || isEditSuccess) {
+    if (isCreateSuccess) {
       modalAction(false);
       toast({
         variant: "success",
-        title: `Class ${isCreateSuccess ? "created" : "updated"} Successfully.`,
+        title: `Subject ${
+          isCreateSuccess ? "created" : "updated"
+        } Successfully.`,
       });
     }
-  }, [isCreateError, isCreateSuccess, isEditError, isEditSuccess]);
+  }, [isCreateError, isCreateSuccess]);
   return (
     <>
-      {(isCreatePending || isEditPending) && (
+      {isCreatePending && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
         </div>
@@ -82,14 +82,32 @@ const CreateSubject = ({ modalAction, subjectData = {} }: any) => {
         <DialogTitle>{`${!subjectData ? "Add" : "Edit"} Subjects`}</DialogTitle>
         <DialogDescription> </DialogDescription>
       </DialogHeader>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="name">Subject Name</Label>
-          <Input id="name" placeholder="Enter subject name" />
+          <Input
+            id="name"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.name}
+            placeholder="Enter subject name"
+          />
+          {touched.name && errors.name && (
+            <div className="text-xs text-red-500">
+              {/* @ts-ignore */}
+              {errors.name}
+            </div>
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="code">Subject Code</Label>
-          <Input id="code" placeholder="Enter subject code" />
+          <Input
+            id="code"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            value={values.code}
+            placeholder="Enter subject code"
+          />
         </div>
         <Button className="w-full">Create Subject</Button>
       </form>
