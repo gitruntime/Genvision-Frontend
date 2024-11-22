@@ -4,6 +4,7 @@ import {
     PlusCircle,
     Pencil,
     Trash,
+    
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,10 @@ import {
 import { CircularProgress, FormControl, TextField, Modal, MenuItem } from "@mui/material";
 import api from "@/modules/Teachers/apiConfig/Interceptor";
 import { useParams } from "react-router-dom";
+import Cookies from 'universal-cookie';
+
+
+
 
 const ExamList = () => {
     const [activeTab, setActiveTab] = useState<string>("all");
@@ -41,6 +46,9 @@ const ExamList = () => {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset } = useForm();
     const { id } = useParams();
+const cookies = new Cookies();
+const teacherName = cookies.get('teacherName');
+
 
     // Fetch assignments
     const fetchAssignment = async () => {
@@ -140,11 +148,11 @@ const ExamList = () => {
                                         <TableHead>Exam Name</TableHead>
                                         <TableHead>Exam Type</TableHead>
                                         <TableHead>Teacher Name</TableHead>
-                                        <TableHead>Date</TableHead>
-                                        <TableHead>Start Time</TableHead>
-                                        <TableHead>End Time</TableHead>
-                                        <TableHead>Subject</TableHead>
                                         <TableHead>Class</TableHead>
+                                        <TableHead>Subject</TableHead>
+                                        <TableHead>Date</TableHead>
+                                        <TableHead>Start date</TableHead>
+                                        <TableHead>End date</TableHead>
                                         <TableHead>Action</TableHead>
 
                                     </TableRow>
@@ -156,11 +164,11 @@ const ExamList = () => {
                                             <TableCell>{item.examName}</TableCell>
                                             <TableCell>{item.examType}</TableCell>
                                             <TableCell>{item.teachaerName}</TableCell>
-                                            <TableCell>{item.date}</TableCell>
-                                            <TableCell>{item.startTime}</TableCell>
-                                            <TableCell>{item.endTime}</TableCell>
-                                            <TableCell>{item.subject}</TableCell>
                                             <TableCell>{item.class}</TableCell>
+                                            <TableCell>{item.subject}</TableCell>
+                                            <TableCell>{item.date}</TableCell>
+                                            <TableCell>{item.startdate}</TableCell>
+                                            <TableCell>{item.enddate}</TableCell>
                                             <TableCell>
                                                 <div className="flex items-center space-x-2">
                                                     <Button
@@ -198,7 +206,7 @@ const ExamList = () => {
                     className="p-6 bg-white rounded-md shadow-lg max-w-md mx-auto mt-20 max-h-[90vh] overflow-y-auto"
                 >
                     <h2 className="text-lg font-bold mb-4">
-                        {editingItem ? "Edit Exam" : "Add Exam"}
+                        {editingItem ? "Edit Attendance" : "Add Attendance"}
                     </h2>
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                         <FormControl variant="outlined" fullWidth>
@@ -217,7 +225,7 @@ const ExamList = () => {
                                 required
                                 InputLabelProps={{ shrink: true }}
                             >
-                                {["Midterm", "Final", "Quiz", "Practice Test"].map((type) => (
+                                {["Semester", "Final", "Quiz", "Practice Test"].map((type) => (
                                     <MenuItem key={type} value={type}>
                                         {type}
                                     </MenuItem>
@@ -229,7 +237,7 @@ const ExamList = () => {
                             label="Teacher Name"
                             type="text"
                             InputLabelProps={{ shrink: true }}
-                            defaultValue="John Doe" // Replace with actual API value
+                            defaultValue={teacherName} // Replace with actual API value
                             disabled
                         />
                         <TextField

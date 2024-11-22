@@ -29,7 +29,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { CircularProgress, FormControl, TextField, Modal, MenuItem } from "@mui/material";
+import { CircularProgress, FormControl, TextField, Modal, MenuItem, InputLabel } from "@mui/material";
 import api from "@/modules/Teachers/apiConfig/Interceptor";
 import { useParams } from "react-router-dom";
 
@@ -42,19 +42,17 @@ const AssignmentList = () => {
     const [editingItem, setEditingItem] = useState(null);
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit, reset } = useForm();
-    const [selectedClassId, setSelectedClassId] = useState(editingItem?.classId || null);
-    const [subjectList, setSubjectList] = useState([]);
-    const [selectedSubject, setSelectedSubject] = useState(null);
-
+    const [selectedClassId, setSelectedClassId] = useState(editingItem?.classId || "");
+    const selectedClassData = classList.filter((cls) => cls.id === selectedClassId);
+    const subject = selectedClassData[0]?.ClassTeachers[0]?.Subject || { name: "", id: "" };
 
     const { id } = useParams();
-    console.log("hey.....", assignmentData)
 
     // Fetch assignments
     const fetchAssignment = async () => {
         try {
             setLoading(true);
-            const response = await api.get("/teacher/classes/assignments"); // Update the API endpoint as needed
+            const response = await api.get("/teacher/classes/assignments");
             setAssignmentData(response.data?.data || []);
         } catch (error) {
             console.error("Failed to fetch assignment data:", error);
@@ -62,39 +60,48 @@ const AssignmentList = () => {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        fetchAssignment();
+    }, [id]);
 
-
+    // Fetch class list
     const fetchClassList = async () => {
         try {
             setLoadingClasses(true);
-            const response = await api.get("/teacher/classes"); // Replace with your API endpoint
-            const data = response.data?.data || []; // Adjust based on the API response structure
-            setClassList(data);
+            const response = await api.get("/teacher/classes");
+            setClassList(response.data?.data || []);
         } catch (error) {
             console.error("Failed to fetch class list:", error);
-            setClassList([]); // Fallback to an empty array on error
+            setClassList([]);
         } finally {
             setLoadingClasses(false);
         }
     };
 
-
     useEffect(() => {
         fetchClassList();
     }, []);
 
-    // Add or Update Attendance
+    // Add or Update Assignment
     const onSubmit = async (data: any) => {
         try {
             setLoading(true);
+            
+            // Ensure subjectId is a number
+            if (data.subjectId) {
+                data.subjectId = Number(data.subjectId);
+            }
+    
             if (editingItem) {
                 // Update logic
-                await api.put(`teacher/classes/assignments`, data); // Adjust endpoint and payload
+                data.id = editingItem.id;
+                await api.put(`/teacher/classes/assignments/${editingItem.id}`, data); // Fixed endpoint
             } else {
                 // Add logic
-                await api.post("teacher/classes/assignments", data); // Adjust endpoint and payload
+                await api.post("/teacher/classes/assignments", data); // Fixed endpoint
             }
-            fetchAssignment(); // Refresh data after success
+    
+            fetchAssignment(); // Refresh assignments list after success
             toggleModal(); // Close modal
         } catch (error) {
             console.error("Failed to save assignment data:", error);
@@ -102,63 +109,41 @@ const AssignmentList = () => {
             setLoading(false);
         }
     };
+    
 
-    // Handle modal toggling
     const toggleModal = () => {
         setModalOpen(!modalOpen);
         if (!modalOpen) {
             reset();
             setEditingItem(null);
-            setSelectedClassId(null); // Clear the selected class
+            setSelectedClassId(null);
         }
     };
 
-
     // Populate editing state
-    const onEdit = (item) => {
+    const onEdit = (item: any) => {
         setEditingItem(item);
-        setSelectedClassId(item.classId);
-    
-        // Update subject list based on class
-        const selectedClass = classList.find((cls) => cls.id === item.classId);
-        setSubjectList(selectedClass ? selectedClass.subjects || [] : []);
-        setSelectedSubject(item.subjectId); // Populate subject field
-    
+        console.log("editi",item)
+        setSelectedClassId(item.classId); // Set the classId of the item being edited
         setModalOpen(true);
-        reset(item); // Populate the form with existing data
+        reset({
+            ...item, // Spread the item to populate all form fields with current data
+            subjectId: item?.subjectId || "", // Set subjectId explicitly if not present
+        });
     };
-    
-
 
     // Delete Assignment
     const onDelete = async (id: number) => {
         try {
             setLoading(true);
-            await api.delete(`/assignments/${id}`); // Adjust endpoint
-            fetchAssignment(); // Refresh data
+            await api.delete(`/teacher/classes/assignments/${id}`); // Fixed endpoint
+            fetchAssignment(); // Refresh assignments list after deletion
         } catch (error) {
             console.error("Failed to delete assignment:", error);
         } finally {
             setLoading(false);
         }
     };
-
-    const handleClassChange = (e) => {
-        const selectedClassId = e.target.value;
-        setSelectedClassId(selectedClassId);
-
-        // Find the selected class and update the subject list
-        const selectedClass = classList.find((cls) => cls.id === selectedClassId);
-        if (selectedClass) {
-            setSubjectList(selectedClass.ClassTeachers.[0].subject.id || []); // Adjust based on API structure
-        } else {
-            setSubjectList([]); // Clear the subject list if no class is selected
-        }
-    };
-
-    useEffect(() => {
-        fetchAssignment();
-    }, [id]);
 
     return (
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
@@ -179,7 +164,7 @@ const AssignmentList = () => {
                                     className="bg-purple-500 text-white hover:bg-purple-600"
                                     onClick={toggleModal}
                                 >
-                                    Add Attendance
+                                    Add Assignment
                                 </Button>
                                 {loading && <CircularProgress size={20} className="ml-2" />}
                             </div>
@@ -195,7 +180,6 @@ const AssignmentList = () => {
                                         <TableHead>Priority</TableHead>
                                         <TableHead>Created At</TableHead>
                                         <TableHead>Action</TableHead>
-
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
@@ -203,7 +187,6 @@ const AssignmentList = () => {
                                         <TableRow key={item.id}>
                                             <TableCell>{item.id + 1}</TableCell>
                                             <TableCell>{item.name}</TableCell>
-                                            <TableCell>{item.dueDate}</TableCell>
                                             <TableCell>{item.dueDate}</TableCell>
                                             <TableCell>{item.document}</TableCell>
                                             <TableCell>{item.priority}</TableCell>
@@ -247,38 +230,50 @@ const AssignmentList = () => {
                     </h2>
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                         <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor="name"></InputLabel>
                             <TextField
                                 {...register("name", { required: true })}
                                 label="Name"
                                 type="text"
-                                required
-                                InputLabelProps={{ shrink: true }}
-                            />
-                            <br />
-                            <TextField
-                                {...register("dueDate", { required: true })}
-                                label="Due Date"
-                                type="date"
+                                id="name"
                                 required
                                 InputLabelProps={{ shrink: true }}
                             />
                         </FormControl>
 
-                        <TextField
-                            {...register("priority")}
-                            label="Priority"
-                            type="text"
-                            InputLabelProps={{ shrink: true }}
-                        />
                         <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor="dueDate"></InputLabel>
                             <TextField
-                                {...register("classId", { required: true })}
-                                select
-                                label="Class"
+                                {...register("dueDate", { required: true })}
+                                label="Due Date"
+                                type="date"
+                                id="dueDate"
                                 required
                                 InputLabelProps={{ shrink: true }}
+                            />
+                        </FormControl>
+
+                        <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor="priority"></InputLabel>
+                            <TextField
+                                {...register("priority", { required: true })}
+                                label="Priority"
+                                type="text"
+                                id="priority"
+                                required
+                                InputLabelProps={{ shrink: true }}
+                            />
+                        </FormControl>
+
+                        <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor="Class"></InputLabel>
+                            <TextField
+                                {...register("classId")}
+                                select
+                                label="Class"
+                                id="classId"
                                 value={selectedClassId || ""}
-                                onChange={handleClassChange} // Dynamically update subject list
+                                onChange={(e) => setSelectedClassId(e.target.value)}
                             >
                                 {loadingClasses ? (
                                     <MenuItem disabled>
@@ -294,25 +289,22 @@ const AssignmentList = () => {
                             </TextField>
                         </FormControl>
 
-                        {/* Subject Field */}
                         <FormControl variant="outlined" fullWidth>
+                            <InputLabel htmlFor="Subject"></InputLabel>
                             <TextField
-                                {...register("subjectId", { required: true })}
-                                select
                                 label="Subject"
-                                required
-                                InputLabelProps={{ shrink: true }}
-                                value={selectedSubject || ""}
-                                onChange={(e) => setSelectedSubject(e.target.value)}
-                            >
-                                {subjectList.map((subject) => (
-                                    <MenuItem key={subject.id} value={subject.id}>
-                                        {subject.name}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                                value={subject?.name || "No Subject Selected"}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                            <input
+                                type="hidden"
+                                id="subjectId"
+                                {...register("subjectId")}
+                                value={subject?.id || ""}
+                            />
                         </FormControl>
-
 
                         <div className="flex justify-end gap-2">
                             <Button

@@ -13,6 +13,7 @@
 import { useState } from "react";
 
 
+
   
   
 
@@ -61,6 +62,10 @@ import { useState } from "react";
           // Decode the token to get user data
           const decoded = jwtDecode<DecodedToken>(accessToken);
           console.log("Decoded Token Data:", decoded);
+
+          cookies.set("teacherName", decoded.fullName);
+          
+
     
           // Dispatch user data to Redux store 
           dispatch(
@@ -72,7 +77,6 @@ import { useState } from "react";
               isAuthenticated: true,
             })
           );
-    
           // Check user role and navigate accordingly
           if (decoded.userRole === "teacher") {
             navigate("teacher/*");
