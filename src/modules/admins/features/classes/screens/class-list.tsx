@@ -40,6 +40,7 @@ import CreateSubject from "../components/subject-create";
 import CreateEvent from "../components/create-event";
 import EventList from "../components/view-event";
 import ExamList from "../components/view-exams";
+import StudentAddList from "../components/class-student-list";
 
 const TableSkeleton: React.FC = () => {
   return (
@@ -257,7 +258,7 @@ export const ClassList: React.FC = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size={"sm"}>
                     Events <CircleChevronDown className="ml-2 h-4 w-4" />
@@ -277,7 +278,7 @@ export const ClassList: React.FC = () => {
                     <Eye className="h-4 w-4" /> Events
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
 
               {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -375,16 +376,6 @@ export const ClassList: React.FC = () => {
             </div>
           )}
           {/* API Done - Backend */}
-          <Dialog open={false} onOpenChange={setIsStudentModalOpen}>
-            <DialogContent className="max-w-[90%] h-[550px]">
-              <StudentGridSelector
-                onStudentSelect={handleStudentSelect}
-                students={students}
-                // @ts-ignore
-                initialSelectedSubjects={initialStudentSelected}
-              />
-            </DialogContent>
-          </Dialog>
           <Dialog open={isClassAddModalOpen} onOpenChange={setIsClassModalOpen}>
             <DialogContent>
               {isClassAddModalOpen && (
@@ -401,7 +392,7 @@ export const ClassList: React.FC = () => {
           >
             {isCreateExamModalOpen && (
               <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-                <CreateExam />
+                <CreateExam modalAction={setIsCreateExamModalOpen} />
               </DialogContent>
             )}
           </Dialog>
@@ -443,6 +434,9 @@ export const ClassList: React.FC = () => {
               <EventList />
             </DialogContent>
           </Dialog>
+
+
+
           <Dialog
             open={isViewExamModalOpen}
             onOpenChange={setIsViewExamModalOpen}

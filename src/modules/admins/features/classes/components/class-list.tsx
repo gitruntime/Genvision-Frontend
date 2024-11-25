@@ -38,6 +38,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import TeacherAddComp from "./teacher-add";
 import TeacherAddList from "./teacherAdd-list";
+import StudentGridSelector from "./student-list";
+import StudentAddList from "./class-student-list";
 
 export const ClassListComponent: FC<any> = memo(
   ({ classes, handleClassEditModal }: any) => {
@@ -58,7 +60,7 @@ export const ClassListComponent: FC<any> = memo(
     });
 
     const handleSubjectSelect = (selectedSubject) => {
-      console.log(  
+      console.log(
         selectedSubject.map((subject) => subject.id),
         "thousi"
       );
@@ -87,6 +89,10 @@ export const ClassListComponent: FC<any> = memo(
         });
       }
     }, [isDeleteClassSuccess]);
+
+    const [isStudentAddModal, setIsStudentAddModal] = useState(false);
+    const [isStudentAddListModal, setIsStudentAddListModal] = useState(false);
+
     return (
       <>
         {classes.map((classItem: any) => (
@@ -134,13 +140,9 @@ export const ClassListComponent: FC<any> = memo(
                     <Eye className="mr-2 h-4 w-4" />
                     <span>Subject</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Eye className="mr-2 h-4 w-4" />
-                    <span>Students</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  {/* <DropdownMenuItem>
                     <Eye className="mr-2 h-4 w-4" /> Events
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
 
                   <DropdownMenuGroup>
                     <DropdownMenuSub>
@@ -175,6 +177,36 @@ export const ClassListComponent: FC<any> = memo(
                   <DropdownMenuGroup>
                     <DropdownMenuSub>
                       <DropdownMenuSubTrigger className="focus:text-white">
+                        <span>Student</span>
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setClassId(classItem.id);
+                              setIsStudentAddModal(true);
+                            }}
+                          >
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            <span>Student</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setClassId(classItem.id);
+                              setIsStudentAddListModal(true);
+                            }}
+                          >
+                            <Eye className="mr-2 h-4 w-4" />
+                            Student
+                          </DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+
+                  {/* <DropdownMenuGroup>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger className="focus:text-white">
                         <span>Assignments</span>
                       </DropdownMenuSubTrigger>
                       <DropdownMenuPortal>
@@ -190,7 +222,7 @@ export const ClassListComponent: FC<any> = memo(
                         </DropdownMenuSubContent>
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
-                  </DropdownMenuGroup>
+                  </DropdownMenuGroup> */}
                   <DropdownMenuItem
                     onClick={() => {
                       setClassData(classItem);
@@ -297,6 +329,27 @@ export const ClassListComponent: FC<any> = memo(
               modalAction={setIsClassTeachersViewModal}
             />
           )}
+        </Dialog>
+
+        <Dialog open={isStudentAddModal} onOpenChange={setIsStudentAddModal}>
+          {classId && (
+            <DialogContent className="max-w-[90%] h-[550px]">
+              <StudentGridSelector
+                classId={classId}
+                modalAction={setIsStudentAddModal}
+                // @ts-ignore
+              />
+            </DialogContent>
+          )}
+        </Dialog>
+
+        <Dialog
+          open={isStudentAddListModal}
+          onOpenChange={setIsStudentAddListModal}
+        >
+          <DialogContent className="max-w-[50%] max-h-[90%] overflow-y-scroll hide-scrollbar">
+            <StudentAddList classId={classId} />
+          </DialogContent>
         </Dialog>
       </>
     );

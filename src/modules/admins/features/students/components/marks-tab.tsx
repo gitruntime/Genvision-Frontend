@@ -16,141 +16,178 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDownIcon } from "lucide-react";
-import { FC } from "react";
+import { FC, useState } from "react";
+import ExamGradeModal from "./create-marks";
+import { Dialog } from "@/components/ui/dialog";
+import { useParams } from "react-router-dom";
+import { useSMarkCreateAPI, useSMarkListAPI } from "../store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const Marks: FC = () => {
-  const getScoreColor = (score: number) => {
-    if (score < 60) return "text-red-500";
-    if (score >= 80) return "text-green-500";
-    return "text-black";
-  };
-
-  const months = Array.from({ length: 12 }, (_, i) =>
-    new Date(0, i).toLocaleString("en", { month: "long" })
-  );
-
-  const years = Array.from(
-    { length: new Date().getFullYear() - 2000 + 1 },
-    (_, i) => 2000 + i
-  );
-
-  const examTypes = [
-    "Unit Test",
-    "Special Test",
-    "First Half Exam",
-    "Leaving Exam",
-    "Second Half Exam",
-  ];
+const MarksTableSkeleton = () => {
+  // Number of skeleton rows to display
+  const skeletonRows = 5;
 
   return (
     <Card className="w-full max-w-5xl">
-      <CardHeader className="flex flex-row items-start justify-end">
-        <div className="flex justify-center space-x-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-xs py-1 px-2">
-                Select Month <ChevronDownIcon className="h-4 w-4 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-auto hide-scrollbar">
-              {months.map((month) => (
-                <DropdownMenuItem key={month}>{month}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-xs py-1 px-2">
-                Select Year <ChevronDownIcon className="h-4 w-4 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-scroll hide-scrollbar">
-              {years.map((year) => (
-                <DropdownMenuItem key={year}>{year}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-xs py-1 px-2">
-                Select Exam Type <ChevronDownIcon className="h-4 w-4 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="max-h-40 overflow-y-scroll hide-scrollbar">
-              {examTypes.map((examType) => (
-                <DropdownMenuItem key={examType}>{examType}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <Button>Submit</Button>
-        </div>
+      <CardHeader className="flex flex-row items-start justify-start">
+        <Skeleton className="h-8 w-24" />
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Roll No</TableHead>
-              <TableHead>Class</TableHead>
-              <TableHead></TableHead>
-              <TableHead colSpan={4} className="text-center">
-                Model exam scores
-              </TableHead>
-              <TableHead></TableHead>
-              <TableHead>Cut off</TableHead>
-              {/* <TableHead>Action</TableHead> */}
-            </TableRow>
-            <TableRow>
-              <TableHead></TableHead>
-              <TableHead></TableHead>
-              <TableHead>Maths</TableHead>
-              <TableHead>Chemistry</TableHead>
-              <TableHead>Biology</TableHead>
-              <TableHead>Physics</TableHead>
-              <TableHead>English</TableHead>
-              <TableHead>Hindi</TableHead>
-              <TableHead></TableHead>
-              <TableHead></TableHead>
+              {[
+                "Exam Name",
+                "Subject Name",
+                "Total Marks",
+                "Marks Obtained",
+                "Grade",
+              ].map((header, index) => (
+                <TableHead key={index}>
+                  <Skeleton className="h-4 w-24" />
+                </TableHead>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {Array.from({ length: skeletonRows }).map((_, index) => (
               <TableRow key={index}>
-                <TableCell> {index + 1}</TableCell>
-                <TableCell>10th</TableCell>
-                <TableCell className={getScoreColor(12)}>{12}</TableCell>
-                <TableCell className={getScoreColor(40)}>{40}</TableCell>
-                <TableCell className={getScoreColor(23)}>{23}</TableCell>
-                <TableCell className={getScoreColor(10)}>{10}</TableCell>
-                <TableCell className={getScoreColor(76)}>{76}</TableCell>
-                <TableCell className={getScoreColor(78)}>{78}</TableCell>
-                <TableCell className={getScoreColor(34)}>{34}</TableCell>
-                {/* <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={`text-xs py-1 px-2 bg-green-100 text-green-800 hover:bg-green-200`}
-                    >
-                      {"Unit Test"} <ChevronDownIcon className="h-4 w-4 ml-1" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>Unit Test</DropdownMenuItem>
-                    <DropdownMenuItem>First Half</DropdownMenuItem>
-                    <DropdownMenuItem>Spcl CL</DropdownMenuItem>
-                    <DropdownMenuItem>Second Half</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell> */}
+                <TableCell>
+                  <Skeleton className="h-4 w-32" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-40" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-8" />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </CardContent>
     </Card>
+  );
+};
+
+const Marks: FC = () => {
+  const [isExamModalOpen, setIsExamModalOpen] = useState(false);
+
+  const { id } = useParams();
+
+  const {
+    data: MARKS_DATA,
+    isLoading: IS_MARKSDATA_LOADING,
+    isSuccess: IS_MARKSDATA_SUCCESS,
+    isError,
+  } = useSMarkListAPI(id);
+
+  console.log(
+    MARKS_DATA,
+    "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+  );
+
+  return (
+    <>
+      <div className="flex justify-end space-x-2 m-2">
+        <Button onClick={() => setIsExamModalOpen(true)}>Create Marks</Button>
+      </div>
+      {IS_MARKSDATA_LOADING ? (
+        <MarksTableSkeleton />
+      ) : MARKS_DATA?.data.length > 0 ? (
+        <Card className="w-full max-w-5xl">
+          <CardHeader className="flex flex-row items-start justify-start">
+            Marks
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {[
+                    "Exam Name",
+                    "Subject Name",
+                    "Total Marks",
+                    "Marks Obtained",
+                    "Grade",
+                  ].map((value) => (
+                    <TableHead>{value}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {MARKS_DATA?.data.map((exam) => (
+                  <TableRow key={exam.id}>
+                    <TableCell>{exam?.examSubjects?.exam?.name}</TableCell>
+                    <TableCell>
+                      {exam?.examSubjects?.Subject?.name +
+                        " " +
+                        exam?.examSubjects?.Subject?.code}
+                    </TableCell>
+                    <TableCell>{exam?.examSubjects?.maxScore}</TableCell>
+                    <TableCell>{exam?.marksObtained}</TableCell>
+                    <TableCell>{exam?.grade}</TableCell>
+                    {/* <TableCell className={getScoreColor(12)}>{12}</TableCell>
+              <TableCell className={getScoreColor(40)}>{40}</TableCell>
+              <TableCell className={getScoreColor(23)}>{23}</TableCell>
+              <TableCell className={getScoreColor(10)}>{10}</TableCell>
+              <TableCell className={getScoreColor(76)}>{76}</TableCell>
+              <TableCell className={getScoreColor(78)}>{78}</TableCell>
+              <TableCell className={getScoreColor(34)}>{34}</TableCell> */}
+                    {/* <TableCell>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={`text-xs py-1 px-2 bg-green-100 text-green-800 hover:bg-green-200`}
+                  >
+                    {"Unit Test"} <ChevronDownIcon className="h-4 w-4 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Unit Test</DropdownMenuItem>
+                  <DropdownMenuItem>First Half</DropdownMenuItem>
+                  <DropdownMenuItem>Spcl CL</DropdownMenuItem>
+                  <DropdownMenuItem>Second Half</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableCell> */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="flex-1">
+          <div
+            className={
+              "flex flex-1 items-center h-[380px] justify-center rounded-lg border border-dashed shadow-sm"
+            }
+            x-chunk="dashboard-02-chunk-1"
+          >
+            <div className="flex flex-col items-center gap-1 text-center">
+              <h3 className="text-2xl font-bold tracking-tight">No Marks</h3>
+              <p className="text-sm text-muted-foreground">
+                No marks data for this student.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Dialog open={isExamModalOpen} onOpenChange={setIsExamModalOpen}>
+        {/* This is useless idea */}
+        {isExamModalOpen && id && (
+          <ExamGradeModal modalAction={setIsExamModalOpen} studentId={id} />
+        )}
+      </Dialog>
+    </>
   );
 };
 

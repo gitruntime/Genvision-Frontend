@@ -45,16 +45,16 @@ const itemList: Items[] = [
     icon: <Users className="h-4 w-4" />,
     to: "/admin/students",
   },
-  {
-    name: "Parents",
-    icon: <Users className="h-4 w-4" />,
-    to: "/admin/parents",
-  },
+  // {
+  //   name: "Parents",
+  //   icon: <Users className="h-4 w-4" />,
+  //   to: "/admin/parents",
+  // },
   { name: "Class", icon: <Home className="h-4 w-4" />, to: "/admin/classes" },
   {
     name: "Exams",
     icon: <Home className="h-4 w-4" />,
-    to: "/admin/exams",
+    to: "/admin/classes/exams",
   },
 ];
 

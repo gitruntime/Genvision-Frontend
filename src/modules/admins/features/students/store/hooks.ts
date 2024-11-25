@@ -1,18 +1,33 @@
 import {
+  QueryClient,
   useMutation,
+  UseMutationResult,
   useQuery,
   useQueryClient,
   UseQueryResult,
 } from "@tanstack/react-query";
 import { FetchDataParams } from "../../teachers/types";
-import { studentCreateAPI, StudentListAPI } from "./api";
+import {
+  AIPromptAPI,
+  attendanceCreateAPI,
+  attendanceUpdateAPI,
+  InterestListAPI,
+  MarkCreateAPI,
+  MarkListAPI,
+  SAddressListAPI,
+  SAttendanceListAPI,
+  studentCreateAPI,
+  StudentListAPI,
+  studentViewAPI,
+} from "./api";
 import { AxiosError } from "axios";
+import { AddStudentsToClassAPI } from "../../classes/store/api";
 
 export const useListStudents = ({
-  page,
-  size,
-  sortBy,
-  sortOrder,
+  page = 1,
+  size = 100,
+  sortBy = "id",
+  sortOrder = "ASC",
 }: FetchDataParams): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", page, size, sortBy, sortOrder],
@@ -34,6 +49,93 @@ export const useCreateStudent = () => {
       queryClient.invalidateQueries(["admin", "students"]);
     },
     retry: false,
+  });
+};
+
+export const useViewStudents = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "student", id],
+    queryFn: () => studentViewAPI(id),
+    enabled: !!id,
+  });
+};
+
+export const useSAddressListAPI = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "addresses"],
+    queryFn: () => SAddressListAPI(id),
+  });
+};
+
+export const useSAttendanceListAPI = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "attendances"],
+    queryFn: () => SAttendanceListAPI(id),
+  });
+};
+
+export const useSCreateAttendanceAPI = (id) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => attendanceCreateAPI(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSUpdateAttendanceAPI = (studentId) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: ([id, data]) => attendanceUpdateAPI(studentId, id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useAddStudentsToClass = (id) => {
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => AddStudentsToClassAPI(id, data),
+    onSuccess: () => {
+      // queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSMarkListAPI = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "marks"],
+    queryFn: () => MarkListAPI(id),
+  });
+};
+
+export const useSMarkCreateAPI = (id) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => MarkCreateAPI(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin", "students", "marks"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSInterestListAPI = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "interests"],
+    queryFn: () => InterestListAPI(id),
+  });
+};
+
+export const useAIPrompt = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "prompts"],
+    queryFn: () => AIPromptAPI(id),
+    enabled: !!id,
   });
 };
 

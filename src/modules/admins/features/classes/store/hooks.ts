@@ -13,6 +13,10 @@ import {
   ClassListAPI,
   ClassUpdateAPI,
   DeleteTeachersFromClassAPI,
+  ExamCreateAPI,
+  ExamListAPI,
+  GetStudentsFromClassAPI,
+  GetSubjectDataUsingClass,
   GetSubjectsFromClassAPI,
   GetTeachersFromClassAPI,
   SubjectCreateAPI,
@@ -182,5 +186,40 @@ export const useDeleteTeacherFromClass = (classId: string | number) => {
     onSuccess: () => {
       queryClient.invalidateQueries(["admin", "class", "teachers"]);
     },
+  });
+};
+
+export const useCreateExam = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => ExamCreateAPI(data),
+    retry: false,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["admin", "class", "exams"]);
+    },
+  });
+};
+
+export const useListExam = (params: {
+  classId?: number;
+}): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "exams"],
+    queryFn: () => ExamListAPI(params),
+  });
+};
+
+export const useGetStudentsFromClass = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "students"],
+    queryFn: () => GetStudentsFromClassAPI(id),
+  });
+};
+
+export const useGetSubjectDataUsingClass = (id): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "subjects"],
+    queryFn: () => GetSubjectDataUsingClass(id),
+    enabled: !!id,
   });
 };

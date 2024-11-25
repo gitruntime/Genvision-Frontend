@@ -88,8 +88,10 @@ export const GetStudentsFromClassAPI = async (id: number | string) => {
   return response.data;
 };
 
-export const AddStudentsToClassAPI = async (id: number | string) => {
-  const response = await api.post(`/admin/classes/${id}/students`);
+export const AddStudentsToClassAPI = async (id: number | string, data: any) => {
+  const response = await api.post(`/admin/classes/${id}/students`, {
+    studentIds: data,
+  });
   return response.data;
 };
 
@@ -100,5 +102,20 @@ export const AssignmentListAPI = async (id: number | string) => {
 
 export const AssignmentCreateAPI = async (id: number | string) => {
   const response = await api.post(`/admin/classes/${id}/assignments`);
+  return response.data;
+};
+
+export const ExamCreateAPI = async (data: any) => {
+  const response = await api.post("/admin/exams", data);
+  return response.data;
+};
+
+export const ExamListAPI = async (params: { studentId?: number }) => {
+  const response = await api.get("/admin/exams", { params });
+  return response.data;
+};
+
+export const GetSubjectDataUsingClass = async (id) => {
+  const response = await api.get(`/admin/classes/${id}/subjectsData`);
   return response.data;
 };

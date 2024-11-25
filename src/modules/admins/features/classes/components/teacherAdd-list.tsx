@@ -274,7 +274,7 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
           ) : (
             // If no subjects, display a message
             <div className="p-4 text-center text-sm text-gray-500">
-              No subjects available
+              No teachers available
             </div>
           )}
         </div>

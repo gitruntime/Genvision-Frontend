@@ -21,6 +21,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { useDashboard } from "../store/hooks";
 
 const SchoolDashboard = () => {
   // Sample data for charts
@@ -63,6 +64,8 @@ const SchoolDashboard = () => {
       type: "Academic",
     },
   ];
+
+  const { data: DASHBOARD_DATA } = useDashboard();
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
@@ -107,9 +110,11 @@ const SchoolDashboard = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,000</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.totalStudents?.count}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              {DASHBOARD_DATA?.data?.totalStudents?.growth}
             </p>
           </CardContent>
         </Card>
@@ -121,8 +126,13 @@ const SchoolDashboard = () => {
             <GraduationCap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
-            <p className="text-xs text-muted-foreground">+2 new this month</p>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.totalTeachers?.count}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              +{DASHBOARD_DATA?.data?.totalTeachers?.newThisMonth} new this
+              month
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -133,9 +143,11 @@ const SchoolDashboard = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">92.4%</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.averageAttendance?.percentage}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +4.3% from last week
+              {/* +4.3% from last week */}
             </p>
           </CardContent>
         </Card>
@@ -147,9 +159,11 @@ const SchoolDashboard = () => {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.upcomingEvents?.count}
+            </div>
             <p className="text-xs text-muted-foreground">
-              Next event in 3 days
+              {/* Next event in 3 days */}
             </p>
           </CardContent>
         </Card>

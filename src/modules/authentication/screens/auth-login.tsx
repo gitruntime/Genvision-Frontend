@@ -25,12 +25,7 @@ export default function AuthLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("hi thousi");
-    console.log(user);
-
     if (user) {
-      console.log(user, "user here");
-
       navigate(`/${user.userRole}/dashboard`);
     }
   }, [user]);

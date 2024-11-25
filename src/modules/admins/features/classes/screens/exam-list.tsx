@@ -29,6 +29,8 @@ import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CreateExam from "../components/create-exams";
+import { useListExam } from "../store/hooks";
+import ExamListComponent from "../components/exam-list";
 
 const TableSkeleton: React.FC = () => {
   return (
@@ -101,6 +103,8 @@ export const ExamListPreview: React.FC = () => {
     },
   ];
 
+  const { data: examList, isLoading, isSuccess, isError } = useListExam();
+
   const [isCreateExamModalOpen, setIsCreateExamModalOpen] = useState(false);
 
   return (
@@ -132,40 +136,45 @@ export const ExamListPreview: React.FC = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button size="sm" className="h-8 gap-1">
+            <Button
+              onClick={() => setIsCreateExamModalOpen(true)}
+              size="sm"
+              className="h-8 gap-1"
+            >
               <PlusCircle className="h-3.5 w-3.5" /> Add Exams
             </Button>
           </div>
         </div>
-        <Card className="h-[80vh] flex flex-col">
-          <CardHeader>
-            <CardTitle>Exams</CardTitle>
-            <CardDescription>Manage your exams here.</CardDescription>
-          </CardHeader>
-          <CardContent className="max-h-[350px] overflow-scroll hide-scrollbar flex-1">
-            <Table className=" overflow-scroll">
-              <TableHeader>
-                <TableRow>
-                  {["Exam Name", "Start Date", "End Date", "Classes"].map(
-                    (value, index) => (
-                      <TableHead key={index}>{value}</TableHead>
-                    )
-                  )}
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="max-h-[400px] overflow-hidden">
-                {/* <ClassListComponent
-                        classes={classData?.data}
-                        handleClassEditModal={handleClassEditModal}
-                      /> */}
-              </TableBody>
-            </Table>
-          </CardContent>
-          <CardFooter className="mt-auto">
-            {/* <div className="text-xs text-muted-foreground">
+        {isLoading ? (
+          <TableSkeleton />
+        ) : examList?.data.length > 0 ? (
+          <>
+            <Card className="h-[80vh] flex flex-col">
+              <CardHeader>
+                <CardTitle>Exams</CardTitle>
+                <CardDescription>Manage your exams here.</CardDescription>
+              </CardHeader>
+              <CardContent className="max-h-[350px] overflow-scroll hide-scrollbar flex-1">
+                <Table className=" overflow-scroll">
+                  <TableHeader>
+                    <TableRow>
+                      {["Exam Name", "Start Date", "End Date", "Classes"].map(
+                        (value, index) => (
+                          <TableHead key={index}>{value}</TableHead>
+                        )
+                      )}
+                      <TableHead>
+                        <span className="sr-only">Actions</span>
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="max-h-[400px] overflow-hidden">
+                    <ExamListComponent examItem={examList?.data} />
+                  </TableBody>
+                </Table>
+              </CardContent>
+              <CardFooter className="mt-auto">
+                {/* <div className="text-xs text-muted-foreground">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="default">{position}</Button>
@@ -188,27 +197,30 @@ export const ExamListPreview: React.FC = () => {
                     Showing <strong>{`${start} - ${end}`}</strong> of{" "}
                     <strong>{30}</strong> teachers
                   </div> */}
-          </CardFooter>
-        </Card>
-        <Dialog open={true} onOpenChange={setIsCreateExamModalOpen}>
-          {true  && (
-            <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-              <CreateExam />
+              </CardFooter>
+            </Card>
+          </>
+        ) : (
+          <div
+            className={`flex flex-1 items-center h-[80vh] justify-center rounded-lg border border-dashed shadow-sm mt-3 `}
+            x-chunk="dashboard-02-chunk-1"
+          >
+            <div className="flex flex-col items-center gap-1 text-center">
+              <h3 className="text-2xl font-bold tracking-tight">No Classes</h3>
+              <p className="text-sm text-muted-foreground">Add classes</p>
+            </div>
+          </div>
+        )}
+        <Dialog
+          open={isCreateExamModalOpen}
+          onOpenChange={setIsCreateExamModalOpen}
+        >
+          {isCreateExamModalOpen && (
+            <DialogContent className="max-w-[60%] max-h-[90%] overflow-y-scroll hide-scrollbar">
+              <CreateExam modalAction={setIsCreateExamModalOpen} />
             </DialogContent>
           )}
         </Dialog>
-
-        {/* <div
-              className={`flex flex-1 items-center h-[80vh] justify-center rounded-lg border border-dashed shadow-sm mt-3 `}
-              x-chunk="dashboard-02-chunk-1"
-            >
-              <div className="flex flex-col items-center gap-1 text-center">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  No Classes
-                </h3>
-                <p className="text-sm text-muted-foreground">Add classes</p>
-              </div>
-            </div> */}
         {/* API Done - Backend */}
       </main>
     </>
