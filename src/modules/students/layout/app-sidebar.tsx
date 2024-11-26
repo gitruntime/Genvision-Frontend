@@ -35,14 +35,14 @@ const items = [
   },
   {
     title: "Classmates",
-    url: "/student/assignments",
+    url: "/student/classmates",
     icon: Users,
   },
-  {
-    title: "Assignments",
-    url: "/student/assignments",
-    icon: BookText,
-  },
+  // {
+  //   title: "Assignments",
+  //   url: "/student/assignments",
+  //   icon: BookText,
+  // },
   {
     title: "Teachers",
     url: "/student/teachers",

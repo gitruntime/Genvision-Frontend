@@ -84,3 +84,8 @@ export const VolunteerDeleteAPI = async (id) => {
   const response = await api.delete(`/student/volunteers/${id}`);
   return response.data;
 };
+
+export const DashboardAPI = async () => {
+  const response = await api.get(`/student/dashboard`);
+  return response.data;
+}

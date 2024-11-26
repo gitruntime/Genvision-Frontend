@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil, Trash, Plus } from "lucide-react";
+import { Pencil, Trash, Plus, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -31,52 +31,55 @@ import {
   useVolunteerUpdate,
 } from "../store/hooks";
 
-const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
+const VolunteerForm = ({
+  onSubmit,
+  initialValues,
+  onCancel,
+  isCreatePending,
+  isUpdatePending,
+}: any) => {
   const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
     useFormik({
       initialValues: initialValues || {
-        organization: "",
+        organisationName: "",
         role: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-        hoursPerWeek: "",
+        duration: "",
       },
       validationSchema: Yup.object({
-        organization: Yup.string().required("Organization is required"),
+        organisationName: Yup.string().required("Organisation is required"),
         role: Yup.string().required("Role is required"),
-        startDate: Yup.date().required("Start date is required"),
-        endDate: Yup.date().min(
-          Yup.ref("startDate"),
-          "End date must be after start date"
-        ),
-        description: Yup.string().required("Description is required"),
-        hoursPerWeek: Yup.number()
-          .required("Hours per week is required")
-          .min(1, "Must be at least 1 hour")
-          .max(168, "Cannot exceed 168 hours"),
+        duration: Yup.string().required("Duration is required"),
       }),
       onSubmit: (values) => {
+        console.log("Values :> ", values);
+
         onSubmit(values);
       },
     });
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {(isCreatePending || isUpdatePending) && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
+          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        </div>
+      )}
       <div className="space-y-2">
-        <Label htmlFor="organization">Organization</Label>
+        <Label htmlFor="organisationName">Organization</Label>
         <Input
-          id="organization"
-          name="organization"
-          value={values.organization}
+          id="organisationName"
+          name="organisationName"
+          value={values.organisationName}
           onChange={handleChange}
           onBlur={handleBlur}
           className={
-            touched.organization && errors.organization ? "border-red-500" : ""
+            touched.organisationName && errors.organisationName
+              ? "border-red-500"
+              : ""
           }
         />
-        {touched.organization && errors.organization && (
-          <p className="text-sm text-red-500">{errors.organization}</p>
+        {touched.organisationName && errors.organisationName && (
+          <p className="text-sm text-red-500">{errors.organisationName}</p>
         )}
       </div>
 
@@ -97,77 +100,23 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="startDate">Start Date</Label>
+          <Label htmlFor="duration">Duration</Label>
           <Input
-            id="startDate"
-            name="startDate"
-            type="date"
-            value={values.startDate}
+            id="duration"
+            name="duration"
+            type="text"
+            value={values.duration}
             onChange={handleChange}
             onBlur={handleBlur}
             className={
-              touched.startDate && errors.startDate ? "border-red-500" : ""
+              touched.duration && errors.duration ? "border-red-500" : ""
             }
           />
-          {touched.startDate && errors.startDate && (
-            <p className="text-sm text-red-500">{errors.startDate}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="endDate">End Date</Label>
-          <Input
-            id="endDate"
-            name="endDate"
-            type="date"
-            value={values.endDate}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            className={
-              touched.endDate && errors.endDate ? "border-red-500" : ""
-            }
-          />
-          {touched.endDate && errors.endDate && (
-            <p className="text-sm text-red-500">{errors.endDate}</p>
+          {touched.duration && errors.duration && (
+            <p className="text-sm text-red-500">{errors.duration}</p>
           )}
         </div>
       </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Input
-          id="description"
-          name="description"
-          value={values.description}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={
-            touched.description && errors.description ? "border-red-500" : ""
-          }
-        />
-        {touched.description && errors.description && (
-          <p className="text-sm text-red-500">{errors.description}</p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="hoursPerWeek">Hours per Week</Label>
-        <Input
-          id="hoursPerWeek"
-          name="hoursPerWeek"
-          type="number"
-          value={values.hoursPerWeek}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          className={
-            touched.hoursPerWeek && errors.hoursPerWeek ? "border-red-500" : ""
-          }
-        />
-        {touched.hoursPerWeek && errors.hoursPerWeek && (
-          <p className="text-sm text-red-500">{errors.hoursPerWeek}</p>
-        )}
-      </div>
-
       <DialogFooter>
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
@@ -249,46 +198,6 @@ const VolunteerTab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
 
-  const handleAddVolunteer = (values) => {
-    if (editingRecord) {
-      setVolunteerRecords((records) =>
-        records.map((record) =>
-          record.id === editingRecord.id ? { ...values, id: record.id } : record
-        )
-      );
-      toast({
-        title: "Volunteer record updated successfully",
-        variant: "success",
-      });
-    } else {
-      setVolunteerRecords([...volunteerRecords, { ...values, id: Date.now() }]);
-      toast({
-        title: "Volunteer record added successfully",
-        variant: "success",
-      });
-    }
-    setIsModalOpen(false);
-    setEditingRecord(null);
-  };
-
-  const handleDeleteVolunteer = (id) => {
-    setVolunteerRecords((records) =>
-      records.filter((record) => record.id !== id)
-    );
-    toast({
-      title: "Volunteer record deleted successfully",
-      variant: "success",
-    });
-  };
-
-  const handleEditVolunteer = (record) => {
-    setEditingRecord(record);
-    setIsModalOpen(true);
-  };
-
-  const { data: VOLUNTEERS, isLoading: isVolunteerLoading } =
-    useListVolunteer();
-
   const {
     mutate: createMutate,
     isSuccess: isCreateSuccess,
@@ -312,6 +221,84 @@ const VolunteerTab = () => {
     isError: isDeleteError,
     error: deleteError,
   } = useVolunteerDelete();
+
+  const handleAddVolunteer = (values: any) => {
+    if (editingRecord) {
+      updateMutate([
+        values.id,
+        {
+          organisationName: values.organisationName,
+          role: values.role,
+          duration: values.duration,
+        },
+      ]);
+    } else {
+      createMutate(values);
+    }
+  };
+
+  useEffect(() => {
+    if (isCreateError) {
+      toast({
+        title: createError.response?.data.message,
+        variant: "destructive",
+      });
+    }
+
+    if (isCreateSuccess) {
+      setIsModalOpen(false);
+      setEditingRecord(null);
+      toast({
+        title: "Volunteer record created successfully",
+        variant: "success",
+      });
+    }
+
+    if (isUpdateError) {
+      toast({
+        title: updateError.response?.data.message || "Something went wrong",
+        variant: "destructive",
+      });
+    }
+
+    if (isUpdateSuccess) {
+      setIsModalOpen(false);
+      setEditingRecord(null);
+      toast({
+        title: "Volunteer record updated successfully",
+        variant: "success",
+      });
+    }
+  }, [isCreateError, isCreateSuccess, isUpdateSuccess, isUpdateError]);
+
+
+  useEffect(() => {
+    if (isDeleteError) {
+      toast({
+        title: deleteError.response?.data.message,
+        variant: "destructive",
+      });
+    }
+
+    if (isDeleteSuccess) {
+      toast({
+        title: "Volunteer deleted successfully",
+        variant: "success",
+      });
+    }
+  }, [isDeleteError, isDeleteSuccess]);
+
+  const handleDeleteVolunteer = (id) => {
+    deleteMutate(id);
+  };
+
+  const handleEditVolunteer = (record) => {
+    setEditingRecord(record);
+    setIsModalOpen(true);
+  };
+
+  const { data: VOLUNTEERS, isLoading: isVolunteerLoading } =
+    useListVolunteer();
 
   return (
     <TabsContent value="volunteer" className="space-y-4">
@@ -402,6 +389,8 @@ const VolunteerTab = () => {
                 setIsModalOpen(false);
                 setEditingRecord(null);
               }}
+              isCreatePending={isCreatePending}
+              isUpdatePending={isUpdatePending}
             />
           </DialogContent>
         )}

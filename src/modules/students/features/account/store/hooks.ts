@@ -9,6 +9,7 @@ import {
   AddressDeleteAPI,
   AddressListAPI,
   AddressUpdateAPI,
+  DashboardAPI,
   GoalCreateAPI,
   GoalDeleteAPI,
   GoalListAPI,
@@ -173,7 +174,7 @@ export const useVolunteerUpdate = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: ([id, data]) => VolunteerUpdateAPI(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["volunteers", id]);
+      queryClient.invalidateQueries(["volunteers"]);
     },
     retry: false,
   });
@@ -186,5 +187,12 @@ export const useVolunteerDelete = () => {
     onSuccess: () => {
       queryClient.invalidateQueries(["volunteers"]);
     },
+  });
+};
+
+export const useDashboard = () => {
+  return useQuery({
+    queryKey: ["dashboard"],
+    queryFn: DashboardAPI,
   });
 };
