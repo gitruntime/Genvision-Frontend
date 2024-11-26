@@ -2,7 +2,7 @@ import { getBaseURL } from "@/modules/admins/utils/axios-util";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
-import { setCredentialError, setCredentials } from "../store/auth-slice";
+import { setCredentialError, setCredentials } from "../store/slice";
 
 // Define types for the login request and response
 interface LoginCredentials {
@@ -15,6 +15,14 @@ interface ErrorResponse {
 }
 
 // Define the API function with explicit types
+const loginAPI = async ({
+  email,
+  password,
+}: LoginCredentials): Promise<any> => {
+  const { data } = await axios.post<any>(`${getBaseURL()}/auth/login`, {
+    email,
+    password,
+  });
 const loginAPI = async ({
   email,
   password,
