@@ -127,7 +127,7 @@ const ChatInterface = () => {
         <div className="flex-1 overflow-y-scroll hide-scrollbar py-6">
           <div className="max-w-5xl mx-auto space-y-6">
             {messages.length === 0 && <div className="text-center py-20"></div>}
-            {messages.map((message, index) => (
+            {messages.map((message: any, index: any) => (
               <div
                 key={index}
                 className={`flex items-start gap-4 ${

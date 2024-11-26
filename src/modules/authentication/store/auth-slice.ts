@@ -23,6 +23,7 @@ const authSlice = createSlice({
     setCredentials: (state, action: PayloadAction<{ token: string }>) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
+      // @ts-ignore
       state.user = jwtDecode(action.payload.token?.accessToken);
       state.error = null;
       localStorage.setItem("tokens", JSON.stringify(action.payload.token));

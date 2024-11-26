@@ -1,77 +1,151 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { format } from 'date-fns';
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent 
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, 
-  AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction, 
-  AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { CalendarIcon, Pencil, Trash2 } from 'lucide-react';
+import React, { useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { format } from "date-fns";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { CalendarIcon, Loader2, Pencil, Trash2 } from "lucide-react";
+import {
+  useGoalCreateAPI,
+  useGoalDeleteAPI,
+  useGoalUpdateAPI,
+  useListGoals,
+} from "../store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 
 const GoalsComponent = () => {
   const [goals, setGoals] = React.useState([]);
   const [editingGoal, setEditingGoal] = React.useState(null);
 
+  const {
+    data: GOALS,
+    isLoading: isGoalLoading,
+    isSuccess: isGoalSuccess,
+  } = useListGoals();
+
+  const {
+    mutate: createMutate,
+    isPending: isCreatePending,
+    isSuccess: isCreateSuccess,
+    isError: isCreateError,
+    error: createError,
+  } = useGoalCreateAPI();
+
+  const {
+    mutate: updateMutate,
+    isPending: isUpdatePending,
+    isSuccess: isUpdateSuccess,
+    isError: isUpdateError,
+    error: updateError,
+  } = useGoalUpdateAPI();
+
+  const {
+    mutate: deleteMutate,
+    isPending: isDeletePending,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+    error: deleteError,
+  } = useGoalDeleteAPI();
+
   const formik = useFormik({
     initialValues: {
-      title: '',
-      description: '',
-      deadline: null,
-      status: 'PENDING'
+      name: "",
+      description: "",
+      type: "",
     },
     validationSchema: Yup.object({
-      title: Yup.string()
-        .required('Title is required')
-        .min(3, 'Title must be at least 3 characters')
-        .max(100, 'Title must be less than 100 characters'),
+      name: Yup.string()
+        .required("Title is required")
+        .min(3, "Title must be at least 3 characters")
+        .max(100, "Title must be less than 100 characters"),
       description: Yup.string()
-        .required('Description is required')
-        .min(10, 'Description must be at least 10 characters')
-        .max(500, 'Description must be less than 500 characters'),
-      deadline: Yup.date()
-        .required('Deadline is required')
-        .min(new Date(), 'Deadline cannot be in the past'),
-      status: Yup.string()
-        .oneOf(['PENDING', 'IN_PROGRESS', 'COMPLETED'], 'Invalid status')
+        .required("Description is required")
+        .min(10, "Description must be at least 10 characters")
+        .max(500, "Description must be less than 500 characters"),
+      type: Yup.string()
+        .oneOf(["long term", "short term"], "Invalid goal type")
+        .required("Goal type is required"),
     }),
     onSubmit: (values, { resetForm }) => {
       if (editingGoal) {
-        setGoals(goals.map(goal => 
-          goal.id === editingGoal.id 
-            ? { ...values, id: goal.id } 
-            : goal
-        ));
+        updateMutate([editingGoal?.id, values]);
         setEditingGoal(null);
       } else {
-        const newGoal = {
-          id: Date.now(),
-          ...values
-        };
-        setGoals([...goals, newGoal]);
+        createMutate(values);
       }
       resetForm();
     },
   });
 
+  useEffect(() => {
+    if (isCreateError || isUpdateError || isDeleteError) {
+      toast({
+        variant: "destructive",
+        // @ts-ignore
+        title: createError
+          ? createError.response?.data.message
+          : deleteError
+          ? deleteError.response?.data.message
+          : updateError?.response?.data.message,
+      });
+    }
+
+    if (isCreateSuccess || isUpdateSuccess || isDeleteSuccess) {
+      toast({
+        variant: "success",
+        title: `Goal ${
+          isCreateSuccess ? "created" : isDeleteSuccess ? "deleted" : "updated"
+        } Successfully.`,
+      });
+    }
+  }, [
+    isCreateError,
+    isCreateSuccess,
+    isUpdateError,
+    isUpdateSuccess,
+    isDeleteSuccess,
+  ]);
+
   const startEditing = (goal) => {
     setEditingGoal(goal);
     formik.setValues({
-      title: goal.title,
+      name: goal.name,
       description: goal.description,
-      deadline: goal.deadline,
-      status: goal.status
+      type: goal.type,
     });
   };
 
@@ -81,7 +155,7 @@ const GoalsComponent = () => {
   };
 
   const removeGoal = (id) => {
-    setGoals(goals.filter(goal => goal.id !== id));
+    deleteMutate(id);
   };
 
   return (
@@ -91,115 +165,160 @@ const GoalsComponent = () => {
         <CardDescription>Set and manage your goals</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <form onSubmit={formik.handleSubmit} className="space-y-4 border-b pb-4">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="space-y-4 border-b pb-4"
+        >
+          {(isCreatePending || isUpdatePending || isDeletePending) && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
+              <Loader2 className="h-8 w-8 animate-spin text-white" />
+            </div>
+          )}
           <div>
             <Input
-              name="title"
-              placeholder="Goal title"
-              {...formik.getFieldProps('title')}
-              className={formik.errors.title && formik.touched.title ? 'border-red-500' : ''}
+              id="name"
+              name="name"
+              placeholder="Goal name"
+              {...formik.getFieldProps("name")}
+              className={
+                formik.errors.name && formik.touched.name
+                  ? "border-red-500"
+                  : ""
+              }
             />
-            {formik.touched.title && formik.errors.title && (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.title}</div>
+            {formik.touched.name && formik.errors.name && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.name}
+              </div>
             )}
           </div>
 
           <div>
             <Textarea
+              id="description"
               name="description"
               placeholder="Goal description"
-              {...formik.getFieldProps('description')}
-              className={formik.errors.description && formik.touched.description ? 'border-red-500' : ''}
+              {...formik.getFieldProps("description")}
+              className={
+                formik.errors.description && formik.touched.description
+                  ? "border-red-500"
+                  : ""
+              }
             />
             {formik.touched.description && formik.errors.description && (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.description}</div>
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.description}
+              </div>
             )}
           </div>
 
           <div>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className={`w-full justify-start text-left font-normal ${
-                    formik.errors.deadline && formik.touched.deadline ? 'border-red-500' : ''
-                  }`}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {formik.values.deadline
-                    ? format(formik.values.deadline, 'PPP')
-                    : 'Set deadline'}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={formik.values.deadline}
-                  onSelect={(date) => formik.setFieldValue('deadline', date)}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            {formik.touched.deadline && formik.errors.deadline && (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.deadline}</div>
+            <Select
+              name="type"
+              onValueChange={(value) => formik.setFieldValue("type", value)}
+              value={formik.values.type}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select Goal Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="long term">Long Term</SelectItem>
+                <SelectItem value="short term">Short Term</SelectItem>
+              </SelectContent>
+            </Select>
+            {formik.touched.type && formik.errors.type && (
+              <div className="text-red-500 text-sm mt-1">
+                {formik.errors.type}
+              </div>
             )}
           </div>
 
           <Button type="submit" className="w-full">
-            {editingGoal ? 'Update Goal' : 'Add Goal'}
+            {editingGoal ? "Update Goal" : "Add Goal"}
           </Button>
           {editingGoal && (
-            <Button type="button" variant="outline" className="w-full" onClick={cancelEditing}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={cancelEditing}
+            >
               Cancel Editing
             </Button>
           )}
         </form>
 
         <div className="space-y-4">
-          {goals.map((goal) => (
-            <Card key={goal.id}>
-              <CardContent className="pt-6">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="font-semibold">{goal.title}</h4>
-                    <p className="text-sm text-gray-500">{goal.description}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge>{goal.status}</Badge>
-                      <span className="text-sm text-gray-500">
-                        Due: {format(goal.deadline, 'PPP')}
-                      </span>
+          {isGoalLoading
+            ? // Skeleton Loader
+              [...Array(3)].map((_, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <Skeleton className="h-6 w-1/3 mb-2" />{" "}
+                        {/* Goal title */}
+                        <Skeleton className="h-4 w-2/3" />{" "}
+                        {/* Goal description */}
+                      </div>
+                      <div className="flex gap-2">
+                        <Skeleton className="h-8 w-8" /> {/* Edit button */}
+                        <Skeleton className="h-8 w-8" /> {/* Delete button */}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => startEditing(goal)}>
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="sm">
-                          <Trash2 className="h-4 w-4" />
+                  </CardContent>
+                </Card>
+              ))
+            : GOALS?.data.map((goal) => (
+                <Card key={goal.id}>
+                  <CardContent className="pt-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-semibold">{goal.name}</h4>
+                        <p className="text-sm text-gray-500">
+                          {goal.description}
+                        </p>
+                        <Badge>
+                          <p>{goal.type}</p>
+                        </Badge>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => startEditing(goal)}
+                        >
+                          <Pencil className="h-4 w-4" />
                         </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Goal</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete this goal? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={() => removeGoal(goal.id)}>
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="outline" size="sm">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Goal</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete this goal? This
+                                action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => removeGoal(goal.id)}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
         </div>
       </CardContent>
     </Card>

@@ -238,12 +238,6 @@ const ProfileTab = () => {
                     >
                       Edit Profile
                     </Button>
-                    <Button
-                      variant="destructive"
-                      onClick={() => setIsDeleteDialogOpen(true)}
-                    >
-                      Delete Profile
-                    </Button>
                   </>
                 )}
               </div>

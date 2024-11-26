@@ -1,113 +1,264 @@
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent 
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { X, Plus } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { X, Plus, FileText, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  useInterestsCreateAPI,
+  useInterestsDeleteAPI,
+  useListInterests,
+} from "../store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const InterestsComponent = () => {
-  const [interests, setInterests] = React.useState([
-    { id: 1, name: 'Reading', category: 'Hobbies' },
-    { id: 2, name: 'Programming', category: 'Professional' },
-  ]);
+interface Interest {
+  name: string;
+}
 
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      category: '',
-    },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .required('Interest name is required')
-        .min(2, 'Interest name must be at least 2 characters')
-        .max(50, 'Interest name must be less than 50 characters'),
-      category: Yup.string()
-        .required('Category is required')
-        .min(2, 'Category must be at least 2 characters')
-        .max(30, 'Category must be less than 30 characters'),
-    }),
-    onSubmit: (values, { resetForm }) => {
-      const newInterest = {
-        id: Date.now(),
-        name: values.name,
-        category: values.category,
-      };
-      setInterests([...interests, newInterest]);
-      resetForm();
-    },
-  });
-
-  const removeInterest = (id) => {
-    setInterests(interests.filter((interest) => interest.id !== id));
-  };
-
+const InterestSkeleton = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Interests</CardTitle>
-        <CardDescription>Manage your interests</CardDescription>
+        <Skeleton className="h-6 w-1/4" /> {/* Title */}
+        <Skeleton className="h-4 w-1/2 mt-2" /> {/* Description */}
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          {interests.map((interest) => (
-            <Badge
-              key={interest.id}
-              variant="secondary"
-              className="flex items-center gap-2"
-            >
-              {interest.name} - {interest.category}
-              <button
-                onClick={() => removeInterest(interest.id)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="h-3 w-3" />
-              </button>
-            </Badge>
+          {/* Replace interests with placeholders */}
+          {[...Array(6)].map((_, index) => (
+            <Skeleton key={index} className="h-8 w-20 rounded" />
           ))}
         </div>
-        
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          <div className="flex gap-2">
-            <div className="flex-1">
-              <Input
-                name="name"
-                placeholder="Interest name"
-                {...formik.getFieldProps('name')}
-                className={formik.errors.name && formik.touched.name ? 'border-red-500' : ''}
-              />
-              {formik.touched.name && formik.errors.name && (
-                <div className="text-red-500 text-sm mt-1">{formik.errors.name}</div>
-              )}
-            </div>
-            
-            <div className="flex-1">
-              <Input
-                name="category"
-                placeholder="Category"
-                {...formik.getFieldProps('category')}
-                className={formik.errors.category && formik.touched.category ? 'border-red-500' : ''}
-              />
-              {formik.touched.category && formik.errors.category && (
-                <div className="text-red-500 text-sm mt-1">{formik.errors.category}</div>
-              )}
-            </div>
-            
-            <Button type="submit">
-              <Plus className="h-4 w-4 mr-2" />
-              Add
-            </Button>
-          </div>
-        </form>
+
+        <div className="flex gap-2">
+          <Skeleton className="h-10 w-32" /> {/* Bulk Add Button */}
+        </div>
       </CardContent>
     </Card>
+  );
+};
+
+const InterestsComponent = () => {
+  const [interests, setInterests] = useState<Interest[]>([]);
+  const { toast } = useToast();
+  const [selectedInterests, setSelectedInterests] = useState<number[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const {
+    mutate: createMutate,
+    isPending: isCreatePending,
+    isSuccess: isCreateSuccess,
+    isError: isCreateError,
+    error: createError,
+  } = useInterestsCreateAPI();
+
+  const {
+    mutate: deleteMutate,
+    isPending: isDeletePending,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+    error: deleteError,
+  } = useInterestsDeleteAPI();
+
+  const bulkFormik = useFormik({
+    initialValues: {
+      bulkInterests: "",
+    },
+    validationSchema: Yup.object({
+      bulkInterests: Yup.string()
+        .required("Please enter interests")
+        .min(2, "Input must be at least 2 characters"),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      const interestArray = values.bulkInterests
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item.length >= 2 && item.length <= 50);
+
+      if (interestArray.length === 0) {
+        toast({
+          title: "Invalid input",
+          description: "Please enter valid interests separated by commas",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      createMutate({ interests: interestArray });
+
+      resetForm();
+
+      // toast({
+      //   title: `${newInterests.length} interests added successfully`,
+      //   variant: "success",
+      // });
+    },
+  });
+
+  useEffect(() => {
+    if (isCreateSuccess || isDeleteSuccess) {
+      if (isCreateSuccess) {
+        setIsDialogOpen(false);
+      }
+      if (isDeleteSuccess) {
+        setSelectedInterests([]);
+      }
+      toast({
+        title: `Interests ${
+          isCreateSuccess ? "added" : "deleted"
+        } successfully`,
+        variant: "success",
+      });
+    }
+    if (isCreateError || isDeleteError) {
+      toast({
+        title: createError
+          ? createError.response?.data.message
+          : deleteError
+          ? deleteError.response?.data.message
+          : "Something went wrong",
+        variant: "destructive",
+      });
+    }
+  }, [isCreateSuccess, isCreateError, isDeleteError, isDeleteSuccess]);
+
+  const { data: INTERESTS, isLoading: isListLoading } = useListInterests();
+
+  const handleBulkDelete = () => {
+    if (selectedInterests.length === 0) {
+      toast({
+        title: "No interests selected",
+        description: "Please select interests to delete",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    console.log(selectedInterests, "hjjjjjjjjjjjjjjjjjjjjjjj");
+
+    deleteMutate({ interests: selectedInterests });
+  };
+
+  const toggleInterestSelection = (id: number) => {
+    setSelectedInterests((prev) =>
+      prev.includes(id)
+        ? prev.filter((interestId) => interestId !== id)
+        : [...prev, id]
+    );
+  };
+
+  return (
+    <>
+      {isListLoading ? (
+        <InterestSkeleton />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>Interests</CardTitle>
+            <CardDescription>Manage your interests</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              {INTERESTS?.data.map((interest) => (
+                <Badge
+                  key={interest.name}
+                  variant={
+                    selectedInterests.includes(interest.id)
+                      ? "default"
+                      : "secondary"
+                  }
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => toggleInterestSelection(interest.id)}
+                >
+                  {interest.name}
+                </Badge>
+              ))}
+            </div>
+
+            <div className="flex gap-2">
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Bulk Add
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  {(isCreatePending || isDeletePending) && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg z-50">
+                      <Loader2 className="h-8 w-8 animate-spin text-white" />
+                    </div>
+                  )}
+                  <DialogHeader>
+                    <DialogTitle>Add Multiple Interests</DialogTitle>
+                  </DialogHeader>
+                  <form
+                    onSubmit={bulkFormik.handleSubmit}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <Textarea
+                        placeholder="Enter interests separated by commas (e.g., Reading, Writing, Coding)"
+                        {...bulkFormik.getFieldProps("bulkInterests")}
+                        className={
+                          bulkFormik.errors.bulkInterests &&
+                          bulkFormik.touched.bulkInterests
+                            ? "border-red-500"
+                            : ""
+                        }
+                        rows={4}
+                      />
+                      {bulkFormik.touched.bulkInterests &&
+                        bulkFormik.errors.bulkInterests && (
+                          <div className="text-red-500 text-sm mt-1">
+                            {bulkFormik.errors.bulkInterests}
+                          </div>
+                        )}
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setIsDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit">Add Interests</Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {selectedInterests.length > 0 && (
+              <div className="flex justify-end">
+                <Button variant="destructive" onClick={handleBulkDelete}>
+                  <X className="h-4 w-4 mr-2" />
+                  Delete Selected ({selectedInterests.length})
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
 

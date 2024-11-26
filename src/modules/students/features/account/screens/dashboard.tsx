@@ -134,7 +134,7 @@ const Dashboard = () => {
       {/* Middle Section */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Class Schedule */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Today's Schedule</CardTitle>
             <CardDescription>Your upcoming classes</CardDescription>
@@ -164,10 +164,10 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Assignment Status */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Assignment Progress</CardTitle>
             <CardDescription>Subject-wise completion status</CardDescription>
@@ -185,13 +185,13 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Bottom Row */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Teacher Feedback */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Recent Feedback</CardTitle>
             <CardDescription>Comments from your teachers</CardDescription>
@@ -220,10 +220,10 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Announcements */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>School Announcements</CardTitle>
             <CardDescription>Important updates and events</CardDescription>
@@ -250,7 +250,7 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

@@ -1,62 +1,65 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent
-} from '@/components/ui/card';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { TabsContent } from '@/components/ui/tabs';
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { TabsContent } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table';
-import { Pencil, Trash, Plus } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+  TableRow,
+} from "@/components/ui/table";
+import { Pencil, Trash, Plus } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  useListVolunteer,
+  useVolunteerCreate,
+  useVolunteerDelete,
+  useVolunteerUpdate,
+} from "../store/hooks";
 
 const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
-  const { handleSubmit, handleChange, handleBlur, values, errors, touched } = useFormik({
-    initialValues: initialValues || {
-      organization: '',
-      role: '',
-      startDate: '',
-      endDate: '',
-      description: '',
-      hoursPerWeek: '',
-    },
-    validationSchema: Yup.object({
-      organization: Yup.string().required('Organization is required'),
-      role: Yup.string().required('Role is required'),
-      startDate: Yup.date().required('Start date is required'),
-      endDate: Yup.date().min(
-        Yup.ref('startDate'),
-        'End date must be after start date'
-      ),
-      description: Yup.string().required('Description is required'),
-      hoursPerWeek: Yup.number()
-        .required('Hours per week is required')
-        .min(1, 'Must be at least 1 hour')
-        .max(168, 'Cannot exceed 168 hours'),
-    }),
-    onSubmit: (values) => {
-      onSubmit(values);
-    },
-  });
+  const { handleSubmit, handleChange, handleBlur, values, errors, touched } =
+    useFormik({
+      initialValues: initialValues || {
+        organization: "",
+        role: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+        hoursPerWeek: "",
+      },
+      validationSchema: Yup.object({
+        organization: Yup.string().required("Organization is required"),
+        role: Yup.string().required("Role is required"),
+        startDate: Yup.date().required("Start date is required"),
+        endDate: Yup.date().min(
+          Yup.ref("startDate"),
+          "End date must be after start date"
+        ),
+        description: Yup.string().required("Description is required"),
+        hoursPerWeek: Yup.number()
+          .required("Hours per week is required")
+          .min(1, "Must be at least 1 hour")
+          .max(168, "Cannot exceed 168 hours"),
+      }),
+      onSubmit: (values) => {
+        onSubmit(values);
+      },
+    });
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,7 +71,9 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
           value={values.organization}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={touched.organization && errors.organization ? 'border-red-500' : ''}
+          className={
+            touched.organization && errors.organization ? "border-red-500" : ""
+          }
         />
         {touched.organization && errors.organization && (
           <p className="text-sm text-red-500">{errors.organization}</p>
@@ -83,7 +88,7 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
           value={values.role}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={touched.role && errors.role ? 'border-red-500' : ''}
+          className={touched.role && errors.role ? "border-red-500" : ""}
         />
         {touched.role && errors.role && (
           <p className="text-sm text-red-500">{errors.role}</p>
@@ -100,7 +105,9 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
             value={values.startDate}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={touched.startDate && errors.startDate ? 'border-red-500' : ''}
+            className={
+              touched.startDate && errors.startDate ? "border-red-500" : ""
+            }
           />
           {touched.startDate && errors.startDate && (
             <p className="text-sm text-red-500">{errors.startDate}</p>
@@ -116,7 +123,9 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
             value={values.endDate}
             onChange={handleChange}
             onBlur={handleBlur}
-            className={touched.endDate && errors.endDate ? 'border-red-500' : ''}
+            className={
+              touched.endDate && errors.endDate ? "border-red-500" : ""
+            }
           />
           {touched.endDate && errors.endDate && (
             <p className="text-sm text-red-500">{errors.endDate}</p>
@@ -132,7 +141,9 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
           value={values.description}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={touched.description && errors.description ? 'border-red-500' : ''}
+          className={
+            touched.description && errors.description ? "border-red-500" : ""
+          }
         />
         {touched.description && errors.description && (
           <p className="text-sm text-red-500">{errors.description}</p>
@@ -148,7 +159,9 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
           value={values.hoursPerWeek}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={touched.hoursPerWeek && errors.hoursPerWeek ? 'border-red-500' : ''}
+          className={
+            touched.hoursPerWeek && errors.hoursPerWeek ? "border-red-500" : ""
+          }
         />
         {touched.hoursPerWeek && errors.hoursPerWeek && (
           <p className="text-sm text-red-500">{errors.hoursPerWeek}</p>
@@ -165,6 +178,72 @@ const VolunteerForm = ({ onSubmit, initialValues, onCancel }) => {
   );
 };
 
+const VolunteerSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>
+          <Skeleton className="h-6 w-48" />
+        </CardTitle>
+        <Skeleton className="h-4 w-32" />
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+              <TableHead className="text-right">
+                <Skeleton className="h-4 w-32" />
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[1, 2, 3].map((index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-32" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-24" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+};
+
 const VolunteerTab = () => {
   const [volunteerRecords, setVolunteerRecords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -172,8 +251,8 @@ const VolunteerTab = () => {
 
   const handleAddVolunteer = (values) => {
     if (editingRecord) {
-      setVolunteerRecords(records => 
-        records.map(record => 
+      setVolunteerRecords((records) =>
+        records.map((record) =>
           record.id === editingRecord.id ? { ...values, id: record.id } : record
         )
       );
@@ -193,7 +272,9 @@ const VolunteerTab = () => {
   };
 
   const handleDeleteVolunteer = (id) => {
-    setVolunteerRecords(records => records.filter(record => record.id !== id));
+    setVolunteerRecords((records) =>
+      records.filter((record) => record.id !== id)
+    );
     toast({
       title: "Volunteer record deleted successfully",
       variant: "success",
@@ -205,82 +286,125 @@ const VolunteerTab = () => {
     setIsModalOpen(true);
   };
 
+  const { data: VOLUNTEERS, isLoading: isVolunteerLoading } =
+    useListVolunteer();
+
+  const {
+    mutate: createMutate,
+    isSuccess: isCreateSuccess,
+    isPending: isCreatePending,
+    isError: isCreateError,
+    error: createError,
+  } = useVolunteerCreate();
+
+  const {
+    mutate: updateMutate,
+    isSuccess: isUpdateSuccess,
+    isPending: isUpdatePending,
+    isError: isUpdateError,
+    error: updateError,
+  } = useVolunteerUpdate();
+
+  const {
+    mutate: deleteMutate,
+    isSuccess: isDeleteSuccess,
+    isPending: isDeletePending,
+    isError: isDeleteError,
+    error: deleteError,
+  } = useVolunteerDelete();
+
   return (
     <TabsContent value="volunteer" className="space-y-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Volunteer Experience</CardTitle>
-          <Button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Add Volunteer Experience
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Organization</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Start Date</TableHead>
-                <TableHead>End Date</TableHead>
-                <TableHead>Hours/Week</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {volunteerRecords.map((record) => (
-                <TableRow key={record.id}>
-                  <TableCell>{record.organization}</TableCell>
-                  <TableCell>{record.role}</TableCell>
-                  <TableCell>{new Date(record.startDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{record.endDate ? new Date(record.endDate).toLocaleDateString() : 'Present'}</TableCell>
-                  <TableCell>{record.hoursPerWeek}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEditVolunteer(record)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteVolunteer(record.id)}
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {volunteerRecords.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground">
-                    No volunteer experience added yet
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {isVolunteerLoading ? (
+        <VolunteerSkeleton />
+      ) : (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Volunteer Experience</CardTitle>
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add Volunteer Experience
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {VOLUNTEERS?.data.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Organization Name</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Duration</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {VOLUNTEERS?.data.map((volunteer) => (
+                    <TableRow key={volunteer.id}>
+                      <TableCell>{volunteer.organisationName}</TableCell>
+                      <TableCell>{volunteer.role}</TableCell>
+                      <TableCell>{volunteer.duration}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleEditVolunteer(volunteer)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDeleteVolunteer(volunteer.id)}
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <div
+                className={`flex flex-1 items-center lg:h-[510px] justify-center rounded-lg border border-dashed shadow-sm`}
+                x-chunk="dashboard-02-chunk-1"
+              >
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <h3 className="text-2xl font-bold tracking-tight">
+                    No Volunteers
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Add some volunteers to manage
+                  </p>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingRecord ? 'Edit Volunteer Experience' : 'Add Volunteer Experience'}
-            </DialogTitle>
-          </DialogHeader>
-          <VolunteerForm
-            onSubmit={handleAddVolunteer}
-            initialValues={editingRecord}
-            onCancel={() => {
-              setIsModalOpen(false);
-              setEditingRecord(null);
-            }}
-          />
-        </DialogContent>
+        {isModalOpen && (
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                {editingRecord
+                  ? "Edit Volunteer Experience"
+                  : "Add Volunteer Experience"}
+              </DialogTitle>
+            </DialogHeader>
+            <VolunteerForm
+              onSubmit={handleAddVolunteer}
+              initialValues={editingRecord}
+              onCancel={() => {
+                setIsModalOpen(false);
+                setEditingRecord(null);
+              }}
+            />
+          </DialogContent>
+        )}
       </Dialog>
     </TabsContent>
   );

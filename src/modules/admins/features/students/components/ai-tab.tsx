@@ -3,6 +3,8 @@ import three from "../../../assets/3d art.png";
 import { useAIPrompt } from "../store/hooks";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
+import Markdown from "react-markdown";
+import remarkGfm from 'remark-gfm'
 
 const AnatomyDashboard = () => {
   const { id } = useParams();
@@ -70,9 +72,11 @@ const AnatomyDashboard = () => {
                 <CardTitle>{ai.prompt}</CardTitle>
               </CardHeader>
               <CardContent>
-                {typeof ai.result === "object"
-                  ? JSON.stringify(ai.result, null, 2)
-                  : ai.result}
+                <Markdown remarkPlugins={[remarkGfm]}>
+                  {typeof ai.result === "object"
+                    ? JSON.stringify(ai.result, null, 2)
+                    : ai.result}
+                </Markdown>
               </CardContent>
             </Card>
           ))
