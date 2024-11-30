@@ -148,7 +148,7 @@ import { Button } from "@/components/ui/button"
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link to="./profile">
+                <Link to="/student/profile">
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                 </Link>
 

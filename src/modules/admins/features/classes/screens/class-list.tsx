@@ -32,7 +32,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useListClass } from "../store/hooks";
 import { ClassListComponent } from "../components/class-list";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import StudentGridSelector from "../components/student-list";
 import { ClassAddComp } from "../components/class-add";
 import CreateExam from "../components/create-exams";
 import SubjectList from "../components/subject-view";
@@ -108,7 +107,6 @@ export const ClassList: React.FC = () => {
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false);
   const [isViewEventModalOpen, setIsViewEventModalOpen] = useState(false);
   const [isViewExamModalOpen, setIsViewExamModalOpen] = useState(false);
-  const [isTeacherAddModal, setIsTeacherAddModal] = useState(false);
 
   const {
     data: classData,
@@ -133,21 +131,21 @@ export const ClassList: React.FC = () => {
     return <ClassListSkeleton />;
   }
 
-  const handleStudentSelect = (selectedStudents: any) => {
-    // Handle the selected subjects
-    console.log("Selected subjects:", selectedStudents);
-    // You can send this data to your backend
-  };
+  // const handleStudentSelect = (selectedStudents: any) => {
+  //   // Handle the selected subjects
+  //   console.log("Selected subjects:", selectedStudents);
+  //   // You can send this data to your backend
+  // };
 
-  const initialStudentSelected = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "555-1234",
-      profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-  ];
+  // const initialStudentSelected = [
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //     email: "john.doe@example.com",
+  //     phoneNumber: "555-1234",
+  //     profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
+  //   },
+  // ];
 
   const handleClassAddModal = () => {
     setIsEditClassData(null);
@@ -171,22 +169,22 @@ export const ClassList: React.FC = () => {
     setIsEditSubjectData(data);
   };
 
-  const students = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "555-1234",
-      profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phoneNumber: "555-5678",
-      profilePicture: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-  ];
+  // const students = [
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //     email: "john.doe@example.com",
+  //     phoneNumber: "555-1234",
+  //     profilePicture: "https://randomuser.me/api/portraits/men/1.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Jane Smith",
+  //     email: "jane.smith@example.com",
+  //     phoneNumber: "555-5678",
+  //     profilePicture: "https://randomuser.me/api/portraits/women/1.jpg",
+  //   },
+  // ];
 
   return (
     <>
@@ -257,7 +255,7 @@ export const ClassList: React.FC = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size={"sm"}>
                     Events <CircleChevronDown className="ml-2 h-4 w-4" />
@@ -277,7 +275,7 @@ export const ClassList: React.FC = () => {
                     <Eye className="h-4 w-4" /> Events
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
 
               {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -375,16 +373,6 @@ export const ClassList: React.FC = () => {
             </div>
           )}
           {/* API Done - Backend */}
-          <Dialog open={false} onOpenChange={setIsStudentModalOpen}>
-            <DialogContent className="max-w-[90%] h-[550px]">
-              <StudentGridSelector
-                onStudentSelect={handleStudentSelect}
-                students={students}
-                // @ts-ignore
-                initialSelectedSubjects={initialStudentSelected}
-              />
-            </DialogContent>
-          </Dialog>
           <Dialog open={isClassAddModalOpen} onOpenChange={setIsClassModalOpen}>
             <DialogContent>
               {isClassAddModalOpen && (
@@ -401,7 +389,7 @@ export const ClassList: React.FC = () => {
           >
             {isCreateExamModalOpen && (
               <DialogContent className="max-w-[90%] max-h-[90%] overflow-y-scroll hide-scrollbar">
-                <CreateExam />
+                <CreateExam modalAction={setIsCreateExamModalOpen} />
               </DialogContent>
             )}
           </Dialog>
@@ -443,6 +431,9 @@ export const ClassList: React.FC = () => {
               <EventList />
             </DialogContent>
           </Dialog>
+
+
+
           <Dialog
             open={isViewExamModalOpen}
             onOpenChange={setIsViewExamModalOpen}

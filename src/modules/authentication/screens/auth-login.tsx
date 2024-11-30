@@ -9,13 +9,9 @@ import { useLogin } from "../hooks/useLogin";
 import { useSelector } from "react-redux";
 import { ToastAction } from "@/components/ui/toast";
 import { useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 export const description =
   "A login page with two columns. The first column has the login form with email and password. There's a Forgot your password link and a link to sign up if you do not have an account. The second column has a cover image.";
 
-interface DecodedToken {
-  userRole: string;
-}
 
 export default function AuthLogin() {
   const { mutate: loginMutate, isError, isSuccess } = useLogin();
@@ -25,12 +21,7 @@ export default function AuthLogin() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("hi thousi");
-    console.log(user);
-
     if (user) {
-      console.log(user, "user here");
-
       navigate(`/${user.userRole}/dashboard`);
     }
   }, [user]);

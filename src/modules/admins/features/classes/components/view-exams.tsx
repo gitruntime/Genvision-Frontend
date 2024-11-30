@@ -1,47 +1,36 @@
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Check } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import CreateExam from "./create-exams";
+import { Pencil, Trash2 } from "lucide-react";
 
-export const CreateExamPreview = () => {
-  return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">Create Exam Preview</h1>
-      <div className="flex justify-center">
-        <CreateExam />
-      </div>
-    </div>
-  );
-};
+// export const CreateExamPreview = () => {
+//   return (
+//     <div className="p-4 bg-gray-100 min-h-screen">
+//       <h1 className="text-2xl font-bold mb-4">Create Exam Preview</h1>
+//       <div className="flex justify-center">
+//         <CreateExam modalAction={} />
+//       </div>
+//     </div>
+//   );
+// };
 
-const ClassCard = ({ className, selected, onClick }:any) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`relative p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md 
-        ${
-          selected
-            ? "border-blue-500 bg-blue-50"
-            : "border-gray-200 hover:border-blue-200"
-        }`}
-  >
-    <div className="text-sm font-medium">{className}</div>
-    {selected && (
-      <div className="absolute top-2 right-2 text-blue-500">
-        <Check className="w-4 h-4" />
-      </div>
-    )}
-  </button>
-);
+// const ClassCard = ({ className, selected, onClick }:any) => (
+//   <button
+//     type="button"
+//     onClick={onClick}
+//     className={`relative p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md 
+//         ${
+//           selected
+//             ? "border-blue-500 bg-blue-50"
+//             : "border-gray-200 hover:border-blue-200"
+//         }`}
+//   >
+//     <div className="text-sm font-medium">{className}</div>
+//     {selected && (
+//       <div className="absolute top-2 right-2 text-blue-500">
+//         <Check className="w-4 h-4" />
+//       </div>
+//     )}
+//   </button>
+// );
 
 export const ExamListPreview = () => {
   return (
@@ -111,22 +100,22 @@ const ExamList = () => {
     },
   ];
 
-  const classes = [
-    "Class 6A",
-    "Class 6B",
-    "Class 7A",
-    "Class 7B",
-    "Class 8A",
-    "Class 8B",
-  ];
-  const [selectedClasses, setSelectedClasses] = useState([]);
-  const toggleClass = (className: any) => {
-    setSelectedClasses((prev: any) =>
-      prev.includes(className)
-        ? prev.filter((c: any) => c !== className)
-        : [...prev, className]
-    );
-  };
+  // const classes = [
+  //   "Class 6A",
+  //   "Class 6B",
+  //   "Class 7A",
+  //   "Class 7B",
+  //   "Class 8A",
+  //   "Class 8B",
+  // ];
+  // const [selectedClasses, setSelectedClasses] = useState([]);
+  // const toggleClass = (className: any) => {
+  //   setSelectedClasses((prev: any) =>
+  //     prev.includes(className)
+  //       ? prev.filter((c: any) => c !== className)
+  //       : [...prev, className]
+  //   );
+  // };
 
   return (
     <div className="flex">

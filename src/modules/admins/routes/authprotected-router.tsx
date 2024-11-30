@@ -9,9 +9,9 @@ interface AuthProtectedRouteProps {
 const AuthProtectedRoute: React.FC<AuthProtectedRouteProps> = ({
   children,
 }) => {
-  const { token } = useSelector((state: any) => state.auth);
+  const { token } = useSelector((state: { auth: { token: string | null } }) => state.auth);
 
-  return token ? children : <Navigate to={"/auth/login"} />;
+  return token ? <>{children}</> : <Navigate to="/auth/login" />;
 };
 
 export default AuthProtectedRoute;

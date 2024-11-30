@@ -34,7 +34,7 @@ const TeacherAddComponent = ({ classId, modalAction }: any) => {
     teacherRole: Yup.string().required("Role is required"),
   });
 
-  const { data: TEACHERS, isLoading: isTeacherLoading } = useListTeacher({
+  const { data: TEACHERS } = useListTeacher({
     page: 1,
     size: 20,
     sortBy: "id",
@@ -45,13 +45,11 @@ const TeacherAddComponent = ({ classId, modalAction }: any) => {
 
   const {
     data: CLASS_SUBJECTS,
-    isLoading: getSubjectLoading,
     isSuccess: getSubjectsSuccess,
   } = useGetSubjectsFromClass(classId);
 
   const {
     data: subjectList,
-    isLoading: isSubjectLoading,
     isSuccess: isSubjectListSuccess,
   } = useListSubject({
     page: 1,
@@ -70,7 +68,7 @@ const TeacherAddComponent = ({ classId, modalAction }: any) => {
 
   useEffect(() => {
     if (getSubjectsSuccess && isSubjectListSuccess) {
-      const subjects = subjectList?.data.filter((subject) =>
+      const subjects = subjectList?.data.filter((subject:any) =>
         CLASS_SUBJECTS?.subjectIds.includes(subject.id)
       );
       console.log(subjects, "hflsakjdsh");
@@ -112,6 +110,7 @@ const TeacherAddComponent = ({ classId, modalAction }: any) => {
     if (isAddTeacherError) {
       toast({
         title:
+        // @ts-ignore
           addTeacherError?.response?.data.message || "Something went wrong",
         variant: "destructive",
       });

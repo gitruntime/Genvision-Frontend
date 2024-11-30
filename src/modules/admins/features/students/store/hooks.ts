@@ -5,14 +5,27 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { FetchDataParams } from "../../teachers/types";
-import { studentCreateAPI, StudentListAPI } from "./api";
+import {
+  AIPromptAPI,
+  attendanceCreateAPI,
+  attendanceUpdateAPI,
+  InterestListAPI,
+  MarkCreateAPI,
+  MarkListAPI,
+  SAddressListAPI,
+  SAttendanceListAPI,
+  studentCreateAPI,
+  StudentListAPI,
+  studentViewAPI,
+} from "./api";
 import { AxiosError } from "axios";
+import { AddStudentsToClassAPI } from "../../classes/store/api";
 
 export const useListStudents = ({
-  page,
-  size,
-  sortBy,
-  sortOrder,
+  page = 1,
+  size = 100,
+  sortBy = "id",
+  sortOrder = "ASC",
 }: FetchDataParams): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", page, size, sortBy, sortOrder],
@@ -30,10 +43,101 @@ export const useCreateStudent = () => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => studentCreateAPI(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "students"]);
     },
     retry: false,
+  });
+};
+
+export const useViewStudents = (id:any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "student", id],
+    queryFn: () => studentViewAPI(id),
+    enabled: !!id,
+  });
+};
+
+export const useSAddressListAPI = (id:any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "addresses"],
+    queryFn: () => SAddressListAPI(id),
+  });
+};
+
+export const useSAttendanceListAPI = (id:any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "attendances"],
+    queryFn: () => SAttendanceListAPI(id),
+  });
+};
+
+export const useSCreateAttendanceAPI = (id:any) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => attendanceCreateAPI(id, data),
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSUpdateAttendanceAPI = (studentId:any) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: ([id, data]) => attendanceUpdateAPI(studentId, id, data),
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useAddStudentsToClass = (id:any) => {
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => AddStudentsToClassAPI(id, data),
+    onSuccess: () => {
+      // queryClient.invalidateQueries(["admin", "students", "attendances"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSMarkListAPI = (id:any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "marks"],
+    queryFn: () => MarkListAPI(id),
+  });
+};
+
+export const useSMarkCreateAPI = (id:any) => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => MarkCreateAPI(id, data),
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["admin", "students", "marks"]);
+    },
+    retry: false,
+  });
+};
+
+export const useSInterestListAPI = (id : any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "interests"],
+    queryFn: () => InterestListAPI(id),
+  });
+};
+
+export const useAIPrompt = (id : any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "students", "prompts"],
+    queryFn: () => AIPromptAPI(id),
+    enabled: !!id,
   });
 };
 
@@ -53,20 +157,8 @@ export const useCreateStudent = () => {
 // } from "./api";
 // import { AxiosError } from "axios";
 
-// // Define types for student and address data (replace 'any' with actual types as needed)
-// interface StudentData {
-//   // define properties based on actual student data structure
-// }
-
-// interface AddressData {
-//   // define properties based on actual address data structure
-// }
-
-// export const useListStudent = (): UseMutationResult<
-//   StudentData[],
-//   AxiosError
-// > => {
-//   return useMutation<StudentData[], AxiosError>({
+// export const useListStudent = (): UseMutationResult<any, AxiosError> => {
+//   return useMutation<any, AxiosError>({
 //     mutationFn: studentListAPI,
 //     onSuccess: (data) => {
 //       // handle success

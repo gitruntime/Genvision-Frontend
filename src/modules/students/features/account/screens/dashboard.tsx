@@ -1,14 +1,8 @@
-import React from 'react';
-import { 
-  Book, 
-  ClipboardList, 
-  LineChart as LineChartIcon, 
-  MessageSquare, 
-  Bell,
-  Calendar,
+import {
+  ClipboardList,
   Trophy,
-  Clock
-} from 'lucide-react';
+  Clock,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -16,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import {
   LineChart,
   Line,
@@ -26,115 +18,183 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  Legend
-} from 'recharts';
+  Legend,
+} from "recharts";
+import { useDashboard } from "../store/hooks";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const PerformanceOverviewSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <Skeleton className="h-6 w-1/2" /> {/* Placeholder for title */}
+        </CardTitle>
+        <CardDescription>
+          <Skeleton className="h-4 w-3/4" /> {/* Placeholder for description */}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="h-[300px]">
+        <Skeleton className="h-full w-full" /> {/* Placeholder for the chart */}
+      </CardContent>
+    </Card>
+  );
+};
+
+const DashboardSkeleton = () => {
+  return (
+    <div className="grid gap-6 md:grid-cols-4">
+      {/* Skeleton Card 1 */}
+      {Array(4)
+        .fill(null)
+        .map((_, index) => (
+          <Card key={index}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle>
+                <Skeleton className="h-4 w-1/3" /> {/* Placeholder for title */}
+              </CardTitle>
+              <Skeleton className="h-4 w-4 rounded-full" />{" "}
+              {/* Placeholder for icon */}
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-1/4 mb-2" />{" "}
+              {/* Placeholder for number */}
+              <Skeleton className="h-4 w-2/3" />{" "}
+              {/* Placeholder for description */}
+            </CardContent>
+          </Card>
+        ))}
+    </div>
+  );
+};
 
 const Dashboard = () => {
-  // Sample performance data for the line chart
-  const performanceData = [
-    { month: 'Sep', Mathematics: 85, Physics: 78, Literature: 92 },
-    { month: 'Oct', Mathematics: 88, Physics: 82, Literature: 88 },
-    { month: 'Nov', Mathematics: 92, Physics: 85, Literature: 90 },
-    { month: 'Dec', Mathematics: 90, Physics: 88, Literature: 94 },
+  const { data, isLoading } = useDashboard();
+
+  const subjects = data?.data.ScorePerformance.reduce((acc : any, item: any) => {
+    Object.keys(item).forEach((key) => {
+      if (key !== "month" && !acc.includes(key)) {
+        acc.push(key); // Add the subject if it's not already added
+      }
+    });
+    return acc;
+  }, []);
+
+  const colors = [
+    "#8884d8", 
+    "#82ca9d",
+    "#ffc658",
+    "#ff7300",
+    "#413ea0",
+    "#ff0099",
+    "#00c8ff"  
   ];
 
-  // Sample assignment completion data for the bar chart
-  const assignmentData = [
-    { subject: 'Mathematics', completed: 15, pending: 3 },
-    { subject: 'Physics', completed: 12, pending: 4 },
-    { subject: 'Literature', completed: 10, pending: 2 },
-  ];
 
   return (
     <div className="p-6 space-y-6">
       {/* Top Stats Row */}
-      <div className="grid gap-6 md:grid-cols-4">
+      {isLoading ? (
+        <DashboardSkeleton />
+      ) : (
+        <div className="grid gap-6 md:grid-cols-3">
+          {/* <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                Today's Classes
+              </CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">4</div>
+              <p className="text-xs text-muted-foreground">
+                Next: Mathematics at 10:00 AM
+              </p>
+            </CardContent>
+          </Card> */}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Teacher
+              </CardTitle>
+              <ClipboardList className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {data?.data.teacherCount}
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                Average Mark
+              </CardTitle>
+              <Trophy className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {parseFloat(data?.data.averageMarks)}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
+                +5% from last semester
+              </p> */}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Subjects
+              </CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {data?.data.subjectCount}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">This week</p> */}
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      {isLoading ? (
+        <PerformanceOverviewSkeleton />
+      ) : (
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Today's Classes
-            </CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle>Performance Overview</CardTitle>
+            <CardDescription>
+              Your academic progress across subjects
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-muted-foreground">
-              Next: Mathematics at 10:00 AM
-            </p>
+          <CardContent className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data?.data.ScorePerformance}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {/* Dynamically set the Line chart to the subject */}
+                {subjects?.map((subject : any, index :any) => (
+                  <Line
+                    key={subject}
+                    type="monotone"
+                    dataKey={subject}
+                    stroke={colors[index % colors.length]}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Pending Assignments
-            </CardTitle>
-            <ClipboardList className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">9</div>
-            <p className="text-xs text-muted-foreground">
-              3 due this week
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Average Grade
-            </CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">A-</div>
-            <p className="text-xs text-muted-foreground">
-              +5% from last semester
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Study Hours
-            </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">24.5</div>
-            <p className="text-xs text-muted-foreground">
-              This week
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
+      )}
       {/* Performance Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Performance Overview</CardTitle>
-          <CardDescription>Your academic progress across subjects</CardDescription>
-        </CardHeader>
-        <CardContent className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={performanceData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="Mathematics" stroke="#8884d8" />
-              <Line type="monotone" dataKey="Physics" stroke="#82ca9d" />
-              <Line type="monotone" dataKey="Literature" stroke="#ffc658" />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
 
       {/* Middle Section */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Class Schedule */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Today's Schedule</CardTitle>
             <CardDescription>Your upcoming classes</CardDescription>
@@ -164,10 +224,10 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Assignment Status */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Assignment Progress</CardTitle>
             <CardDescription>Subject-wise completion status</CardDescription>
@@ -185,13 +245,13 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Bottom Row */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Teacher Feedback */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Recent Feedback</CardTitle>
             <CardDescription>Comments from your teachers</CardDescription>
@@ -220,10 +280,10 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Announcements */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>School Announcements</CardTitle>
             <CardDescription>Important updates and events</CardDescription>
@@ -250,7 +310,7 @@ const Dashboard = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

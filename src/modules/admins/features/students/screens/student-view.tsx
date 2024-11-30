@@ -1,23 +1,24 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import {
   Attendance,
   OverviewTab,
-  Performance,
   Teacher,
   Marks,
   Documents,
+  Performance,
 } from "../components";
 import { FC } from "react";
 import AnatomyDashboard from "../components/ai-tab";
+import { useParams } from "react-router-dom";
 
 const StudentView: FC = () => {
+  const { id: studentId } = useParams();
+
   return (
     <main className="grid flex-1 items-start mt-3">
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Thouseef Hamza T P's Profile</h1>
-          <Badge>Class Leader</Badge>
+          <h1 className="text-2xl font-bold"></h1>
         </div>
 
         <Tabs defaultValue="overview">
@@ -25,12 +26,10 @@ const StudentView: FC = () => {
             {[
               "AI",
               "Overview",
-              "Teachers",
               "Attendance",
-              "Subjects",
+              // "Subjects",
               "Marks",
               "Performance",
-              "Documents",
             ].map((tab, idx) => (
               <TabsTrigger key={idx} value={tab.toLowerCase()}>
                 {tab}
@@ -43,11 +42,11 @@ const StudentView: FC = () => {
           </TabsContent>
 
           <TabsContent value="overview">
-            <OverviewTab />
+            {studentId && <OverviewTab studentId={studentId} />}
           </TabsContent>
 
-          <TabsContent value="attendance">
-            <Attendance />
+          <TabsContent value="attendance" className="h-[10%]">
+            {studentId && <Attendance studentId={studentId} />}
           </TabsContent>
 
           <TabsContent value="teachers">

@@ -13,6 +13,10 @@ import {
   ClassListAPI,
   ClassUpdateAPI,
   DeleteTeachersFromClassAPI,
+  ExamCreateAPI,
+  ExamListAPI,
+  GetStudentsFromClassAPI,
+  GetSubjectDataUsingClass,
   GetSubjectsFromClassAPI,
   GetTeachersFromClassAPI,
   SubjectCreateAPI,
@@ -130,7 +134,7 @@ export const useDeleteSubject = () => {
   });
 };
 
-export const useGetSubjectsFromClass = (id): UseQueryResult<any, Error> => {
+export const useGetSubjectsFromClass = (id:any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "class", "subjects"],
     queryFn: () => GetSubjectsFromClassAPI(id),
@@ -149,12 +153,13 @@ export const useAddSubjectsToClass = () => {
       AddSubjectsToClassAPI(classId, data),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "class", "subjects"]);
     },
   });
 };
 
-export const useGetTeachersFromClass = (id): UseQueryResult<any, Error> => {
+export const useGetTeachersFromClass = (id: any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "class", "teachers"],
     queryFn: () => GetTeachersFromClassAPI(id),
@@ -169,6 +174,7 @@ export const useAddTeacherssToClass = () => {
       AddTeachersToClassAPI(classId, data),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "class", "teachers"]);
     },
   });
@@ -180,7 +186,44 @@ export const useDeleteTeacherFromClass = (classId: string | number) => {
     mutationFn: (id) => DeleteTeachersFromClassAPI(classId, id),
     retry: false,
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "class", "teachers"]);
     },
+  });
+};
+
+export const useCreateExam = () => {
+  const queryClient = useQueryClient();
+  return useMutation<any, AxiosError, any>({
+    mutationFn: (data) => ExamCreateAPI(data),
+    retry: false,
+    onSuccess: () => {
+      // @ts-ignore
+      queryClient.invalidateQueries(["admin", "class", "exams"]);
+    },
+  });
+};
+
+export const useListExam = (params: {
+  studentId?: number;
+}): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "exams"],
+    queryFn: () => ExamListAPI(params),
+  });
+};
+
+export const useGetStudentsFromClass = (id : any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "students"],
+    queryFn: () => GetStudentsFromClassAPI(id),
+  });
+};
+
+export const useGetSubjectDataUsingClass = (id: any): UseQueryResult<any, Error> => {
+  return useQuery({
+    queryKey: ["admin", "class", "subjects"],
+    queryFn: () => GetSubjectDataUsingClass(id),
+    enabled: !!id,
   });
 };

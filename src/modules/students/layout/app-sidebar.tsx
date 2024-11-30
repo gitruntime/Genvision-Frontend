@@ -1,13 +1,8 @@
 import {
   BookOpenCheck,
-  BookText,
-  Calendar,
   Command,
   Home,
-  Inbox,
   NotebookPen,
-  Search,
-  Settings,
   Users,
 } from "lucide-react";
 
@@ -35,14 +30,14 @@ const items = [
   },
   {
     title: "Classmates",
-    url: "/student/assignments",
+    url: "/student/classmates",
     icon: Users,
   },
-  {
-    title: "Assignments",
-    url: "/student/assignments",
-    icon: BookText,
-  },
+  // {
+  //   title: "Assignments",
+  //   url: "/student/assignments",
+  //   icon: BookText,
+  // },
   {
     title: "Teachers",
     url: "/student/teachers",

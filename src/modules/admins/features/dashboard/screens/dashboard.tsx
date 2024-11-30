@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   LineChart,
   Line,
@@ -17,52 +16,52 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
+import { useDashboard } from "../store/hooks";
 
 const SchoolDashboard = () => {
   // Sample data for charts
-  const attendanceData = [
-    { month: "Jan", students: 92, teachers: 96 },
-    { month: "Feb", students: 94, teachers: 98 },
-    { month: "Mar", students: 91, teachers: 95 },
-    { month: "Apr", students: 95, teachers: 97 },
-    { month: "May", students: 93, teachers: 99 },
-    { month: "Jun", students: 90, teachers: 96 },
-  ];
+  // const attendanceData = [
+  //   { month: "Jan", students: 92, teachers: 96 },
+  //   { month: "Feb", students: 94, teachers: 98 },
+  //   { month: "Mar", students: 91, teachers: 95 },
+  //   { month: "Apr", students: 95, teachers: 97 },
+  //   { month: "May", students: 93, teachers: 99 },
+  //   { month: "Jun", students: 90, teachers: 96 },
+  // ];
 
-  const performanceData = [
-    { subject: "Math", score: 85 },
-    { subject: "Science", score: 78 },
-    { subject: "English", score: 88 },
-    { subject: "History", score: 82 },
-    { subject: "Arts", score: 90 },
-  ];
+  // const performanceData = [
+  //   { subject: "Math", score: 85 },
+  //   { subject: "Science", score: 78 },
+  //   { subject: "English", score: 88 },
+  //   { subject: "History", score: 82 },
+  //   { subject: "Arts", score: 90 },
+  // ];
 
-  const genderDistribution = [
-    { name: "Male", value: 540 },
-    { name: "Female", value: 460 },
-  ];
+  // const genderDistribution = [
+  //   { name: "Male", value: 540 },
+  //   { name: "Female", value: 460 },
+  // ];
 
-  const COLORS = ["#4f46e5", "#ec4899"];
+  // const COLORS = ["#4f46e5", "#ec4899"];
 
-  const upcomingEvents = [
-    { id: 1, title: "Annual Sports Day", date: "2024-11-20", type: "Sports" },
-    {
-      id: 2,
-      title: "Parent-Teacher Meeting",
-      date: "2024-11-25",
-      type: "Meeting",
-    },
-    {
-      id: 3,
-      title: "Science Exhibition",
-      date: "2024-12-05",
-      type: "Academic",
-    },
-  ];
+  // const upcomingEvents = [
+  //   { id: 1, title: "Annual Sports Day", date: "2024-11-20", type: "Sports" },
+  //   {
+  //     id: 2,
+  //     title: "Parent-Teacher Meeting",
+  //     date: "2024-11-25",
+  //     type: "Meeting",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Science Exhibition",
+  //     date: "2024-12-05",
+  //     type: "Academic",
+  //   },
+  // ];
+
+  const { data: DASHBOARD_DATA } = useDashboard();
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 mt-3">
@@ -107,9 +106,11 @@ const SchoolDashboard = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,000</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.totalStudents?.count}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +20.1% from last month
+              {DASHBOARD_DATA?.data?.totalStudents?.growth}
             </p>
           </CardContent>
         </Card>
@@ -121,8 +122,13 @@ const SchoolDashboard = () => {
             <GraduationCap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
-            <p className="text-xs text-muted-foreground">+2 new this month</p>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.totalTeachers?.count}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              +{DASHBOARD_DATA?.data?.totalTeachers?.newThisMonth} new this
+              month
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -133,9 +139,11 @@ const SchoolDashboard = () => {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">92.4%</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.averageAttendance?.percentage}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +4.3% from last week
+              {/* +4.3% from last week */}
             </p>
           </CardContent>
         </Card>
@@ -147,9 +155,11 @@ const SchoolDashboard = () => {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8</div>
+            <div className="text-2xl font-bold">
+              {DASHBOARD_DATA?.data?.upcomingEvents?.count}
+            </div>
             <p className="text-xs text-muted-foreground">
-              Next event in 3 days
+              {/* Next event in 3 days */}
             </p>
           </CardContent>
         </Card>
@@ -167,22 +177,16 @@ const SchoolDashboard = () => {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={attendanceData}>
+                <LineChart data={DASHBOARD_DATA?.data?.attendanceData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
                   <Line
                     type="monotone"
-                    dataKey="students"
+                    dataKey="attendancePercentage"
                     stroke="#4f46e5"
                     name="Students"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="teachers"
-                    stroke="#ec4899"
-                    name="Teachers"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -198,12 +202,12 @@ const SchoolDashboard = () => {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={performanceData}>
+                <BarChart data={DASHBOARD_DATA?.data?.academicPerformance}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="subject" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="score" fill="#4f46e5" />
+                  <Bar dataKey="averageMarks" fill="#4f46e5" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -212,7 +216,7 @@ const SchoolDashboard = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card>
           <CardHeader>
             <CardTitle>Student Distribution</CardTitle>
@@ -284,7 +288,7 @@ const SchoolDashboard = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </main>
   );
 };

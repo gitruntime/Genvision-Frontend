@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,6 @@ import {
   User,
   Bot,
   ChevronDown,
-  Settings,
-  Sun,
-  Moon,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,7 +19,7 @@ import {
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [theme, setTheme] = useState("light");
+  const theme:any = "light";
 
   const predefinedPrompts = [
     {
@@ -70,36 +67,35 @@ const ChatInterface = () => {
         content: inputMessage,
         timestamp: new Date().toLocaleTimeString(),
       };
-
-      setMessages((prev) => [...prev, newUserMessage]);
+      // @ts-ignore
+      setMessages((prev : any) => [...prev, newUserMessage]);
 
       setTimeout(() => {
         const aiResponse = {
           role: "assistant",
-          content: `This is a simulated response to jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj: "${inputMessage}"`,
+          content: `This is a simulated response to : "${inputMessage}"`,
           timestamp: new Date().toLocaleTimeString(),
         };
-        setMessages((prev) => [...prev, aiResponse]);
+        // @ts-ignore
+        setMessages((prev : any) => [...prev, aiResponse]);
       }, 1000);
 
       setInputMessage("");
     }
   };
 
-  const handlePromptSelect = (prompt) => {
+  const handlePromptSelect = (prompt:any) => {
     setInputMessage(prompt.prompt);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e:any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+
 
   return (
     <Card className="w-full max-h-[60%]  overflow-y-scroll hide-scrollbar">
@@ -127,7 +123,7 @@ const ChatInterface = () => {
         <div className="flex-1 overflow-y-scroll hide-scrollbar py-6">
           <div className="max-w-5xl mx-auto space-y-6">
             {messages.length === 0 && <div className="text-center py-20"></div>}
-            {messages.map((message, index) => (
+            {messages.map((message: any, index: any) => (
               <div
                 key={index}
                 className={`flex items-start gap-4 ${

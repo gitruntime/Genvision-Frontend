@@ -2,7 +2,7 @@ import { getBaseURL } from "@/modules/admins/utils/axios-util";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
-import { setCredentialError, setCredentials } from "../store/auth-slice";
+import { setCredentialError, setCredentials } from "../store/slice";
 
 // Define types for the login request and response
 interface LoginCredentials {
@@ -38,7 +38,7 @@ export const useLogin = () => {
       }
     },
     onSuccess: (data) => {
-      console.log(data,"this");
+      // @ts-ignore
       dispatch(setCredentials({ token: data.data }));
     },
     retry: false,

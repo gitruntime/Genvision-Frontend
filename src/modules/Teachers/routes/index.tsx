@@ -5,10 +5,6 @@ import { Sidebar } from "../layout/sidebar-layout";
 const TeacherNavigator = () => {
   return (
     <>
-      <Routes>
-        <Route path="auth/*" element={<TeacherNavigators.Auth />} />
-      </Routes>
-      
       <Sidebar>
         <Routes>    
           <Route path="dashboard" />
