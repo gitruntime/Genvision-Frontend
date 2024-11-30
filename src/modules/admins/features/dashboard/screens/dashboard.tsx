@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   LineChart,
   Line,
@@ -17,53 +16,50 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import { useDashboard } from "../store/hooks";
 
 const SchoolDashboard = () => {
   // Sample data for charts
-  const attendanceData = [
-    { month: "Jan", students: 92, teachers: 96 },
-    { month: "Feb", students: 94, teachers: 98 },
-    { month: "Mar", students: 91, teachers: 95 },
-    { month: "Apr", students: 95, teachers: 97 },
-    { month: "May", students: 93, teachers: 99 },
-    { month: "Jun", students: 90, teachers: 96 },
-  ];
+  // const attendanceData = [
+  //   { month: "Jan", students: 92, teachers: 96 },
+  //   { month: "Feb", students: 94, teachers: 98 },
+  //   { month: "Mar", students: 91, teachers: 95 },
+  //   { month: "Apr", students: 95, teachers: 97 },
+  //   { month: "May", students: 93, teachers: 99 },
+  //   { month: "Jun", students: 90, teachers: 96 },
+  // ];
 
-  const performanceData = [
-    { subject: "Math", score: 85 },
-    { subject: "Science", score: 78 },
-    { subject: "English", score: 88 },
-    { subject: "History", score: 82 },
-    { subject: "Arts", score: 90 },
-  ];
+  // const performanceData = [
+  //   { subject: "Math", score: 85 },
+  //   { subject: "Science", score: 78 },
+  //   { subject: "English", score: 88 },
+  //   { subject: "History", score: 82 },
+  //   { subject: "Arts", score: 90 },
+  // ];
 
-  const genderDistribution = [
-    { name: "Male", value: 540 },
-    { name: "Female", value: 460 },
-  ];
+  // const genderDistribution = [
+  //   { name: "Male", value: 540 },
+  //   { name: "Female", value: 460 },
+  // ];
 
-  const COLORS = ["#4f46e5", "#ec4899"];
+  // const COLORS = ["#4f46e5", "#ec4899"];
 
-  const upcomingEvents = [
-    { id: 1, title: "Annual Sports Day", date: "2024-11-20", type: "Sports" },
-    {
-      id: 2,
-      title: "Parent-Teacher Meeting",
-      date: "2024-11-25",
-      type: "Meeting",
-    },
-    {
-      id: 3,
-      title: "Science Exhibition",
-      date: "2024-12-05",
-      type: "Academic",
-    },
-  ];
+  // const upcomingEvents = [
+  //   { id: 1, title: "Annual Sports Day", date: "2024-11-20", type: "Sports" },
+  //   {
+  //     id: 2,
+  //     title: "Parent-Teacher Meeting",
+  //     date: "2024-11-25",
+  //     type: "Meeting",
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Science Exhibition",
+  //     date: "2024-12-05",
+  //     type: "Academic",
+  //   },
+  // ];
 
   const { data: DASHBOARD_DATA } = useDashboard();
 

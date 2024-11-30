@@ -1,16 +1,13 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import {
   Attendance,
   OverviewTab,
-  Performance,
   Teacher,
   Marks,
   Documents,
 } from "../components";
 import { FC } from "react";
 import AnatomyDashboard from "../components/ai-tab";
-import { useViewStudents } from "../store/hooks";
 import { useParams } from "react-router-dom";
 
 const StudentView: FC = () => {

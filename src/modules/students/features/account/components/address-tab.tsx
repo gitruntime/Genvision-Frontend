@@ -46,12 +46,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 // Address Components
 const AddressForm = ({
-  onSubmit,
   initialValues,
   setIsModalOpen,
   modalAction,
@@ -125,7 +123,9 @@ const AddressForm = ({
         variant: "destructive",
         // @ts-ignore
         title: createError
+        // @ts-ignore
           ? createError.response?.data.message
+          // @ts-ignore
           : updateError?.response?.data.message,
       });
     }
@@ -168,7 +168,7 @@ const AddressForm = ({
           }
         />
         {touched.streetAddress && errors.streetAddress && (
-          <p className="text-sm text-red-500">{errors.streetAddress}</p>
+          <p className="text-sm text-red-500">{typeof errors.streetAddress === 'string' ? errors.streetAddress : ''}</p>
         )}
       </div>
 
@@ -300,19 +300,18 @@ const AddressSkeleton = () => {
 };
 
 const AddressTab = () => {
-  const [addresses, setAddresses] = useState<any>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingAddress, setEditingAddress] = useState<any>(null);
   const [isEdit, setIsEdit] = useState<any>(null);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [addressId, setAddressId] = useState(null);
 
-  const handleDeleteAddress = (id) => {
+  const handleDeleteAddress = (id : any) => {
     setAddressId(id);
     setIsDeleteModal(true);
   };
 
-  const handleEditAddress = (address) => {
+  const handleEditAddress = (address: any) => {
     setEditingAddress(address);
     setIsModalOpen(true);
     setIsEdit(true);
@@ -350,7 +349,6 @@ const AddressTab = () => {
   const {
     data: ADDRESSES,
     isLoading: isAddressLoading,
-    isSuccess: isAddressSuccess,
   } = useListAddress();
 
   return (
@@ -385,7 +383,7 @@ const AddressTab = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {ADDRESSES?.data.map((address) => (
+                {ADDRESSES?.data.map((address:any) => (
                   <TableRow key={address.id}>
                     <TableCell className="font-medium">
                       {address.addressType}

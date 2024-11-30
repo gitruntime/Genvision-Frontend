@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -9,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Clock, Hourglass, LogOut, MoreVertical, User } from "lucide-react";
+import { Clock, Hourglass, LogOut, User } from "lucide-react";
 import { FC } from "react";
 import { useListAttendance } from "../store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,45 +21,21 @@ interface StatCardProps {
   className?: string;
 }
 
-const attendances = [
-  {
-    id: 1,
-    date: "2024-11-21",
-    checkIn: "08:45 am",
-    checkOut: "12:30 pm",
-    status: "PRESENT",
-  },
-  {
-    id: 2,
-    date: "2024-11-20",
-    checkIn: "09:00 am",
-    checkOut: "01:15 pm",
-    status: "PRESENT",
-  },
-  {
-    id: 3,
-    date: "2024-11-19",
-    checkIn: "08:50 am",
-    checkOut: "12:00 pm",
-    status: "ABSENT",
-  },
-  {
-    id: 4,
-    date: "2024-11-18",
-    checkIn: "09:10 am",
-    checkOut: "12:45 pm",
-    status: "PRESENT",
-  },
-  {
-    id: 5,
-    date: "2024-11-17",
-    checkIn: "08:30 am",
-    checkOut: "12:00 pm",
-    status: "ABSENT",
-  },
-];
+interface Attendance {
+  // Define the structure of each attendance object
+  id: number;
+  attendanceDate: number;
+  checkIn: string;
+  checkOut : string;
+  status: 'present' | 'absent' | 'late';
+}
 
-const AttendanceTable: FC = ({ attendances }) => (
+interface AttendanceTableProps {
+  attendances: Attendance[]; // Adjust based on the actual type of your attendances
+}
+
+
+const AttendanceTable: FC<AttendanceTableProps> = ({ attendances }:any) => (
   <Table>
     <TableHeader>
       <TableRow>

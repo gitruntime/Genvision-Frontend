@@ -59,9 +59,9 @@ export const ClassListComponent: FC<any> = memo(
       sortOrder: "ASC",
     });
 
-    const handleSubjectSelect = (selectedSubject) => {
+    const handleSubjectSelect = (selectedSubject:any) => {
       console.log(
-        selectedSubject.map((subject) => subject.id),
+        selectedSubject.map((subject:any) => subject.id),
         "thousi"
       );
     };
@@ -336,7 +336,6 @@ export const ClassListComponent: FC<any> = memo(
             <DialogContent className="max-w-[90%] h-[550px]">
               <StudentGridSelector
                 classId={classId}
-                modalAction={setIsStudentAddModal}
                 // @ts-ignore
               />
             </DialogContent>

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2, Upload } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -11,14 +11,6 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import {
   Popover,
   PopoverContent,
@@ -101,13 +93,11 @@ const ProfileSkeleton = () => {
 };
 
 const ProfileTab = () => {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const {
     data: PROFILE_DATA,
     isLoading: isGETLoading,
-    isError: isGETError,
     isSuccess: isGETSuccess,
   } = useProfileViewAPI();
 
@@ -173,6 +163,7 @@ const ProfileTab = () => {
         lastName: profileData.lastName || "",
         username: profileData.username || "",
         email: profileData.email || "",
+        // @ts-ignore
         dateOfBirth: dateOfBirth,
         bio: profileData?.studentProfile?.bio || "",
         bloodGroup: profileData?.studentProfile?.bloodGroup || "",
@@ -203,6 +194,7 @@ const ProfileTab = () => {
     if (isPUTError) {
       toast({
         variant: "destructive",
+        // @ts-ignore
         title: PUTError?.response?.data.message,
       });
     }
@@ -377,7 +369,8 @@ const ProfileTab = () => {
                   <PopoverContent className="w-auto p-0">
                     <Calendar
                       mode="single"
-                      selected={formik.values.dateOfBirth}
+                      // @ts-ignore
+                      selected={formik.values?.dateOfBirth}
                       onSelect={(date) =>
                         formik.setFieldValue("dateOfBirth", date)
                       }

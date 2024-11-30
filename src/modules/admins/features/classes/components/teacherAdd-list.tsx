@@ -6,11 +6,9 @@ import {
   useGetSubjectsFromClass,
   useGetTeachersFromClass,
   useListSubject,
-  useUpdateSubject,
 } from "../store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import Yup from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -72,11 +70,10 @@ const ROLES = [
   { id: "subject", name: "Subject Teacher" },
 ];
 
-const TeacherAddList = ({ classId, modalAction }: any) => {
+const TeacherAddList = ({ classId }: any) => {
   const {
     data: TEACHERS_ADD_LIST,
     isLoading: isTeachersLoading,
-    isSuccess: isTeachersSuccess,
   } = useGetTeachersFromClass(classId);
 
   const {
@@ -97,13 +94,11 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
 
   const {
     data: CLASS_SUBJECTS,
-    isLoading: isClassSubjectsLoading,
     isSuccess: isClassSubjectsSuccess,
   } = useGetSubjectsFromClass(classId);
 
   const {
     data: subjectList,
-    isLoading: isSubjectLoading,
     isSuccess: isSubjectListSuccess,
   } = useListSubject({
     page: 1,
@@ -123,7 +118,7 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
 
   useEffect(() => {
     if (isSubjectListSuccess && isClassSubjectsSuccess) {
-      const subjects = subjectList?.data.filter((subject) =>
+      const subjects = subjectList?.data.filter((subject:any) =>
         CLASS_SUBJECTS?.subjectIds.includes(subject.id)
       );
       console.log(subjects, "hflsakjdsh");
@@ -160,9 +155,8 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
   });
 
   const [subjectPreviewAction, setSubjectPreviewAction] = useState(null);
-  const [subjectId, setSubjectId] = useState(null);
 
-  const handleSubjectForm = (data: any, action = "") => {
+  const handleSubjectForm = (data: any, action:any = "") => {
     if (action === "delete") {
       deleteTeacherMutate(data.id);
     }
@@ -195,6 +189,7 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
         variant: "destructive",
         title: "Teacher not created",
         description:
+        // @ts-ignore
           addTeacherError?.response?.data?.message ||
           "An error occurred while creating the teacher.",
       });
@@ -205,6 +200,7 @@ const TeacherAddList = ({ classId, modalAction }: any) => {
         variant: "destructive",
         title: "Teacher not deleted",
         description:
+        // @ts-ignore
           deleteTeacherError?.response?.data?.message ||
           "An error occurred while deleting the teacher.",
       });

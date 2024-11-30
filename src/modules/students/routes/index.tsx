@@ -5,7 +5,6 @@ import StudentAttendanceDashboard from "../features/class/screens/attendance";
 import StudentMarksDetailedDashboard from "../features/class/screens/marks";
 import AssignmentList from "../features/class/screens/assignments";
 import ProfileUpdate from "../features/account/screens/account";
-import AuthProtectedRoute from "@/modules/admins/routes/authprotected-router";
 import StudentProtectedRoute from "./student-protected-route";
 import ClassmatesList from "../features/class/components/classmates-list";
 import TeachersList from "../features/class/components/teacher-list";

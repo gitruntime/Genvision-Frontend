@@ -1,30 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Eye, Loader2, AlertCircle } from "lucide-react";
 import {
-  useAddTeacherssToClass,
-  useDeleteTeacherFromClass,
   useGetStudentsFromClass,
-  useGetSubjectsFromClass,
-  useGetTeachersFromClass,
-  useListSubject,
-  useUpdateSubject,
 } from "../store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { useFormik } from "formik";
-import Yup from "@/lib/utils";
-import { Label } from "@/components/ui/label";
-import { toast } from "@/hooks/use-toast";
-import { useListTeacher } from "../../teachers/store/hooks";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Alert, AlertTitle } from "@/components/ui/alert";
 import { DialogContent, DialogHeader } from "@/components/ui/dialog";
 
 const TeacherAddListSkeleton = () => {
@@ -68,19 +45,11 @@ const TeacherAddListSkeleton = () => {
   );
 };
 
-const ROLES = [
-  { id: "class", name: "Class Teacher" },
-  { id: "subject", name: "Subject Teacher" },
-];
-
-const StudentAddList = ({ classId, modalAction }: any) => {
-  const [classSubjects, setClassSubjects] = useState([]);
+const StudentAddList = ({ classId }: any) => {
 
   const {
     data: STUDENT_LIST,
     isLoading: STUDENT_LISTLOADING,
-    isSuccess: STUDENT_LISTSUCCESS,
-    isError: STUDENT_LISTERROR,
   } = useGetStudentsFromClass(classId);
   return (
     <DialogContent className="max-w-[50%] max-h-[95%] overflow-y-scroll hide-sidebar">

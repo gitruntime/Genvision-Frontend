@@ -2,23 +2,18 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { DropdownMenuLabel } from "@radix-ui/react-dropdown-menu";
-import { Eye, MoreHorizontal, Pencil, PlusCircle } from "lucide-react";
+import { MoreHorizontal, Pencil } from "lucide-react";
 
-const ExamListComponent = ({ examItem }) => {
+const ExamListComponent = ({ examItem }:any) => {
   console.log(examItem, "thousi");
   return (
     <>
-      {examItem.map((item) => (
+      {examItem.map((item:any) => (
         <TableRow key={item.id}>
           <TableCell className="font-medium">{item.name}</TableCell>
           <TableCell className="hidden md:table-cell">

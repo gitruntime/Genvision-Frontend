@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -8,104 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Progress } from "@/components/ui/progress";
 import { useListMarks } from "../store/hooks";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const MOCK_DETAILED_MARKS = {
-  semesters: [
-    {
-      name: "First Semester",
-      subjects: [
-        {
-          name: "Mathematics",
-          marks: 85,
-          maxMarks: 100,
-          topics: [
-            { name: "Algebra", marks: 28, maxMarks: 35 },
-            { name: "Geometry", marks: 25, maxMarks: 30 },
-            { name: "Trigonometry", marks: 32, maxMarks: 35 },
-          ],
-        },
-        {
-          name: "Science",
-          marks: 78,
-          maxMarks: 100,
-          topics: [
-            { name: "Physics", marks: 26, maxMarks: 35 },
-            { name: "Chemistry", marks: 24, maxMarks: 30 },
-            { name: "Biology", marks: 28, maxMarks: 35 },
-          ],
-        },
-        {
-          name: "English",
-          marks: 92,
-          maxMarks: 100,
-          topics: [
-            { name: "Grammar", marks: 30, maxMarks: 35 },
-            { name: "Comprehension", marks: 32, maxMarks: 35 },
-            { name: "Writing", marks: 30, maxMarks: 30 },
-          ],
-        },
-      ],
-      totalMarks: 255,
-      maxTotalMarks: 300,
-      percentage: 85,
-    },
-  ],
-  classTests: [
-    {
-      name: "First Class Test",
-      subjects: [
-        {
-          name: "Mathematics",
-          marks: 42,
-          maxMarks: 50,
-          topics: [
-            { name: "Linear Equations", marks: 15, maxMarks: 20 },
-            { name: "Quadratic Equations", marks: 27, maxMarks: 30 },
-          ],
-        },
-        {
-          name: "Science",
-          marks: 38,
-          maxMarks: 50,
-          topics: [
-            { name: "Force and Motion", marks: 18, maxMarks: 25 },
-            { name: "Energy", marks: 20, maxMarks: 25 },
-          ],
-        },
-        {
-          name: "English",
-          marks: 45,
-          maxMarks: 50,
-          topics: [
-            { name: "Comprehension", marks: 22, maxMarks: 25 },
-            { name: "Essay Writing", marks: 23, maxMarks: 25 },
-          ],
-        },
-      ],
-      totalMarks: 125,
-      maxTotalMarks: 150,
-      percentage: 83.33,
-    },
-  ],
-};
+
 
 const DetailedMarksSkeleton = () => {
   return (
@@ -171,10 +76,8 @@ const DetailedMarksSkeleton = () => {
 };
 
 const StudentMarksDetailedDashboard = () => {
-  const [selectedSubject, setSelectedSubject] = useState(null);
-  // const [viewType, setViewType] = useState("semesters");
 
-  const { data, isLoading } = useListMarks();
+  const { data } = useListMarks();
 
   return (
     <>
@@ -209,7 +112,7 @@ const StudentMarksDetailedDashboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data?.data.map((mark) => (
+                  {data?.data.map((mark:any) => (
                     <TableRow key={mark.id}>
                       <TableCell>{mark.examName}</TableCell>
                       <TableCell>{mark.subjectName}</TableCell>

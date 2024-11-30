@@ -38,6 +38,7 @@ export const useProfileUpdateAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => ProfileUpdateAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["profile"]);
     },
     retry: false,
@@ -56,17 +57,19 @@ export const useAddressCreateAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => AddressCreateAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["addresses"]);
     },
     retry: false,
   });
 };
 
-export const useAddressUpdateAPI = (id) => {
+export const useAddressUpdateAPI = (id:any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => AddressUpdateAPI(id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["profile", id]);
     },
     retry: false,
@@ -78,6 +81,7 @@ export const useAddressDeleteAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (id) => AddressDeleteAPI(id),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["addresses"]);
     },
   });
@@ -95,6 +99,7 @@ export const useGoalCreateAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => GoalCreateAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["goals"]);
     },
     retry: false,
@@ -106,6 +111,7 @@ export const useGoalUpdateAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: ([id, data]) => GoalUpdateAPI(id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["goal", id]);
     },
     retry: false,
@@ -117,6 +123,7 @@ export const useGoalDeleteAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (id) => GoalDeleteAPI(id),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["goals"]);
     },
   });
@@ -134,6 +141,7 @@ export const useInterestsCreateAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => InterestCreateAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["interests"]);
     },
     retry: false,
@@ -145,6 +153,7 @@ export const useInterestsDeleteAPI = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => InterestDeleteAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["interests"]);
     },
     retry: false,
@@ -163,6 +172,7 @@ export const useVolunteerCreate = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => VolunteerCreateAPI(data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["volunteers"]);
     },
     retry: false,
@@ -174,6 +184,7 @@ export const useVolunteerUpdate = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: ([id, data]) => VolunteerUpdateAPI(id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["volunteers"]);
     },
     retry: false,
@@ -185,6 +196,7 @@ export const useVolunteerDelete = () => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (id) => VolunteerDeleteAPI(id),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["volunteers"]);
     },
   });

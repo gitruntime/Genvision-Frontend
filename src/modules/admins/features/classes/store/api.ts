@@ -115,7 +115,7 @@ export const ExamListAPI = async (params: { studentId?: number }) => {
   return response.data;
 };
 
-export const GetSubjectDataUsingClass = async (id) => {
+export const GetSubjectDataUsingClass = async (id:any) => {
   const response = await api.get(`/admin/classes/${id}/subjectsData`);
   return response.data;
 };

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -87,7 +86,7 @@ const ClassmatesList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data?.data.map((classmate) => (
+                {data?.data.map((classmate:any) => (
                   <TableRow key={classmate.id}>
                     <TableCell>
                       <Avatar>

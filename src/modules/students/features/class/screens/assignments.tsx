@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import AssignmentSubmission from "../components/assignment-submission";
 
 const invoices = [
   {

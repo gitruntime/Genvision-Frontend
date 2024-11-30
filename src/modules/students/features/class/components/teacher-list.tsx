@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardContent,
@@ -67,7 +66,7 @@ const TeachersSkeleton = () => {
 
 const TeachersList = () => {
 
-  const { data, isLoading, isSuccess, isError } = useListTeacher();
+  const { data, isLoading } = useListTeacher();
 
 
   return (

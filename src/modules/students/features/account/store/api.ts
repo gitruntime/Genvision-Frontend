@@ -15,17 +15,17 @@ export const AddressListAPI = async () => {
   return response.data;
 };
 
-export const AddressCreateAPI = async (data) => {
+export const AddressCreateAPI = async (data:any) => {
   const response = await api.post(`/student/addresses`, data);
   return response.data;
 };
 
-export const AddressUpdateAPI = async (id, data) => {
+export const AddressUpdateAPI = async (id:any, data:any) => {
   const response = await api.put(`/student/addresses/${id}`, data);
   return response.data;
 };
 
-export const AddressDeleteAPI = async (id) => {
+export const AddressDeleteAPI = async (id:any) => {
   const response = await api.delete(`/student/addresses/${id}`);
   return response.data;
 };
@@ -35,17 +35,17 @@ export const GoalListAPI = async () => {
   return response.data;
 };
 
-export const GoalCreateAPI = async (data) => {
+export const GoalCreateAPI = async (data:any) => {
   const response = await api.post(`/student/goals`, data);
   return response.data;
 };
 
-export const GoalUpdateAPI = async (id, data) => {
+export const GoalUpdateAPI = async (id: any, data: any) => {
   const response = await api.put(`/student/goals/${id}`, data);
   return response.data;
 };
 
-export const GoalDeleteAPI = async (id) => {
+export const GoalDeleteAPI = async (id:any) => {
   const response = await api.delete(`/student/goals/${id}`);
   return response.data;
 };
@@ -55,12 +55,12 @@ export const InterestListAPI = async () => {
   return response.data;
 };
 
-export const InterestCreateAPI = async (data) => {
+export const InterestCreateAPI = async (data:any) => {
   const response = await api.post(`/student/interests`, data);
   return response.data;
 };
 
-export const InterestDeleteAPI = async (data) => {
+export const InterestDeleteAPI = async (data:any) => {
   const response = await api.post(`/student/interests/delete`, data);
   return response.data;
 };
@@ -70,17 +70,17 @@ export const VolunteerListAPI = async () => {
   return response.data;
 };
 
-export const VolunteerCreateAPI = async (data) => {
+export const VolunteerCreateAPI = async (data:any) => {
   const response = await api.post(`/student/volunteers`, data);
   return response.data;
 };
 
-export const VolunteerUpdateAPI = async (id, data) => {
+export const VolunteerUpdateAPI = async (id:any, data:any) => {
   const response = await api.put(`/student/volunteers/${id}`, data);
   return response.data;
 };
 
-export const VolunteerDeleteAPI = async (id) => {
+export const VolunteerDeleteAPI = async (id:any) => {
   const response = await api.delete(`/student/volunteers/${id}`);
   return response.data;
 };

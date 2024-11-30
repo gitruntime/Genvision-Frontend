@@ -19,7 +19,7 @@ import {
 const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [theme, setTheme] = useState("light");
+  const theme:any = "light";
 
   const predefinedPrompts = [
     {
@@ -67,36 +67,35 @@ const ChatInterface = () => {
         content: inputMessage,
         timestamp: new Date().toLocaleTimeString(),
       };
-
-      setMessages((prev) => [...prev, newUserMessage]);
+      // @ts-ignore
+      setMessages((prev : any) => [...prev, newUserMessage]);
 
       setTimeout(() => {
         const aiResponse = {
           role: "assistant",
-          content: `This is a simulated response to jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj: "${inputMessage}"`,
+          content: `This is a simulated response to : "${inputMessage}"`,
           timestamp: new Date().toLocaleTimeString(),
         };
-        setMessages((prev) => [...prev, aiResponse]);
+        // @ts-ignore
+        setMessages((prev : any) => [...prev, aiResponse]);
       }, 1000);
 
       setInputMessage("");
     }
   };
 
-  const handlePromptSelect = (prompt) => {
+  const handlePromptSelect = (prompt:any) => {
     setInputMessage(prompt.prompt);
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e:any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+
 
   return (
     <Card className="w-full max-h-[60%]  overflow-y-scroll hide-scrollbar">

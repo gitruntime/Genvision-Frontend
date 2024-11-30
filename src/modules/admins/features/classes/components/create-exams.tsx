@@ -2,20 +2,13 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AlertCircle, Check, Loader2, Search } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
+import { AlertCircle, Loader2 } from "lucide-react";
 import {
   useCreateExam,
   useGetSubjectDataUsingClass,
   useListClass,
 } from "../store/hooks";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,7 +18,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 export const CreateExamPreview = () => {
@@ -33,31 +25,31 @@ export const CreateExamPreview = () => {
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Create Exam Preview</h1>
       <div className="flex justify-center">
-        <CreateExam />
+        <CreateExam modalAction={"anything"} />
       </div>
     </div>
   );
 };
 
-const ClassCard = ({ className, selected, onClick }: any) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`relative p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md 
-      ${
-        selected
-          ? "border-blue-500 bg-blue-50"
-          : "border-gray-200 hover:border-blue-200"
-      }`}
-  >
-    <div className="text-sm font-medium">{className}</div>
-    {selected && (
-      <div className="absolute top-2 right-2 text-blue-500">
-        <Check className="w-4 h-4" />
-      </div>
-    )}
-  </button>
-);
+// const ClassCard = ({ className, selected, onClick }: any) => (
+//   <button
+//     type="button"
+//     onClick={onClick}
+//     className={`relative p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md 
+//       ${
+//         selected
+//           ? "border-blue-500 bg-blue-50"
+//           : "border-gray-200 hover:border-blue-200"
+//       }`}
+//   >
+//     <div className="text-sm font-medium">{className}</div>
+//     {selected && (
+//       <div className="absolute top-2 right-2 text-blue-500">
+//         <Check className="w-4 h-4" />
+//       </div>
+//     )}
+//   </button>
+// );
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -71,36 +63,34 @@ import {
 import { useFormik } from "formik";
 import { toast } from "@/hooks/use-toast";
 
-const ClassCardSkeleton = () => (
-  <div className="relative p-4 rounded-lg border-2 border-gray-200 bg-gray-50 transition-all duration-200 hover:shadow-md">
-    <Skeleton className="h-4 w-3/4 mb-2" />
-    <Skeleton className="absolute top-2 right-2 h-4 w-4 rounded-full" />
-  </div>
-);
+// const ClassCardSkeleton = () => (
+//   <div className="relative p-4 rounded-lg border-2 border-gray-200 bg-gray-50 transition-all duration-200 hover:shadow-md">
+//     <Skeleton className="h-4 w-3/4 mb-2" />
+//     <Skeleton className="absolute top-2 right-2 h-4 w-4 rounded-full" />
+//   </div>
+// );
 
-const classesData = [
-  { id: 1, name: "Class 10" },
-  { id: 2, name: "Class 11" },
-  { id: 3, name: "Class 12" },
-];
+// const classesData = [
+//   { id: 1, name: "Class 10" },
+//   { id: 2, name: "Class 11" },
+//   { id: 3, name: "Class 12" },
+// ];
 
-interface Subject {
-  name: string;
-  dueDate: string;
-  startTime: string;
-  endTime: string;
-}
+// interface Subject {
+//   name: string;
+//   dueDate: string;
+//   startTime: string;
+//   endTime: string;
+// }
 
-interface ClassSchedule {
-  name: string;
-  subjects: Subject[];
-}
+// interface ClassSchedule {
+//   name: string;
+//   subjects: Subject[];
+// }
 
-const CreateExam = ({ modalAction }) => {
+const CreateExam = ({ modalAction }: any) => {
   const {
     data: classes,
-    isPending: isClassPending,
-    isSuccess: isClassSuccess,
   } = useListClass({ page: 1, size: 10, sortBy: "id", sortOrder: "ASC" });
 
   // const [selectedClasses, setSelectedClasses] = useState<any>([]);
@@ -128,7 +118,7 @@ const CreateExam = ({ modalAction }) => {
     error: createExamError,
   } = useCreateExam();
 
-  const { handleSubmit, values, setFieldValue, handleChange, handleBlur } =
+  const { values, setFieldValue, handleChange } =
     useFormik({
       initialValues: {
         name: "",
@@ -222,10 +212,10 @@ const CreateExam = ({ modalAction }) => {
     }
   };
 
-  const getSubjectName = (subjectId) => {
+  const getSubjectName = (subjectId:any) => {
     if (!subjectsData?.data) return "Subject not found";
     const subject = subjectsData.data.find(
-      (subject) => subject.id === subjectId
+      (subject:any) => subject.id === subjectId
     );
     return subject ? subject.name : "Subject not found";
   };
@@ -313,7 +303,7 @@ const CreateExam = ({ modalAction }) => {
               <SelectValue placeholder="Select a class" />
             </SelectTrigger>
             <SelectContent>
-              {classes?.data.map((classItem) => (
+              {classes?.data.map((classItem:any) => (
                 <SelectItem key={classItem.id} value={classItem.id.toString()}>
                   {classItem.name + " " + classItem?.section}
                 </SelectItem>
@@ -340,7 +330,7 @@ const CreateExam = ({ modalAction }) => {
                   </AlertDescription>
                 </Alert>
               ) : (
-                subjectsData?.data.map((subject) => (
+                subjectsData?.data.map((subject: any) => (
                   <Button
                     key={subject.id}
                     type="button"

@@ -9,15 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Clock,
-  Hourglass,
-  Loader2,
-  LogOut,
-  MoreVertical,
-  Plus,
-  User,
-} from "lucide-react";
+import { Clock, Hourglass, Loader2, LogOut, Plus, User } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import {
   useSAttendanceListAPI,
@@ -34,7 +26,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
-import { FormControl, FormItem, FormLabel } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import Yup from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
@@ -98,13 +89,21 @@ const AttendanceDashboardSkeleton = () => {
   );
 };
 
-const AttendanceTable: FC = ({ attendances, studentId }) => {
+interface AttendanceTableInterface {
+  attendances: any;
+  studentId: number | string;
+}
+
+const AttendanceTable: FC<AttendanceTableInterface> = ({
+  attendances,
+  studentId,
+}: any) => {
   const { mutate, isPending, isSuccess, isError, error } =
     useSUpdateAttendanceAPI(studentId);
   const [studentEditId, setStudentEditId] = useState(null);
   const [isAttendanceModal, setIsAttendanceModal] = useState(false);
 
-  const formatTime = (time) => {
+  const formatTime = (time: any) => {
     if (!time) return null;
     return time.slice(0, 5);
   };
@@ -152,7 +151,7 @@ const AttendanceTable: FC = ({ attendances, studentId }) => {
     },
   });
 
-  const handleEditModal = (data) => {
+  const handleEditModal = (data: any) => {
     formik.setValues({
       attendanceDate: data.attendanceDate,
       status: data.status,
@@ -375,7 +374,11 @@ const StatCard: FC<StatCardProps> = ({ icon, value, label, bgColor }) => (
   </Card>
 );
 
-const Attendance: FC = ({ studentId }) => {
+interface AttendanceProps {
+  studentId: number | string;
+}
+
+const Attendance: FC<AttendanceProps> = ({ studentId }: any) => {
   const { data: ATTENDANCES, isLoading: isAttendanceLoading } =
     useSAttendanceListAPI(studentId);
 

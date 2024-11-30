@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -79,7 +79,7 @@ const VolunteerForm = ({
           }
         />
         {touched.organisationName && errors.organisationName && (
-          <p className="text-sm text-red-500">{errors.organisationName}</p>
+          <p className="text-sm text-red-500">{typeof errors?.organisationName === 'string' ? errors.organisationName : ''}</p>
         )}
       </div>
 
@@ -94,7 +94,7 @@ const VolunteerForm = ({
           className={touched.role && errors.role ? "border-red-500" : ""}
         />
         {touched.role && errors.role && (
-          <p className="text-sm text-red-500">{errors.role}</p>
+          <p className="text-sm text-red-500">{typeof errors?.role === 'string' ? errors.role : ''}</p>
         )}
       </div>
 
@@ -113,7 +113,7 @@ const VolunteerForm = ({
             }
           />
           {touched.duration && errors.duration && (
-            <p className="text-sm text-red-500">{errors.duration}</p>
+            <p className="text-sm text-red-500"> {typeof errors?.duration === 'string' ? errors.duration : ''}</p>
           )}
         </div>
       </div>
@@ -194,7 +194,6 @@ const VolunteerSkeleton = () => {
 };
 
 const VolunteerTab = () => {
-  const [volunteerRecords, setVolunteerRecords] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState(null);
 
@@ -217,7 +216,6 @@ const VolunteerTab = () => {
   const {
     mutate: deleteMutate,
     isSuccess: isDeleteSuccess,
-    isPending: isDeletePending,
     isError: isDeleteError,
     error: deleteError,
   } = useVolunteerDelete();
@@ -240,6 +238,7 @@ const VolunteerTab = () => {
   useEffect(() => {
     if (isCreateError) {
       toast({
+        // @ts-ignore
         title: createError.response?.data.message,
         variant: "destructive",
       });
@@ -256,6 +255,7 @@ const VolunteerTab = () => {
 
     if (isUpdateError) {
       toast({
+        // @ts-ignore
         title: updateError.response?.data.message || "Something went wrong",
         variant: "destructive",
       });
@@ -275,6 +275,7 @@ const VolunteerTab = () => {
   useEffect(() => {
     if (isDeleteError) {
       toast({
+        // @ts-ignore
         title: deleteError.response?.data.message,
         variant: "destructive",
       });
@@ -288,11 +289,11 @@ const VolunteerTab = () => {
     }
   }, [isDeleteError, isDeleteSuccess]);
 
-  const handleDeleteVolunteer = (id) => {
+  const handleDeleteVolunteer = (id:any) => {
     deleteMutate(id);
   };
 
-  const handleEditVolunteer = (record) => {
+  const handleEditVolunteer = (record:any) => {
     setEditingRecord(record);
     setIsModalOpen(true);
   };
@@ -328,7 +329,7 @@ const VolunteerTab = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {VOLUNTEERS?.data.map((volunteer) => (
+                  {VOLUNTEERS?.data.map((volunteer:any) => (
                     <TableRow key={volunteer.id}>
                       <TableCell>{volunteer.organisationName}</TableCell>
                       <TableCell>{volunteer.role}</TableCell>

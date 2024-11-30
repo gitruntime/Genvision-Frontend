@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { format } from "date-fns";
 import {
   Card,
   CardHeader,
@@ -13,24 +12,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
   AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { CalendarIcon, Loader2, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import {
   useGoalCreateAPI,
   useGoalDeleteAPI,
@@ -48,13 +41,11 @@ import {
 import { toast } from "@/hooks/use-toast";
 
 const GoalsComponent = () => {
-  const [goals, setGoals] = React.useState([]);
-  const [editingGoal, setEditingGoal] = React.useState(null);
+  const [editingGoal, setEditingGoal] = React.useState<any>(null);
 
   const {
     data: GOALS,
     isLoading: isGoalLoading,
-    isSuccess: isGoalSuccess,
   } = useListGoals();
 
   const {
@@ -117,9 +108,12 @@ const GoalsComponent = () => {
         variant: "destructive",
         // @ts-ignore
         title: createError
+        // @ts-ignore
           ? createError.response?.data.message
           : deleteError
+          // @ts-ignore
           ? deleteError.response?.data.message
+          // @ts-ignore
           : updateError?.response?.data.message,
       });
     }
@@ -140,7 +134,7 @@ const GoalsComponent = () => {
     isDeleteSuccess,
   ]);
 
-  const startEditing = (goal) => {
+  const startEditing = (goal:any) => {
     setEditingGoal(goal);
     formik.setValues({
       name: goal.name,
@@ -154,7 +148,7 @@ const GoalsComponent = () => {
     formik.resetForm();
   };
 
-  const removeGoal = (id) => {
+  const removeGoal = (id:any) => {
     deleteMutate(id);
   };
 
@@ -177,6 +171,7 @@ const GoalsComponent = () => {
           <div>
             <Input
               id="name"
+              // @ts-ignore
               name="name"
               placeholder="Goal name"
               {...formik.getFieldProps("name")}
@@ -196,6 +191,7 @@ const GoalsComponent = () => {
           <div>
             <Textarea
               id="description"
+              // @ts-ignore
               name="description"
               placeholder="Goal description"
               {...formik.getFieldProps("description")}
@@ -269,7 +265,7 @@ const GoalsComponent = () => {
                   </CardContent>
                 </Card>
               ))
-            : GOALS?.data.map((goal) => (
+            : GOALS?.data.map((goal: any) => (
                 <Card key={goal.id}>
                   <CardContent className="pt-6">
                     <div className="flex justify-between items-start">

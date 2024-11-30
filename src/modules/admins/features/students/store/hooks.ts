@@ -1,7 +1,5 @@
 import {
-  QueryClient,
   useMutation,
-  UseMutationResult,
   useQuery,
   useQueryClient,
   UseQueryResult,
@@ -45,14 +43,15 @@ export const useCreateStudent = () => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => studentCreateAPI(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "students"]);
     },
     retry: false,
   });
 };
 
-export const useViewStudents = (id): UseQueryResult<any, Error> => {
+export const useViewStudents = (id:any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "class", "student", id],
     queryFn: () => studentViewAPI(id),
@@ -60,43 +59,45 @@ export const useViewStudents = (id): UseQueryResult<any, Error> => {
   });
 };
 
-export const useSAddressListAPI = (id): UseQueryResult<any, Error> => {
+export const useSAddressListAPI = (id:any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "addresses"],
     queryFn: () => SAddressListAPI(id),
   });
 };
 
-export const useSAttendanceListAPI = (id): UseQueryResult<any, Error> => {
+export const useSAttendanceListAPI = (id:any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "attendances"],
     queryFn: () => SAttendanceListAPI(id),
   });
 };
 
-export const useSCreateAttendanceAPI = (id) => {
+export const useSCreateAttendanceAPI = (id:any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => attendanceCreateAPI(id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "students", "attendances"]);
     },
     retry: false,
   });
 };
 
-export const useSUpdateAttendanceAPI = (studentId) => {
+export const useSUpdateAttendanceAPI = (studentId:any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: ([id, data]) => attendanceUpdateAPI(studentId, id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "students", "attendances"]);
     },
     retry: false,
   });
 };
 
-export const useAddStudentsToClass = (id) => {
+export const useAddStudentsToClass = (id:any) => {
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => AddStudentsToClassAPI(id, data),
     onSuccess: () => {
@@ -106,32 +107,33 @@ export const useAddStudentsToClass = (id) => {
   });
 };
 
-export const useSMarkListAPI = (id): UseQueryResult<any, Error> => {
+export const useSMarkListAPI = (id:any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "marks"],
     queryFn: () => MarkListAPI(id),
   });
 };
 
-export const useSMarkCreateAPI = (id) => {
+export const useSMarkCreateAPI = (id:any) => {
   const queryClient = useQueryClient();
   return useMutation<any, AxiosError, any>({
     mutationFn: (data) => MarkCreateAPI(id, data),
     onSuccess: () => {
+      // @ts-ignore
       queryClient.invalidateQueries(["admin", "students", "marks"]);
     },
     retry: false,
   });
 };
 
-export const useSInterestListAPI = (id): UseQueryResult<any, Error> => {
+export const useSInterestListAPI = (id : any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "interests"],
     queryFn: () => InterestListAPI(id),
   });
 };
 
-export const useAIPrompt = (id): UseQueryResult<any, Error> => {
+export const useAIPrompt = (id : any): UseQueryResult<any, Error> => {
   return useQuery({
     queryKey: ["admin", "students", "prompts"],
     queryFn: () => AIPromptAPI(id),
