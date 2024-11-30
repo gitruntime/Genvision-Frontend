@@ -23,14 +23,6 @@ const loginAPI = async ({
     email,
     password,
   });
-const loginAPI = async ({
-  email,
-  password,
-}: LoginCredentials): Promise<any> => {
-  const { data } = await axios.post<any>(`${getBaseURL()}/auth/login`, {
-    email,
-    password,
-  });
   return data;
 };
 
@@ -46,7 +38,7 @@ export const useLogin = () => {
       }
     },
     onSuccess: (data) => {
-      console.log(data,"this");
+      // @ts-ignore
       dispatch(setCredentials({ token: data.data }));
     },
     retry: false,

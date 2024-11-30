@@ -5,7 +5,6 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import three from "../../../assets/3d art.png";
 import { useAIPrompt } from "../store/hooks";
 import { useParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";

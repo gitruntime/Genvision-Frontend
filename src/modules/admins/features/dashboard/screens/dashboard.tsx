@@ -177,22 +177,16 @@ const SchoolDashboard = () => {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={attendanceData}>
+                <LineChart data={DASHBOARD_DATA?.data?.attendanceData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
                   <Line
                     type="monotone"
-                    dataKey="students"
+                    dataKey="attendancePercentage"
                     stroke="#4f46e5"
                     name="Students"
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="teachers"
-                    stroke="#ec4899"
-                    name="Teachers"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -208,12 +202,12 @@ const SchoolDashboard = () => {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={performanceData}>
+                <BarChart data={DASHBOARD_DATA?.data?.academicPerformance}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="subject" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="score" fill="#4f46e5" />
+                  <Bar dataKey="averageMarks" fill="#4f46e5" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -222,7 +216,7 @@ const SchoolDashboard = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card>
           <CardHeader>
             <CardTitle>Student Distribution</CardTitle>
@@ -294,7 +288,7 @@ const SchoolDashboard = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </main>
   );
 };
